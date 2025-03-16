@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+}
+header{
+    height: 100vh;
+    overflow: hidden;
+    justify-items: center;
+}
+.pop{
+    min-width: 100%;
+   min-height: 100%;
+}
+.intro{
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    padding: 20px;
+    top: 220px;
+    left: 100px;
+    width: 50%;
+    height: auto;
+}
+
+.intro h1{
+    color: #7106cb;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-bottom: 5px;
+    font-weight: bolder;
+}
+.intro h1 span{
+    color: #f2f2f2;
+}
+
+.intro p{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 16px;
+    color: white;
+}
+header .screen{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    min-width: 100%;
+    min-height: 100%;
+
+
+}
+.space{
+    display: flex;
+    position: sticky;
+    bottom: 0;
+    top: 0;
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 50px;
+    height: 50px;
+    align-items: center;
+    box-shadow: 0px 5px 5px rgba(226, 6, 255, 0.1);
+    animation: glow 10s infinite 1s forwards;
+}
+@keyframes glow{
+    0%{
+        box-shadow: 0px 5px 5px rgba(226, 6, 255, 0.1);
+    }
+    33%{
+        box-shadow: 0px 5px 20px rgba(226, 6, 255, 0.6);
+    }
+    66%{
+        box-shadow: 0px 5px 5px rgba(226, 255, 6, 0.3);
+    }
+    100%{
+        box-shadow: 0px 5px 5px rgba(226, 6, 255, 0.1);
+    }
+
+}
+.space ul{
+    width: 50%;
+    display: flex;
+    justify-content: left;
+    margin-left: 100px;
+}
+.space ul li{
+    padding: 0px 10px;
+    border: 1px solid white;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+.space ul li:first-child{
+    padding-left: 0;
+}
+.space ul li:last-child{
+    border-right: none;
+}
+.space a{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: #f2f2f2;
+    text-decoration: none;
+    transition: .5s;
+}
+.space .active, .space ul li:hover a{
+    padding: 3px 10px ;
+    background-color: #ffffff;
+    color: #7106cb;
+
+}
+.chill{
+    height: 50%;
+
+
+}
+.contents{
+
+    background-color: rgb(14, 14, 14);
+    height: 100vh;
+
+}
+
+    
