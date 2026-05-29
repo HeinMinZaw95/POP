@@ -9,8 +9,8 @@
 :root{
     --dark-bg: #0a0a0a;
     --darker-bg: #050505;
-    --accent: #2ecc71;
-    --accent-glow: rgba(46, 204, 113, 0.4);
+    --accent: #EE1C4B;
+    --accent-glow: #943E97bb;
     --text: #ffffff;
 }
 
@@ -28,20 +28,27 @@ body{
      padding: 1.5rem 5%;
      display: flex;
      justify-content: space-between;
+     background-color: transparent !important;
      align-items: center;
-     background: rgba(10, 10, 10, 0.95);
      backdrop-filter: blur(10px) ;
      z-index: 1000;
      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo{
+    display: flex;
+    align-items: center;
+}
+.logo_name{
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--accent);
     text-decoration: none;
     position: relative;
     padding-left: 2.5rem;
+}
+.logo_img{
+    width: 3rem;
 }
 
 .nav-links{
@@ -73,8 +80,34 @@ body{
     width: 100%;
 }
 
+/*Hero Video*/
+.background_video {
+  width: 100%;       /* Spans the full width of its container */
+  height: auto;      /* Allows the aspect ratio to set the height */
+  display: block;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Desktop Version (800px screen width and up) */
+@media (min-width: 800px) {
+  .background_video {
+    aspect-ratio: 16 / 9; /* Matches 1920x1080 exactly */
+    background-image: url('images/desktop-thumbnail.jpg');
+  }
+}
+
+/* Mobile Version (Up to 799px screen width) */
+@media (max-width: 799px) {
+  .background_video {
+    aspect-ratio: 43 / 51; /* Matches 430x510 exactly */
+    background-image: url('images/mobile-thumbnail.jpg');
+  }
+}
+
+
 .hero{
-    min-height: 100vh;
+    max-height: 100vh;
     display: flex;
     align-items: center;
     padding: 12% 5%;
@@ -86,33 +119,106 @@ body{
     text-align: center;
     position: relative;
 }
+        .container {
+            text-align: center;
+            width: 30%;
+        }
 
-.hero-image{
-    flex: 1;
-    text-align: center;
-    position: relative;
-}
+        .title {
+            color: #f0f6fc;
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
 
-.profile-img{
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--accent);
-    box-shadow: 0 0 50px var(--accent-glow);
-    animation: float 3s ease-in-out infinite;
-    filter: grayscale(0.2) contrast(1.1);
-}
+        /* Main interactive viewport */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-height: 100vh; /* Adjust based on your preferred layout size */
+            aspect-ratio: 3 / 4; /* Matches the vertical format of your uploaded images */
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            cursor: ew-resize; /* Shows a left-right resize cursor */
+            user-select: none;
+            -webkit-user-select: none;
+        }
 
-@keyframes float{
-    0%, 100% {transform: translateY(0);}
-    50% {transform: translateY(-20px);}
-}
+        /* Shared image styling to ensure they sit perfectly aligned on top of each other */
+        .slider-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none; /* Prevents browser image dragging physics from interrupting */
+        }
 
+        /* Foreground layer (The Fireman) - Starts half-revealed */
+        .img-foreground {
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+            will-change: clip-path;
+        }
+
+        /* Visual bar splitting the two states */
+        .slider-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 4px rgba(255, 255, 255, 0.8);
+            pointer-events: none; /* Let mouse moves pass directly through to the container */
+            will-change: left;
+            transform: translateX(-50%);
+        }
+
+        /* Small interactive handle badge in the middle of the line */
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            will-change: left;
+        }
+
+        /* SVG arrows inside the handle badge */
+        .slider-button::before {
+            content: '';
+            width: 0; 
+            height: 0; 
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 8px solid #333;
+            margin-right: 4px;
+        }
+
+        .slider-button::after {
+            content: '';
+            width: 0; 
+            height: 0; 
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 8px solid #333;
+            margin-left: 4px;
+        }
 .hero h1{
     font-size: 4rem;
     margin-bottom: 1.5rem;
-    background: linear-gradient(45deg, var(--accent) 30% , #ffffff 70%);
+    background: linear-gradient(45deg, #ffffff 30% , var(--accent-glow) 70%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -127,7 +233,7 @@ body{
 .cta-buttom{
     display: inline-block;
     padding: 1rem 2rem;
-    background: linear-gradient(45deg, var(--accent), #27ae60);
+    background: var(--accent);
     color: white;
     border-radius: 8px;
     text-decoration: none;

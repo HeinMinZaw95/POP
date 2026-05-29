@@ -16,7 +16,10 @@
 <body>
     <!-- Navigation-->
      <nav class="navbar">
-        <a href="#home" class="logo">HeinPop</a>
+        <div class="logo">
+        <img src="img/logo.svg" alt="Logo" class="logo_img">
+        <a href="#home" class="logo_name">HeinPop</a>
+        </div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#skills">skills</a></li>
@@ -24,7 +27,13 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
      </nav>
-
+     <video id="my-background-video" muted loop autoplay playsinline preload="auto" class="background_video">
+    <source src="video/heinpop_hero.mp4" type="video/mp4" media="(min-width: 800px)">
+    
+    <source src="video/ChillplusC35,C50 m.mp4" type="video/mp4" media="(max-width: 799px)">
+    
+    Your browser does not support the video tag.
+</video>
      <!--Hero Section-->
      <section id="home" class="hero">
         <div class="hero-content">
@@ -33,9 +42,19 @@
             <p class="highlight">Creating visuals that resonate and build a community around your vision.</p>
             <a href="#contact" class="cta-buttom">Let's Create</a>
         </div>
-        <div class="hero-image">
-            <img src="img/profile.jpg" alt="Profile" class="profile-img">
+        <div class="container">        
+        <div class="slider-container" id="slider">
+            <!-- Background Image (Normal) -->
+            <img src="Normal.jpg" alt="Normal Citizen">
+            
+            <!-- Foreground Image (Fireman) -->
+            <img src="Fireman.jpg" alt="Fireman" class="img-foreground" id="foreground">
+            
+            <!-- Splitting Line UI elements -->
+            <div class="slider-line" id="line"></div>
+            <div class="slider-button" id="button"></div>
         </div>
+    </div>
      </section>
 
      <!--Skill Section-->
