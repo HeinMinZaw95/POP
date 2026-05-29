@@ -25,7 +25,7 @@ body{
     position: fixed;
      top: 0;
      width: 100%;
-     padding: 1.5rem 5%;
+     padding: 1rem 5%;
      display: flex;
      justify-content: space-between;
      background-color: transparent !important;
@@ -48,7 +48,7 @@ body{
     padding-left: 2.5rem;
 }
 .logo_img{
-    width: 3rem;
+    height: 3rem;
 }
 
 .nav-links{
@@ -82,6 +82,7 @@ body{
 
 /*Hero Video*/
 .background_video {
+    margin-top: 5rem;
   width: 100%;       /* Spans the full width of its container */
   height: auto;      /* Allows the aspect ratio to set the height */
   display: block;
@@ -300,6 +301,9 @@ footer{
 }
 
 @media (max-width: 768px){
+    .background_video {
+    margin-top: 5rem;}
+
     .hero{
         flex-direction: column;
         text-align: center;
