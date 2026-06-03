@@ -243,9 +243,10 @@ body{
     overflow: hidden;
 }
 
-.skills{
+section{
     padding: 5rem 5%;
     background: var(--darker-bg);
+    min-height: 500px;
 
 }
 
@@ -275,15 +276,99 @@ body{
     color: var(--accent);
     margin-bottom: 1rem;
 }
+
+.work-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+/* Container acts as a masked window frame */
+.tab-content-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow: hidden; /* Clips the cards as they exit the top/bottom boundaries */
+    background-color: var(--darker-bg);
+}
+
+#successPrintDesign,
+#successSocialDesign,
+#successCommercialVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-bg);
+    
+    /* 1. ENTERING STATE: Positioned completely above the visible frame, waiting to drop down */
+    visibility: hidden;
+    transform: translateY(-100%); 
+    z-index: 1;
+    
+    /* Changed from 0.6s to 0.9s for a more elegant, paced slide */
+    transition: 
+        transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+        z-index 1.5s step-end,
+        visibility 1.5s step-end;
+}
+
+/* 2. ACTIVE STATE: The card slides into perfect alignment */
+#successPrintDesign.active,
+#successSocialDesign.active,
+#successCommercialVideo.active {
+    position: relative; /* Restores layout height flow for the footer */
+    visibility: visible;
+    z-index: 2; /* Sits cleanly over the exiting card */
+    transform: translateY(0);
+    
+    /* Changed from 0.6s to 0.9s to match the exit speed */
+    transition: 
+        transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+        z-index 1.5s step-start,
+        visibility 1.5s step-start;
+}
+
+/* 3. EXITING STATE: The old card is pulled straight UP out of the frame */
+#successPrintDesign:not(.active),
+#successSocialDesign:not(.active),
+#successCommercialVideo:not(.active) {
+    transform: translateY(-100%); /* Slides up and out */
+    z-index: 1;
+    
+    /* Changed from 0.6s to 0.9s */
+    transition: 
+        transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
+        visibility 1.5s step-end;
+}
+.work-card{
+    padding: 2rem;
+    border-radius: 15px;
+    aspect-ratio: 4/3;
+    background: url(img/Gemini_Generated_Image_rtjssyrtjssyrtjs.png) center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+/* Create a class to handle the smooth fade-in */
+.fade-in {
+    opacity: 1 !important;
+}
+
+
 footer{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
     background: var(--darker-bg);
+    align-items: center;
     padding: 3rem 5%;
     text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .social-links{
-    margin-top: 2rem;
     display: flex;
     justify-content: center;
     gap: 2rem;
@@ -298,6 +383,87 @@ footer{
 .social-links a:hover{
     color: var(--accent);
     transform: translateY(-3px);
+}
+
+/* ==========================================
+   CONTACT INFO STRIP STYLES
+   ========================================== */
+.contact-info-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background: var(--darker-bg);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: .5rem .5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    min-width: 280px;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s ease;
+}
+
+/* Material Icons Styling */
+.contact-item > span.material-symbols-outlined {
+    font-size: 2.2rem;
+    color: var(--accent);
+    background: rgba(238, 28, 75, 0.1);
+    padding: 0.4rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.contact-text h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.4;
+    color: var(--text);
+}
+
+.contact-text a {
+    font-size: 1rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+/* Hover Interactive States */
+.contact-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(238, 28, 75, 0.1);
+}
+
+.contact-item:hover .contact-text a {
+    color: var(--accent);
+}
+
+/* Mobile Breakpoint Optimization */
+@media (max-width: 768px) {
+    .contact-info-strip {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 3rem 5%;
+    }
+    .contact-item {
+        width: 100%;
+        min-width: auto;
+    }
 }
 
 @media (max-width: 768px){
@@ -323,5 +489,57 @@ footer{
     .logo{
         font-size: 1.5rem;
         padding-left: 2rem;
+    }
+}
+
+/* 1. Establish an absolute anchor container for the neon strip */
+.neon-wrapper {
+    position: relative;
+    /* Prevents the high-intensity blur glow from clipping out of the layout bounds */
+    padding-bottom: 2px; 
+}
+
+/* 2. The flowing neon light tube */
+.neon-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* Tube thickness */
+    
+    /* Repeating gradient with your crimson brand accent color and a dark transition gap */
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--accent) 15%, 
+        #ff5e7e 25%, 
+        var(--accent) 35%, 
+        transparent 50%,
+        var(--accent) 65%,
+        #ff5e7e 75%,
+        var(--accent) 85%,
+        transparent 100%
+    );
+    background-size: 200% 100%; /* Needed to loop the gradient smoothly */
+    
+    /* Multi-layered neon ambient glow mapping */
+    box-shadow: 
+        0 2px 10px var(--accent),
+        0 4px 25px var(--accent-glow),
+        0 0 40px rgba(238, 28, 75, 0.4);
+        
+    /* Triggers the hardware-accelerated fluid motion looping infinitely */
+    animation: neonFlow 4s linear infinite;
+    will-change: background-position;
+    z-index: 10;
+}
+
+/* 3. Infinite fluid motion animation engine */
+@keyframes neonFlow {
+    0% {
+        background-position: 200% 0%;
+    }
+    100% {
+        background-position: 0% 0%;
     }
 }
