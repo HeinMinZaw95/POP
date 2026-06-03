@@ -6,6 +6,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
+            // Close mobile menu when a link is clicked
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) navLinks.classList.remove('mobile-active');
+
             target.scrollIntoView({ behavior: 'smooth' });
         }
     });
@@ -17,7 +21,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const video = document.getElementById('my-background-video');
 
 if (video) {
-    // Dynamic Thumbnails
     const setVideoPoster = () => {
         const posterSrc = window.innerWidth >= 800 ? 'video/desktop-thumbnail.jpg' : 'video/mobile-thumbnail.jpg';
         video.setAttribute('poster', posterSrc);
@@ -25,19 +28,16 @@ if (video) {
 
     window.addEventListener('DOMContentLoaded', setVideoPoster);
 
-    // Play safely on load
     window.addEventListener('load', () => {
         video.play().catch(err => console.log("Autoplay prevented or video failed to play:", err));
     });
 
-    // Debounced Resize Source Refresh
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             video.load();
             video.play().catch(() => {});
-            console.log("Video source updated.");
         }, 250); 
     });
 }
@@ -59,11 +59,11 @@ if (navbar) {
             });
             ticking = true;
         }
-    }, { passive: true }); // Improves mobile scroll performance
+    }, { passive: true }); 
 }
 
 // ==========================================
-// 4. BEFORE/AFTER IMAGE SLIDER
+// 4. BEFORE/AFTER IMAGE SLIDER (With Touch Adjustments)
 // ==========================================
 const slider = document.getElementById('slider');
 const foreground = document.getElementById('foreground');
@@ -85,14 +85,19 @@ if (slider && foreground && line && button) {
         updateSplit(percentage);
     };
 
+    // Desktop Mouse Controls
     slider.addEventListener('mousemove', (e) => handleMove(e.clientX));
+    
+    // Mobile Dragging Touch Controls
     slider.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) handleMove(e.touches[0].clientX);
+        if (e.touches.length > 0) {
+            handleMove(e.touches[0].clientX);
+        }
     }, { passive: true });
 }
 
 // ==========================================
-// 5. CLEAN TAB SWITCHER (Using CSS .active)
+// 5. CLEAN TAB SWITCHER
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const socialBtn = document.getElementById("socialDesign");
@@ -113,22 +118,35 @@ document.addEventListener("DOMContentLoaded", () => {
         tabs.forEach(item => {
             item.btn.addEventListener('click', (e) => {
                 e.preventDefault();
-
-                // Clear active states
                 tabs.forEach(t => {
                     if (t.section) t.section.classList.remove('active');
                 });
-
-                // Add active state to clicked item section
-                if (item.section) {
-                    item.section.classList.add('active');
-                }
+                if (item.section) item.section.classList.add('active');
             });
         });
 
-        // Initialize display configuration state smoothly
         if (socialSection) socialSection.classList.add('active');
-    } else {
-        console.warn("Tab elements could not be initialized. Verify IDs match up correctly.");
+    }
+});
+
+// ==========================================
+// 6. MOBILE NAVIGATION DRAWER TOGGLE
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.classList.toggle('mobile-active');
+        });
+
+        // Close menu if clicking anywhere else on screen
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+                navLinks.classList.remove('mobile-active');
+            }
+        });
     }
 });

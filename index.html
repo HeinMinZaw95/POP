@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="google-site-verification" content="HY9HbENiVSk6F7LhIHKzQdf1Nq-7w1SPKz8-RwDo0sU" />
-        <meta name="description" content="Professional graphic design and video editing services to elevate your brand. We create stunning logos, animations, marketing materials, and captivating videos.">
-        <meta name="viewport" content="width=device-width">
-        <title>HeinPop</title>
-        <!--link to google font for social media icon-->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-        <!--link to css file-->
-        <link rel="stylesheet" href="styles.css">
-        <link rel="icon" type="image/x-icon" href="img/logo.svg">
-    </head>
-</html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="HY9HbENiVSk6F7LhIHKzQdf1Nq-7w1SPKz8-RwDo0sU" />
+    <meta name="description" content="Professional graphic design and video editing services to elevate your brand. We create stunning logos, animations, marketing materials, and captivating videos.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeinPop</title>
+    <!--link to google font for social media icon-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!--link to css file-->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.svg">
+</head>
 <body>
     <!-- Navigation-->
-     <nav class="navbar">
+    <nav class="navbar">
         <div class="logo">
-        <img src="img/logo.svg" alt="Logo" class="logo_img">
-        <a href="#home" class="logo_name">HeinPop</a>
+            <img src="img/logo.svg" alt="Logo" class="logo_img">
+            <a href="#home" class="logo_name">HeinPop</a>
         </div>
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" aria-label="Toggle Navigation">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#skills">skills</a></li>
+            <li><a href="#skills">Skills</a></li>
             <li><a href="3D-Viewer.html">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-     </nav>
-     <video id="my-background-video" muted loop autoplay playsinline preload="auto" class="background_video">
-    <source src="video/heinpop_hero.mp4" type="video/mp4" media="(min-width: 800px)">
-    
-    <source src="video/heinpop_hero_m.mp4" type="video/mp4" media="(max-width: 799px)">
-    
-    Your browser does not support the video tag.
-</video>
-     <!--Hero Section-->
-     <section id="home" class="hero">
+    </nav>
+
+    <video id="my-background-video" muted loop autoplay playsinline preload="auto" class="background_video">
+        <source src="video/heinpop_hero.mp4" type="video/mp4" media="(min-width: 800px)">
+        <source src="video/heinpop_hero_m.mp4" type="video/mp4" media="(max-width: 799px)">
+        Your browser does not support the video tag.
+    </video>
+
+    <!--Hero Section-->
+    <section id="home" class="hero">
         <div class="hero-content">
             <h1>Graphic Designer</h1>
             <p>Every brand has a story, and we help you tell it through powerful design. We pour our hearts into every project.</p>
@@ -43,53 +46,47 @@
             <a href="#contact" class="cta-buttom">Let's Create</a>
         </div>
         <div class="container">        
-        <div class="slider-container" id="slider">
-            <!-- Background Image (Normal) -->
-            <img src="Normal.jpg" alt="Normal Citizen">
-            
-            <!-- Foreground Image (Fireman) -->
-            <img src="Fireman.jpg" alt="Fireman" class="img-foreground" id="foreground">
-            
-            <!-- Splitting Line UI elements -->
-            <div class="slider-line" id="line"></div>
-            <div class="slider-button" id="button"></div>
+            <div class="slider-container" id="slider">
+                <!-- Background Image (Normal) -->
+                <img src="Normal.jpg" alt="Normal Citizen">
+                <!-- Foreground Image (Fireman) -->
+                <img src="Fireman.jpg" alt="Fireman" class="img-foreground" id="foreground">
+                <!-- Splitting Line UI elements -->
+                <div class="slider-line" id="line"></div>
+                <div class="slider-button" id="button"></div>
+            </div>
         </div>
-    </div>
-     </section>
+    </section>
 
-     <!--Skill Section-->
+    <!--Skill Section-->
     <section id="skills" class="skills">
         <h2>Skills</h2>
         <div class="skills-grid">
-            
             <div class="skill-card" id="socialDesign">
                 <span class="material-symbols-outlined">format_color_fill</span>
                 <h3>Branding Graphic Design</h3>
                 <h4>Logo, Brochures, Banners, Packages</h4>
             </div>
-
             <div class="skill-card" id="printDesign">
                 <span class="material-symbols-outlined">video_library</span>
                 <h3>Branding Video</h3>
                 <h4>3D animation, Commercial</h4>
             </div>
-
             <div class="skill-card" id="commercialVideo">
                 <span class="material-symbols-outlined">engineering</span>
                 <h3>UI/UX Design</h3>
-                <h4>Propotyping, User Testing</h4>
+                <h4>Prototyping, User Testing</h4>
             </div>
-
         </div>
     </section>
+
     <div class="success neon-wrapper tab-content-container">
-        
         <section id="successSocialDesign" class="success-social-design">
             <h2>Social Media Design</h2>
             <div class="work-grid">
                 <div class="work-card"><span class="material-symbols-outlined">format_color_fill</span><h3>Branding Graphic Design</h3><h4>Logo, Brochures, Banners, Packages</h4></div>
                 <div class="work-card"><span class="material-symbols-outlined">video_library</span><h3>Branding Video</h3><h4>3D animation, Commercial</h4></div>
-                <div class="work-card"><span class="material-symbols-outlined">engineering</span><h3>UI/UX Design</h3><h4>Propotyping, User Testing</h4></div>
+                <div class="work-card"><span class="material-symbols-outlined">engineering</span><h3>UI/UX Design</h3><h4>Prototyping, User Testing</h4></div>
             </div>
         </section>
 
@@ -98,7 +95,7 @@
             <div class="work-grid">
                 <div class="work-card"><span class="material-symbols-outlined">format_color_fill</span><h3>Branding Graphic Design</h3><h4>Logo, Brochures, Banners, Packages</h4></div>
                 <div class="work-card"><span class="material-symbols-outlined">video_library</span><h3>Branding Video</h3><h4>3D animation, Commercial</h4></div>
-                <div class="work-card"><span class="material-symbols-outlined">engineering</span><h3>UI/UX Design</h3><h4>Propotyping, User Testing</h4></div>
+                <div class="work-card"><span class="material-symbols-outlined">engineering</span><h3>UI/UX Design</h3><h4>Prototyping, User Testing</h4></div>
             </div>
         </section>
 
@@ -107,58 +104,43 @@
             <div class="work-grid">
                 <div class="work-card"><span class="material-symbols-outlined">format_color_fill</span><h3>Branding Graphic Design</h3><h4>Logo, Brochures, Banners, Packages</h4></div>
                 <div class="work-card"><span class="material-symbols-outlined">video_library</span><h3>Branding Video</h3><h4>3D animation, Commercial</h4></div>
-                <div class="work-card"><span class="material-symbols-outlined">engineering</span><h3>UI/UX Design</h3><h4>Propotyping, User Testing</h4></div>
+                <div class="work-card"><span class="material-symbols-outlined">engineering</span><h3>UI/UX Design</h3><h4>Prototyping, User Testing</h4></div>
             </div>
         </section>
-
     </div>
 
     <!--footer-->
-    <footer>
+    <footer id="contact">
         <div class="social">
-        
-        <div class="social-links">
-    <a href="#" aria-label="GitHub">
-        <span class="material-symbols-outlined">code</span>
-    </a>
-    <a href="#" aria-label="Instagram">
-        <span class="material-symbols-outlined">photo_camera</span>
-    </a>
-    <a href="#" aria-label="LinkedIn">
-        <span class="material-symbols-outlined">group</span>
-    </a>
-    <a href="#" aria-label="YouTube">
-        <span class="material-symbols-outlined">video_library</span>
-    </a>
-    </div>
-    </div>
-    <p>&copy; 2026 HeinPop. All rights reserved.</p>
-    <div class="contact-info-strip">
-        <div class="contact-item">
-            <span class="material-symbols-outlined">mail</span>
-            <div class="contact-text">
-                <h3>Email Me</h3>
-                <a href="mailto:your-email@example.com">hello@heinpop.com</a>
+            <div class="social-links">
+                <a href="#" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="#" aria-label="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="#" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="#" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
             </div>
         </div>
-        
-        <div class="contact-item">
-            <span class="material-symbols-outlined">call</span>
-            <div class="contact-text">
-                <h3>Call Me</h3>
-                <a href="tel:+1234567890">+95 9 123 456 789</a>
+        <p>&copy; 2026 HeinPop. All rights reserved.</p>
+        <div class="contact-info-strip">
+            <div class="contact-item">
+                <span class="material-symbols-outlined">mail</span>
+                <div class="contact-text">
+                    <h3>Email Me</h3>
+                    <a href="mailto:hello@heinpop.com">hello@heinpop.com</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <span class="material-symbols-outlined">call</span>
+                <div class="contact-text">
+                    <h3>Call Me</h3>
+                    <a href="tel:+959123456789">+95 9 123 456 789</a>
+                </div>
             </div>
         </div>
-    </div>
     </footer>
 
-    <!-- Start of HubSpot Embed Code -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/243801321.js"></script>
-<!-- End of HubSpot Embed Code -->
-
+    <!-- HubSpot Embed Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/243801321.js"></script>
     <!-- link to javascript file-->
-     <script src="app.js"></script>
-
-    </body>
-
-
+    <script src="app.js"></script>
+</body>
+</html>
