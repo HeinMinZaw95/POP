@@ -3,67 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instant 3D GLB Viewer & Code Generator</title>
+    <title>HeinPop | Instant 3D GLB Viewer & Code Generator</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0a0a0a',
+                        darkerBg: '#050505',
+                        accent: '#EE1C4B',
+                        accentGlow: '#943E97bb',
+                    }
+                }
+            }
+        }
+    </script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
+    <!-- Google Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     
     <!-- Google's Model Viewer - The industry standard for loading .glb models -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #090d16;
+            font-family: 'Segoe UI', -apple-system, sans-serif;
+            background-color: var(--dark-bg);
+        }
+        /* Syncing with index.html global theme variables */
+        :root {
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --accent: #EE1C4B;
+            --accent-glow: #943E97bb;
+            --text: #ffffff;
         }
         /* Custom styles for model viewer */
         model-viewer {
             width: 100%;
             height: 100%;
             --poster-color: transparent;
-            background-color: #0f172a;
+            background-color: var(--darker-bg);
+        }
+        /* Custom Scrollbar for side control engine panel */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 3px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
         }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen flex flex-col">
+<body class="text-white min-h-screen flex flex-col bg-darkBg">
 
-    <!-- Header -->
-    <header class="border-b border-slate-850 bg-slate-900/90 backdrop-blur-md px-6 py-4 flex items-center justify-between z-10">
-        <div class="flex items-center gap-3">
-            <div class="bg-indigo-600 p-2.5 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                <i class="fa-solid fa-cube text-xl text-white"></i>
-            </div>
-            <div>
-                <span class="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">No-Code 3D Portal</span>
-                <h1 class="text-lg font-extrabold text-white">GLB Web Publisher</h1>
-            </div>
+    <!-- Brand Header Navigation (Synced directly with index.html layout rules) -->
+    <nav class="w-full bg-darkBg/95 backdrop-blur-md px-[5%] py-4 flex items-center justify-between z-50 border-b border-white/10 sticky top-0">
+        <div class="flex items-center">
+            <img src="img/logo.svg" alt="Logo" class="h-10">
+            <a href="index.html#home" class="text-2xl font-bold text-accent pl-2 text-decoration-none">HeinPop</a>
         </div>
-        <div class="text-xs text-slate-400 font-medium">
-            Powered by Google <code class="bg-slate-950 px-1.5 py-0.5 rounded text-indigo-400 font-mono">&lt;model-viewer&gt;</code>
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle block md:hidden text-white bg-none border-none cursor-pointer" aria-label="Toggle Navigation">
+            <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+        <ul class="nav-links hidden md:flex gap-8 list-none">
+            <li><a href="index.html#home" class="text-white font-medium hover:text-accent transition">Home</a></li>
+            <li><a href="index.html#skills" class="text-white font-medium hover:text-accent transition">Skills</a></li>
+            <li><a href="3D-Viewer.html" class="text-accent font-medium transition">Projects</a></li>
+            <li><a href="#contact" class="text-white font-medium hover:text-accent transition">Contact</a></li>
+        </ul>
+        
+        <!-- Dropdown Mobile Context Menu -->
+        <div class="mobile-menu hidden absolute top-full left-0 right-0 flex-col bg-darkBg/98 p-8 gap-6 border-b border-white/10 text-center z-50">
+            <a href="index.html#home" class="text-white text-lg">Home</a>
+            <a href="index.html#skills" class="text-white text-lg">Skills</a>
+            <a href="3D-Viewer.html" class="text-accent text-lg">Projects</a>
+            <a href="#contact" class="text-white text-lg">Contact</a>
         </div>
-    </header>
+    </nav>
 
     <!-- Main Container -->
-    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden h-[calc(100vh-73px)]">
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden lg:h-[calc(100vh-73px)]">
         
-        <!-- Left: 3D Viewport -->
-        <div class="lg:col-span-8 relative flex flex-col bg-slate-950 border-b lg:border-b-0 lg:border-r border-slate-850">
-            <!-- Dropzone Area overlay (only shows when no file is loaded or drag over) -->
-            <div id="dropzone" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-950/90 p-8 transition-all duration-300">
-                <div class="max-w-md text-center space-y-6 p-8 border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-3xl bg-slate-900/50 transition cursor-pointer" onclick="document.getElementById('file-input').click()">
-                    <div class="w-20 h-20 bg-indigo-600/10 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-indigo-500/10">
+        <!-- Left: 3D Viewport Workspace -->
+        <div class="lg:col-span-8 relative flex flex-col bg-darkerBg border-b lg:border-b-0 lg:border-r border-white/10 min-h-[450px] lg:min-h-0">
+            <!-- Dropzone Area overlay -->
+            <div id="dropzone" class="absolute inset-0 z-20 flex flex-col items-center justify-center bg-darkerBg/95 p-8 transition-all duration-300">
+                <div class="max-w-md text-center space-y-6 p-8 border-2 border-dashed border-white/10 hover:border-accent/50 rounded-3xl bg-darkBg/50 transition cursor-pointer" onclick="document.getElementById('file-input').click()">
+                    <div class="w-20 h-20 bg-accent/10 text-accent rounded-2xl flex items-center justify-center mx-auto mb-4 border border-accent/10">
                         <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
                     </div>
                     <div>
                         <h3 class="text-lg font-bold text-white">Drag & Drop your .GLB file here</h3>
-                        <p class="text-sm text-slate-400 mt-2">Or click to browse your computer's folders</p>
+                        <p class="text-sm text-gray-400 mt-2">Or click to browse your computer's folders</p>
                     </div>
-                    <div class="text-xs text-slate-500 bg-slate-950 py-2 px-4 rounded-xl border border-slate-850 inline-block">
+                    <div class="text-xs text-gray-500 bg-darkerBg py-2 px-4 rounded-xl border border-white/5 inline-block">
                         Your file stays on your computer. 100% private.
                     </div>
                 </div>
@@ -84,7 +131,7 @@
                     alt="Custom customer 3D model">
                     
                     <!-- View in AR Mobile Trigger -->
-                    <button slot="ar-button" class="absolute bottom-6 left-6 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold px-5 py-3 rounded-xl shadow-lg shadow-emerald-600/20 text-xs flex items-center gap-2 transition">
+                    <button slot="ar-button" class="absolute bottom-6 left-6 bg-accent hover:bg-opacity-90 text-white font-bold px-5 py-3 rounded-xl shadow-lg shadow-accent/20 text-xs flex items-center gap-2 transition">
                         <i class="fa-solid fa-mobile-screen-button"></i>
                         VIEW IN YOUR SPACE (MOBILE AR)
                     </button>
@@ -92,65 +139,65 @@
                 </model-viewer>
 
                 <!-- Top Left Status Panel -->
-                <div class="absolute top-4 left-4 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-xl border border-slate-800 text-xs font-semibold flex items-center gap-2 pointer-events-none">
-                    <span id="active-status" class="w-2.5 h-2.5 rounded-full bg-slate-600"></span>
-                    <span id="file-name-display" class="text-slate-300">No model loaded</span>
+                <div class="absolute top-4 left-4 bg-darkBg/90 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10 text-xs font-semibold flex items-center gap-2 pointer-events-none">
+                    <span id="active-status" class="w-2.5 h-2.5 rounded-full bg-gray-600"></span>
+                    <span id="file-name-display" class="text-gray-300">No model loaded</span>
                 </div>
 
                 <!-- Floating bottom utility bar -->
-                <button onclick="unloadModel()" id="clear-btn" class="hidden absolute top-4 right-4 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/20 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+                <button onclick="unloadModel()" id="clear-btn" class="hidden absolute top-4 right-4 bg-accent/20 hover:bg-accent text-white border border-accent/20 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
                     <i class="fa-solid fa-trash-can"></i> Clear Model
                 </button>
             </div>
         </div>
 
-        <!-- Right: Control Panel & Code Generator -->
-        <div class="lg:col-span-4 bg-slate-900/40 backdrop-blur-lg flex flex-col overflow-y-auto">
+        <!-- Right: Control Panel & Code Generator Engine -->
+        <div class="lg:col-span-4 bg-darkBg/40 backdrop-blur-lg flex flex-col overflow-y-auto custom-scroll">
             
             <!-- Quick Tweaks Panel -->
-            <div class="p-6 border-b border-slate-850 space-y-4">
-                <span class="text-xs font-bold text-indigo-400 tracking-wider uppercase">Viewer Configuration</span>
+            <div class="p-6 border-b border-white/10 space-y-4">
+                <span class="text-xs font-bold text-accent tracking-wider uppercase">Viewer Configuration</span>
                 <h2 class="text-xl font-bold text-white">Adjust Real-time Properties</h2>
                 
                 <div class="space-y-4">
                     <!-- Toggle Auto-Rotate -->
-                    <div class="flex items-center justify-between bg-slate-950/40 border border-slate-850 p-3.5 rounded-xl">
+                    <div class="flex items-center justify-between bg-darkerBg/60 border border-white/10 p-3.5 rounded-xl">
                         <div class="flex items-center gap-2.5">
-                            <i class="fa-solid fa-rotate text-slate-400"></i>
+                            <i class="fa-solid fa-rotate text-gray-400"></i>
                             <div>
                                 <span class="text-xs font-bold text-white block">Auto Rotate</span>
-                                <span class="text-[10px] text-slate-500">Gradually turn model automatically</span>
+                                <span class="text-[10px] text-gray-500">Gradually turn model automatically</span>
                             </div>
                         </div>
-                        <input type="checkbox" id="check-rotate" onchange="updateViewer()" class="w-4 h-4 text-indigo-600 rounded bg-slate-950 border-slate-800 focus:ring-indigo-500 focus:ring-offset-slate-900">
+                        <input type="checkbox" id="check-rotate" onchange="updateViewer()" class="w-4 h-4 rounded bg-darkerBg border-white/10 text-accent focus:ring-accent accent-accent">
                     </div>
 
                     <!-- Exposure/Brightness -->
-                    <div class="space-y-1.5 bg-slate-950/40 border border-slate-850 p-3.5 rounded-xl">
+                    <div class="space-y-1.5 bg-darkerBg/60 border border-white/10 p-3.5 rounded-xl">
                         <div class="flex justify-between text-xs">
-                            <span class="font-bold text-slate-300">Lighting Exposure</span>
-                            <span id="label-exposure" class="text-indigo-400 font-mono">1.0</span>
+                            <span class="font-bold text-gray-300">Lighting Exposure</span>
+                            <span id="label-exposure" class="text-accent font-mono">1.0</span>
                         </div>
-                        <input type="range" id="range-exposure" min="0.2" max="2" step="0.1" value="1" oninput="updateViewer()" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        <input type="range" id="range-exposure" min="0.2" max="2" step="0.1" value="1" oninput="updateViewer()" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-accent">
                     </div>
 
                     <!-- Shadow Intensity -->
-                    <div class="space-y-1.5 bg-slate-950/40 border border-slate-850 p-3.5 rounded-xl">
+                    <div class="space-y-1.5 bg-darkerBg/60 border border-white/10 p-3.5 rounded-xl">
                         <div class="flex justify-between text-xs">
-                            <span class="font-bold text-slate-300">Floor Shadows</span>
-                            <span id="label-shadow" class="text-indigo-400 font-mono">1.0</span>
+                            <span class="font-bold text-gray-300">Floor Shadows</span>
+                            <span id="label-shadow" class="text-accent font-mono">1.0</span>
                         </div>
-                        <input type="range" id="range-shadow" min="0" max="2" step="0.1" value="1" oninput="updateViewer()" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                        <input type="range" id="range-shadow" min="0" max="2" step="0.1" value="1" oninput="updateViewer()" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-accent">
                     </div>
 
                     <!-- Background Color Select -->
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-slate-400 block">Viewer Background Color</label>
+                        <label class="text-xs font-bold text-gray-400 block">Viewer Background Color</label>
                         <div class="grid grid-cols-4 gap-2">
-                            <button onclick="setBg('#0f172a')" class="h-8 bg-[#0f172a] rounded-lg border border-slate-700 hover:border-white transition"></button>
-                            <button onclick="setBg('#ffffff')" class="h-8 bg-[#ffffff] rounded-lg border border-slate-700 hover:border-white transition"></button>
-                            <button onclick="setBg('#1e293b')" class="h-8 bg-[#1e293b] rounded-lg border border-slate-700 hover:border-white transition"></button>
-                            <button onclick="setBg('#000000')" class="h-8 bg-[#000000] rounded-lg border border-slate-700 hover:border-white transition"></button>
+                            <button onclick="setBg('#0a0a0a')" class="h-8 bg-[#0a0a0a] rounded-lg border border-white/10 hover:border-accent transition"></button>
+                            <button onclick="setBg('#ffffff')" class="h-8 bg-[#ffffff] rounded-lg border border-white/10 hover:border-accent transition"></button>
+                            <button onclick="setBg('#1e293b')" class="h-8 bg-[#1e293b] rounded-lg border border-white/10 hover:border-accent transition"></button>
+                            <button onclick="setBg('#000000')" class="h-8 bg-[#000000] rounded-lg border border-white/10 hover:border-accent transition"></button>
                         </div>
                     </div>
                 </div>
@@ -158,18 +205,18 @@
 
             <!-- Custom Code Exporter -->
             <div class="p-6 flex-1 flex flex-col space-y-4">
-                <span class="text-xs font-bold text-emerald-400 tracking-wider uppercase">Ready to Publish?</span>
+                <span class="text-xs font-bold text-accent tracking-wider uppercase">Ready to Publish?</span>
                 <h2 class="text-xl font-bold text-white">Your Exportable HTML Code</h2>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Once you upload your <code class="bg-slate-950 px-1 rounded text-indigo-400 font-mono">.glb</code> file to your web server (e.g. your hosting, WordPress Media library, Shopify file vault), copy this exact code to show it:
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Once you upload your <code class="bg-darkerBg px-1 rounded text-accent font-mono">.glb</code> file to your web server (e.g., your hosting, WordPress Media library, Shopify file vault), copy this exact code to show it:
                 </p>
 
                 <!-- Code Block Display -->
-                <div class="relative flex-1 min-h-[200px] flex flex-col bg-slate-950 rounded-xl border border-slate-850 p-4">
-                    <button onclick="copyCode()" class="absolute top-3 right-3 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
+                <div class="relative flex-1 min-h-[220px] flex flex-col bg-darkerBg rounded-xl border border-white/10 p-4">
+                    <button onclick="copyCode()" class="absolute top-3 right-3 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
                         <i class="fa-regular fa-copy"></i> Copy Code
                     </button>
-                    <pre class="text-[11px] text-slate-300 font-mono overflow-auto flex-1 select-all" id="code-snippet">
+                    <pre class="text-[11px] text-gray-300 font-mono overflow-auto flex-1 select-all pt-6" id="code-snippet">
 &lt;!-- Load Google's 3D Engine Component --&gt;
 &lt;script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"&gt;&lt;/script&gt;
 
@@ -177,7 +224,6 @@
 &lt;model-viewer 
   src="your-file-name.glb" 
   camera-controls 
-  auto-rotate 
   shadow-intensity="1" 
   ar 
   style="width: 100%; height: 500px;"&gt;
@@ -185,12 +231,12 @@
                 </div>
 
                 <!-- Hard Truth Checklist -->
-                <div class="bg-indigo-950/20 border border-indigo-500/15 rounded-xl p-4 space-y-2">
-                    <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest block">Crucial Reality Checks</span>
-                    <ul class="text-[11px] text-slate-300 space-y-1.5 list-disc list-inside">
-                        <li>Ensure file extension is strictly lowercase <code class="bg-slate-950 px-1 py-0.5 rounded text-indigo-400 font-mono">.glb</code></li>
+                <div class="bg-darkerBg border border-white/10 rounded-xl p-4 space-y-2">
+                    <span class="text-[10px] font-bold text-accent uppercase tracking-widest block">Crucial Reality Checks</span>
+                    <ul class="text-[11px] text-gray-300 space-y-1.5 list-disc list-inside">
+                        <li>Ensure file extension is strictly lowercase <code class="bg-darkBg px-1 py-0.5 rounded text-accent font-mono">.glb</code></li>
                         <li>Keep file size under **5MB** so customers on mobile loading speeds don't bounce</li>
-                        <li>Websites block 3D assets on standard <code class="bg-slate-950 px-1 py-0.5 rounded font-mono">http</code>. Your site **must** have an <code class="bg-slate-950 px-1 py-0.5 rounded text-emerald-400 font-mono">https://</code> certificate (SSL) for it to load</li>
+                        <li>Websites block 3D assets on standard HTTP. Your site **must** have an <code class="bg-darkBg px-1 py-0.5 rounded text-accent font-mono">https://</code> certificate (SSL) to load safely.</li>
                     </ul>
                 </div>
             </div>
@@ -198,15 +244,43 @@
         </div>
     </main>
 
+    <!-- Global Responsive Contact Layout Strip Footer -->
+    <footer id="contact" class="flex flex-col gap-8 bg-darkerBg items-center padding: 4rem 5% text-center border-t border-white/10 py-8 px-6">
+        <div class="social-links flex justify-center gap-8">
+            <a href="#" aria-label="GitHub" class="text-white text-2xl hover:text-accent hover:-translate-y-1 transition transform"><span class="material-symbols-outlined">code</span></a>
+            <a href="#" aria-label="Instagram" class="text-white text-2xl hover:text-accent hover:-translate-y-1 transition transform"><span class="material-symbols-outlined">photo_camera</span></a>
+            <a href="#" aria-label="LinkedIn" class="text-white text-2xl hover:text-accent hover:-translate-y-1 transition transform"><span class="material-symbols-outlined">group</span></a>
+            <a href="#" aria-label="YouTube" class="text-white text-2xl hover:text-accent hover:-translate-y-1 transition transform"><span class="material-symbols-outlined">video_library</span></a>
+        </div>
+        <p class="text-sm text-gray-400">&copy; 2026 HeinPop. All rights reserved.</p>
+        <div class="flex flex-wrap justify-center items-center gap-6 w-full pt-4 border-t border-white/5">
+            <div class="flex items-center gap-4 p-4 bg-white/5 border border-white/5 rounded-xl w-full max-w-[320px] transition hover:border-accent hover:translate-y-[-4px] hover:shadow-lg">
+                <span class="material-symbols-outlined text-2xl text-accent bg-accent/10 p-2 rounded-xl">mail</span>
+                <div class="text-left">
+                    <h3 class="text-[11px] uppercase tracking-wider text-gray-400 opacity-50">Email Me</h3>
+                    <a href="mailto:hello@heinpop.com" class="text-sm font-medium hover:text-accent transition">hello@heinpop.com</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 p-4 bg-white/5 border border-white/5 rounded-xl w-full max-w-[320px] transition hover:border-accent hover:translate-y-[-4px] hover:shadow-lg">
+                <span class="material-symbols-outlined text-2xl text-accent bg-accent/10 p-2 rounded-xl">call</span>
+                <div class="text-left">
+                    <h3 class="text-[11px] uppercase tracking-wider text-gray-400 opacity-50">Call Me</h3>
+                    <a href="tel:+959123456789" class="text-sm font-medium hover:text-accent transition">+95 9 123 456 789</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- Custom Toast Alert system -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 border border-slate-850 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 pointer-events-none z-50">
-        <i class="fa-solid fa-circle-check text-indigo-400 text-lg" id="toast-icon"></i>
+    <div id="toast" class="fixed bottom-6 right-6 bg-darkBg border border-white/10 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 pointer-events-none z-50">
+        <i class="fa-solid fa-circle-check text-accent text-lg" id="toast-icon"></i>
         <div>
             <span id="toast-title" class="text-xs font-bold text-white block">Success</span>
-            <span id="toast-desc" class="text-[11px] text-slate-400">File processed securely.</span>
+            <span id="toast-desc" class="text-[11px] text-gray-400">File processed securely.</span>
         </div>
     </div>
 
+    <!-- Script Operations Layer -->
     <script>
         const viewer = document.getElementById('main-viewer');
         const fileInput = document.getElementById('file-input');
@@ -216,18 +290,28 @@
         const clearBtn = document.getElementById('clear-btn');
         const codeSnippet = document.getElementById('code-snippet');
 
+        // Mobile Menu Interactivity Layer
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+            });
+        }
+
         // Handle Drag & Drop mechanics
         ['dragenter', 'dragover'].forEach(eventName => {
             dropzone.addEventListener(eventName, (e) => {
                 e.preventDefault();
-                dropzone.classList.add('border-indigo-500', 'bg-slate-900/90');
+                dropzone.classList.add('border-accent', 'bg-darkBg/90');
             }, false);
         });
 
         ['dragleave', 'drop'].forEach(eventName => {
             dropzone.addEventListener(eventName, (e) => {
                 e.preventDefault();
-                dropzone.classList.remove('border-indigo-500', 'bg-slate-900/90');
+                dropzone.classList.remove('border-accent', 'bg-darkBg/90');
             }, false);
         });
 
@@ -246,9 +330,8 @@
             }
         }
 
-        // Process loaded local GLB files directly into system RAM using ObjectURL
         function processFile(file) {
-            if (!file.name.endsWith('.glb')) {
+            if (!file.name.toLowerCase().endsWith('.glb')) {
                 showToast("Invalid File Format", "Only binary .glb files are supported.", "fa-solid fa-triangle-exclamation");
                 return;
             }
@@ -256,15 +339,13 @@
             const objectURL = URL.createObjectURL(file);
             viewer.src = objectURL;
 
-            // Update UI components
             dropzone.classList.add('hidden');
             clearBtn.classList.remove('hidden');
             filenameDisplay.innerText = file.name;
-            activeStatus.className = "w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse";
+            activeStatus.className = "w-2.5 h-2.5 rounded-full bg-accent animate-pulse";
 
-            // Update exported code representation to use their target file name
             generateCodeSnippet(file.name);
-            showToast("Model Loaded", `${file.name} is now interactive in 3D workspace.`);
+            showToast("Model Loaded", `${file.name} is now interactive.`);
         }
 
         function unloadModel() {
@@ -272,25 +353,23 @@
             dropzone.classList.remove('hidden');
             clearBtn.classList.add('hidden');
             filenameDisplay.innerText = "No model loaded";
-            activeStatus.className = "w-2.5 h-2.5 rounded-full bg-slate-600";
+            activeStatus.className = "w-2.5 h-2.5 rounded-full bg-gray-600";
             fileInput.value = "";
             generateCodeSnippet("your-file-name.glb");
         }
 
-        // Apply background customization settings
         function setBg(color) {
             viewer.style.backgroundColor = color;
-            showToast("Background Updated", `Scene environment color changed to ${color}`);
+            showToast("Background Updated", `Scene background color shifted to ${color}`);
         }
 
-        // Dynamic code block rendering
         function generateCodeSnippet(filename) {
             const isRotate = document.getElementById('check-rotate').checked ? "\n  auto-rotate" : "";
             const exp = document.getElementById('range-exposure').value;
             const shadow = document.getElementById('range-shadow').value;
 
             codeSnippet.innerHTML = `&lt;!-- Load Google's 3D Engine Component --&gt;
-&lt;script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"&gt;&lt;/script&gt;
+&lt;script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"&gt;&lt;/script>
 
 &lt;!-- The 3D Viewer Element --&gt;
 &lt;model-viewer 
@@ -303,17 +382,14 @@
 &lt;/model-viewer&gt;`;
         }
 
-        // Live parameter configuration listener 
         function updateViewer() {
             const isRotate = document.getElementById('check-rotate').checked;
             const exposureVal = document.getElementById('range-exposure').value;
             const shadowVal = document.getElementById('range-shadow').value;
 
-            // Sync visual labels
             document.getElementById('label-exposure').innerText = exposureVal;
             document.getElementById('label-shadow').innerText = shadowVal;
 
-            // Direct properties mapping on Google Engine
             if (isRotate) {
                 viewer.setAttribute('auto-rotate', '');
             } else {
@@ -322,12 +398,10 @@
             viewer.setAttribute('exposure', exposureVal);
             viewer.setAttribute('shadow-intensity', shadowVal);
 
-            // Re-generate copyable code
             const currentName = filenameDisplay.innerText === "No model loaded" ? "your-file-name.glb" : filenameDisplay.innerText;
             generateCodeSnippet(currentName);
         }
 
-        // Clipboard action helper
         function copyCode() {
             const textToCopy = codeSnippet.innerText;
             const tempTextArea = document.createElement("textarea");
@@ -344,12 +418,11 @@
             document.body.removeChild(tempTextArea);
         }
 
-        // Global notifications trigger
         function showToast(title, desc, icon = "fa-solid fa-circle-check") {
             const toast = document.getElementById('toast');
             document.getElementById('toast-title').innerText = title;
             document.getElementById('toast-desc').innerText = desc;
-            document.getElementById('toast-icon').className = `${icon} text-indigo-400 text-lg`;
+            document.getElementById('toast-icon').className = `${icon} text-accent text-lg`;
 
             toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
             
