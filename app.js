@@ -77,7 +77,7 @@ if (navbar) {
 }
 
 // ==========================================
-// 5. SPLIT-SCREEN PHOTO COMPARE SLIDER
+// 5. SPLIT-SCREEN PHOTO COMPARE SLIDER (WITH AUTOMATED PEEK)
 // ==========================================
 const slider = document.getElementById('slider');
 const foreground = document.getElementById('foreground');
@@ -85,6 +85,11 @@ const line = document.getElementById('line');
 const button = document.getElementById('button');
 
 if (slider && foreground && line && button) {
+    let animationFrameId;
+    let isUserInteracting = false;
+    let startTime = null;
+
+    // Core update layout function
     const updateSplit = (percentage) => {
         const cappedPercent = Math.max(0, Math.min(100, percentage));
         foreground.style.clipPath = `polygon(0 0, ${cappedPercent}% 0, ${cappedPercent}% 100%, 0 100%)`;
@@ -92,17 +97,60 @@ if (slider && foreground && line && button) {
         button.style.left = `${cappedPercent}%`;
     };
 
+    // Calculate mouse/touch positioning relative to container boundaries
     const handleMove = (clientX) => {
+        stopAutoMovement(); // Kill the animation loop permanently on user contact
         const rect = slider.getBoundingClientRect();
         const mouseX = clientX - rect.left;
         const percentage = (mouseX / rect.width) * 100;
         updateSplit(percentage);
     };
 
+    // Auto-movement loop equation: Sway back and forth using a simple sine wave
+    const animatePeek = (timestamp) => {
+        if (isUserInteracting) return;
+        if (!startTime) startTime = timestamp;
+        
+        const elapsed = timestamp - startTime;
+        
+        // Configuration Parameters:
+        // Math.sin speed coefficient = 0.0015 (Adjust for faster/slower movement)
+        // Amplitude multiplier = 12 (Sways +/- 12% from center midpoint)
+        const centerMidpoint = 50;
+        const autoPercentage = centerMidpoint + (Math.sin(elapsed * 0.0015) * 12);
+        
+        updateSplit(autoPercentage);
+        animationFrameId = requestAnimationFrame(animatePeek);
+    };
+
+    const stopAutoMovement = () => {
+        if (!isUserInteracting) {
+            isUserInteracting = true;
+            cancelAnimationFrame(animationFrameId);
+            // Smoothly remove temporary transition properties so manual drag feels instant
+            line.style.transition = 'none';
+            button.style.transition = 'none';
+            foreground.style.transition = 'none';
+        }
+    };
+
+    // Initialize subtle transitions for the auto-movement phase
+    line.style.transition = 'left 0.1s ease-out';
+    button.style.transition = 'left 0.1s ease-out';
+    foreground.style.transition = 'clip-path 0.1s ease-out';
+
+    // Kickstart the auto animation loop
+    animationFrameId = requestAnimationFrame(animatePeek);
+
+    // Human Interaction Listeners
     slider.addEventListener('mousemove', (e) => handleMove(e.clientX));
     slider.addEventListener('touchmove', (e) => {
         if (e.touches.length > 0) handleMove(e.touches[0].clientX);
     }, { passive: true });
+
+    // Additional safeguard events to drop auto-movement on subtle contact
+    slider.addEventListener('mouseenter', stopAutoMovement);
+    slider.addEventListener('touchstart', stopAutoMovement, { passive: true });
 }
 
 // ==========================================================
