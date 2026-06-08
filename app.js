@@ -1,5 +1,5 @@
 // ==========================================
-// 1. SMOOTH PORTAL LINK INTERCEPTIONS
+// 1. SMOOTH NAVIGATION LINK ACTIONS
 // ==========================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -14,7 +14,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ==========================================
-// 2. VIDEO STREAM PIPELINE MANAGEMENT
+// 2. HERO VIDEO AUTO-PLAY PIPELINE
 // ==========================================
 const video = document.getElementById('my-background-video');
 if (video) {
@@ -23,9 +23,7 @@ if (video) {
         video.setAttribute('poster', posterSrc);
     };
     window.addEventListener('DOMContentLoaded', setVideoPoster);
-    window.addEventListener('load', () => {
-        video.play().catch(() => {});
-    });
+    window.addEventListener('load', () => { video.play().catch(() => {}); });
 
     let resizeTimer;
     window.addEventListener('resize', () => {
@@ -38,7 +36,7 @@ if (video) {
 }
 
 // ==========================================
-// 3. DYNAMIC LEFT-SIDE HERO TEXT SUBTITLE TIMER
+// 3. HERO ROLE TEXT INTERVAL ENGINE
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const roles = ["Motion Graphic Designer", "3D Multimedia Artist", "Visual Content Director"];
@@ -47,30 +45,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (subtitleElement) {
         setInterval(() => {
-            // Trigger exit fade slide up animation
-            subtitleElement.classList.add("fade-out");
-
+            subtitleElement.style.opacity = '0';
+            subtitleElement.style.transform = 'translateY(5px)';
             setTimeout(() => {
-                // Change string value behind the scenes
                 currentRoleIndex = (currentRoleIndex + 1) % roles.length;
                 subtitleElement.textContent = roles[currentRoleIndex];
-
-                // Remove exit class, add entry placement class
-                subtitleElement.classList.remove("fade-out");
-                subtitleElement.classList.add("fade-in");
-
-                // Clear entry architecture on micro-tick execution
-                setTimeout(() => {
-                    subtitleElement.classList.remove("fade-in");
-                }, 50);
-
-            }, 300); // Syncs cleanly with the css fade step transition
+                subtitleElement.style.opacity = '1';
+                subtitleElement.style.transform = 'translateY(0)';
+            }, 300); 
         }, 3500); 
     }
 });
 
 // ==========================================
-// 4. RESPONSIVE NAVIGATION SCROLL ADJUSTMENT
+// 4. NAVBAR SCROLL COLOR TRANSITIONS
 // ==========================================
 const navbar = document.querySelector('.navbar');
 let ticking = false;
@@ -89,7 +77,7 @@ if (navbar) {
 }
 
 // ==========================================
-// 5. HERO SCREEN BEFORE/AFTER COMPASS SLIDER
+// 5. SPLIT-SCREEN PHOTO COMPARE SLIDER
 // ==========================================
 const slider = document.getElementById('slider');
 const foreground = document.getElementById('foreground');
@@ -117,33 +105,32 @@ if (slider && foreground && line && button) {
     }, { passive: true });
 }
 
-// ==========================================
-// 6. STUDIO WORK DISCIPLINE STREAM SWITCHER
-// ==========================================
+// ==========================================================
+// 6. ACCORDION / DROPDOWN SELECTION MANAGER
+// ==========================================================
 document.addEventListener("DOMContentLoaded", () => {
-    const menuRows = document.querySelectorAll('.menu-row');
-    const streamLayers = document.querySelectorAll('.stream-layer');
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
 
-    if (menuRows.length > 0) {
-        menuRows.forEach(row => {
-            row.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = row.getAttribute('data-target');
-                const targetStream = document.getElementById(targetId);
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const currentItem = header.parentElement;
+            const isAlreadyActive = currentItem.classList.contains('active');
 
-                if (targetStream) {
-                    menuRows.forEach(r => r.classList.remove('active'));
-                    streamLayers.forEach(layer => layer.classList.remove('active'));
-                    row.classList.add('active');
-                    targetStream.classList.add('active');
-                }
+            // Close all active open dropdown cards uniformly
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('active');
             });
+
+            // Toggle active card element state
+            if (!isAlreadyActive) {
+                currentItem.classList.add('active');
+            }
         });
-    }
+    });
 });
 
 // ==========================================
-// 7. MOBILE NAVIGATION BAR DRAWER TOGGLE
+// 7. MOBILE DRAWER INTERACTION EXPANSION
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector('.menu-toggle');
@@ -162,57 +149,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ==========================================
-// 8. AUTO-ROTATING PORTFOLIO CAROUSEL
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector('.carousel-container');
-    const track = document.querySelector('.carousel-track');
-    const slides = document.querySelectorAll('.carousel-slide');
-    const prevBtn = document.querySelector('.carousel-nav.prev');
-    const nextBtn = document.querySelector('.carousel-nav.next');
-    
-    if (track && slides.length > 0) {
-        let currentIndex = 0;
-        const totalSlides = slides.length;
-        let rotationTimer = null;
-
-        const updateCarouselPosition = () => {
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        };
-
-        const nextSlide = () => {
-            currentIndex = (currentIndex + 1) % totalSlides;
-            updateCarouselPosition();
-        };
-
-        const prevSlide = () => {
-            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-            updateCarouselPosition();
-        };
-
-        const startAutoRotation = () => {
-            if (!rotationTimer) rotationTimer = setInterval(nextSlide, 4000);
-        };
-
-        const stopAutoRotation = () => {
-            if (rotationTimer) { clearInterval(rotationTimer); rotationTimer = null; }
-        };
-
-        nextBtn.addEventListener('click', () => { stopAutoRotation(); nextSlide(); startAutoRotation(); });
-        prevBtn.addEventListener('click', () => { stopAutoRotation(); prevSlide(); startAutoRotation(); });
-
-        if(container) {
-            container.addEventListener('mouseenter', stopAutoRotation);
-            container.addEventListener('mouseleave', startAutoRotation);
-        }
-        startAutoRotation();
-    }
-});
-
-// ==========================================
-// 9. 3D PROJECT ENGINE SWITCH CONTROLLER
-// ==========================================
+// ==========================================================
+// 8. CLEAN STANDARD 3D MOCKUP SWITCHER (STABLE VIEWPORT)
+// ==========================================================
 document.addEventListener("DOMContentLoaded", () => {
     const modelViewer = document.getElementById('active-3d-model');
     const threedButtons = document.querySelectorAll('.threed-btn');
@@ -221,22 +160,26 @@ document.addEventListener("DOMContentLoaded", () => {
         threedButtons.forEach(button => {
             button.addEventListener('click', () => {
                 if (button.classList.contains('active')) return;
+                
+                // Track standard button links active highlight
                 threedButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
 
+                // Read structural file route path
                 const targetModelPath = button.getAttribute('data-model');
-                if (targetModelPath) modelViewer.setAttribute('src', models/monkey.glb);
+                if (targetModelPath) {
+                    modelViewer.setAttribute('src', targetModelPath);
+                }
             });
         });
     }
 });
 
 // ==========================================
-// 10. HIGH-PERFORMANCE GLOBAL SCROLL REVEAL ENGINE
+// 9. HIGH-PERFORMANCE GLOBAL SCROLL REVEAL ENGINE
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
-
     const observerOptions = {
         root: null, 
         threshold: 0.12, 

@@ -2,38 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="google-site-verification" content="HY9HbENiVSk6F7LhIHKzQdf1Nq-7w1SPKz8-RwDo0sU" />
-    <meta name="description" content="Professional graphic design and video editing services to elevate your brand. We create stunning logos, animations, marketing materials, and captivating videos.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeinPop</title>
-    <!-- Link to google font for icons -->
+    <title>HeinPop | Professional Motion Graphics & 3D Multimedia Artistry</title>
+    
+    <meta name="description" content="Professional motion graphics production, high-fidelity 3D packaging mockups, and strategic visual direction by HeinPop. Explore an immersive portfolio of custom-engineered layouts, animations, and corporate branding assets.">
+    <meta name="keywords" content="Motion Graphic Designer, 3D Multimedia Artist, 3D Packaging Mockups, Video Editing, Blender Pipelines, Creative Branding, After Effects, Typography Systems, HeinPop Portfolio">
+    <meta name="author" content="HeinPop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.com/">
+    <meta name="google-site-verification" content="HY9HbENiVSk6F7LhIHKzQdf1Nq-7w1SPKz8-RwDo0sU" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="HeinPop | Professional Motion Graphics & 3D Multimedia Artistry">
+    <meta property="og:description" content="Transforming ordinary visual assets into high-performance corporate narratives. Explore professional 3D pipelines, custom environments, and fluid kinetic layouts.">
+    <meta property="og:url" content="https://heinpop.com/">
+    <meta property="og:image" content="img/og-preview.jpg">
+    <meta property="og:site_name" content="HeinPop">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HeinPop | Professional Motion Graphics & 3D Multimedia Artistry">
+    <meta name="twitter:description" content="Transforming ordinary visual assets into high-performance corporate narratives via custom 3D engines and broadcast motion tracking.">
+    <meta name="twitter:image" content="img/og-preview.jpg">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <!-- Link to css file -->
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="img/logo.svg">
+    
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="logo">
-            <img src="img/logo.svg" alt="Logo" class="logo_img">
+            <img src="img/logo.svg" alt="HeinPop Corporate Emblem" class="logo_img">
             <a href="#home" class="logo_name">HeinPop</a>
         </div>
-        <!-- Mobile Menu Toggle -->
-        <button class="menu-toggle" aria-label="Toggle Navigation">
+        <button class="menu-toggle" aria-label="Toggle Mobile Navigation Menu">
             <span class="material-symbols-outlined">menu</span>
         </button>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about-slider">About</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#print-3d">3D Work</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="video-container">
             <video id="my-background-video" muted loop autoplay playsinline preload="auto" class="background_video">
@@ -41,7 +55,6 @@
                 <source src="video/heinpop_hero_m.mp4" type="video/mp4" media="(max-width: 799px)">
                 Your browser does not support the video tag.
             </video>
-            <!-- Left-side Dynamic Subtitle Overlay -->
             <div class="hero-left-subtitle">
                 <span class="subtitle-label">Current Role</span>
                 <div id="dynamic-subtitle" class="subtitle-text">Motion Graphic Designer</div>
@@ -51,31 +64,25 @@
         <div class="hero-wrapper">
             <div class="hero-content reveal-on-scroll">
                 <h1>Motion <br>Graphic Designer</h1>
-                <p>Every brand has a story, and Let me help you tell it through powerful design. I pour my hearts into every project.</p>
-                <p class="highlight">Creating visuals that resonate and build a community around your vision.</p>
-                <a href="#contact" class="cta-buttom">Let's Create</a>
+                <p>Every brand has an intrinsic story waiting to be expressed. I help you project yours with clarity through high-performance motion design and calculated spatial compositions.</p>
+                <p class="highlight">Engineering immersive digital environments that hook attention instantly and foster community engagement.</p>
+                <a href="#contact" class="cta-button">Let's Create</a>
             </div>
         </div>
     </section>
 
-    <!-- Interactive Splitting Image Showcase & About Me Unified Section -->
     <section id="about-slider" class="slider-showcase-section">
-        <div class="about-slider-grid max-container">
+        <div class="about-slider-grid">
             
-            <!-- Left Side: Interactive Slider Showcase -->
             <div class="slider-column reveal-on-scroll">        
                 <div class="slider-container" id="slider">
-                    <!-- Background Image (Normal) -->
-                    <img src="Normal.jpg" alt="Normal Citizen">
-                    <!-- Foreground Image (Fireman) -->
-                    <img src="Fireman.jpg" alt="Fireman" class="img-foreground" id="foreground">
-                    <!-- Splitting Line UI elements -->
+                    <img src="Normal.jpg" alt="Baseline Post-Production Vector Layout Canvas">
+                    <img src="Fireman.jpg" alt="Final High-Fidelity Multimedia Production Render Asset" class="img-foreground" id="foreground">
                     <div class="slider-line" id="line"></div>
                     <div class="slider-button" id="button"></div>
                 </div>
             </div>
 
-            <!-- Right Side: Integrated About Me Context -->
             <div class="about-column reveal-on-scroll reveal-delay-1">
                 <span class="section-tagline">Behind The Pixels</span>
                 <h2>Crafting Immersive Digital Experiences</h2>
@@ -85,11 +92,11 @@
                 <div class="mini-metrics-grid">
                     <div class="metric-card">
                         <h4>3D Pipelines</h4>
-                        <p>Custom assets built completely from absolute zero blueprints.</p>
+                        <p>Custom commercial models built from absolute zero engineering guidelines.</p>
                     </div>
                     <div class="metric-card">
                         <h4>Brand Impact</h4>
-                        <p>Tailored layouts focusing on core strategic conversions.</p>
+                        <p>Tailored interface layouts focusing on high strategic target conversion.</p>
                     </div>
                 </div>
             </div>
@@ -97,177 +104,162 @@
         </div>
     </section>
 
-    <!-- Skill & Work Display Hub Section -->
     <section id="skills" class="skills-studio">
         <div class="studio-header reveal-on-scroll">
             <h2>Specializations</h2>
-            <p>Click a discipline to dynamically stream visual assets.</p>
+            <p>Click any skill block below to drop down details and matching active project layouts.</p>
         </div>
         
-        <div class="studio-dashboard">
-            <!-- Left Side: Minimalist Selector Menu Links -->
-            <div class="skills-menu reveal-on-scroll reveal-delay-1">
-                <div class="menu-row active" data-target="successSocialDesign">
-                    <span class="material-symbols-outlined icon-main">format_color_fill</span>
-                    <div class="menu-text">
+        <div class="accordion-container max-container reveal-on-scroll">
+            
+            <div class="accordion-item active">
+                <div class="accordion-header">
+                    <span class="material-symbols-outlined header-icon">format_color_fill</span>
+                    <div class="header-text">
                         <h3>Digital Design</h3>
-                        <p>Social Marketing Displays</p>
+                        <p>Social Marketing & Dynamic Campaign Media</p>
                     </div>
-                    <span class="material-symbols-outlined arrow-indicator">chevron_right</span>
+                    <span class="material-symbols-outlined arrow-indicator">expand_more</span>
                 </div>
-                
-                <div class="menu-row" data-target="successPrintDesign">
-                    <span class="material-symbols-outlined icon-main">video_library</span>
-                    <div class="menu-text">
-                        <h3>Branding Video</h3>
-                        <p>3D Animation & Mini Commercials</p>
-                    </div>
-                    <span class="material-symbols-outlined arrow-indicator">chevron_right</span>
-                </div>
-                
-                <div class="menu-row" data-target="successCommercialVideo">
-                    <span class="material-symbols-outlined icon-main">engineering</span>
-                    <div class="menu-text">
-                        <h3>Printing Design</h3>
-                        <p>Premium Packagings & Layouts</p>
-                    </div>
-                    <span class="material-symbols-outlined arrow-indicator">chevron_right</span>
-                </div>
-            </div>
-
-            <!-- Right Side: Streamlined Direct Portfolio Viewport -->
-            <div class="portfolio-stream reveal-on-scroll reveal-delay-2">
-                
-                <!-- Stream 1: Social Media (Auto-rotating Carousel) -->
-                <div id="successSocialDesign" class="stream-layer active">
-                    <div class="carousel-container">
-                        <button class="carousel-nav prev" aria-label="Previous image">
-                            <span class="material-symbols-outlined">chevron_left</span>
-                        </button>
-                        
-                        <div class="carousel-viewport">
-                            <div class="carousel-track">
-                                <div class="carousel-slide"><img src="img/cpufan.jpg" alt="cpufan-marketing"></div>
-                                <div class="carousel-slide"><img src="img/shirt.jpg" alt="shirt-marketing"></div>
-                                <div class="carousel-slide"><img src="img/icefire.jpg" alt="icefire-marketing"></div>
-                            </div>
-                        </div>
-
-                        <button class="carousel-nav next" aria-label="Next image">
-                            <span class="material-symbols-outlined">chevron_right</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Stream 2: Branding Video -->
-                <div id="successPrintDesign" class="stream-layer">
+                <div class="accordion-content">
                     <div class="stream-grid single-media">
                         <div class="media-box">
-                            <iframe src="https://www.youtube.com/embed/5nzNeDllXy8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <img src="img/cpufan.jpg" alt="Digital Graphic & Concept Campaign Architecture">
                         </div>
-                        <div class="text-box">
-                            <h3>Pure Structural Creation</h3>
-                            <p>No templates. Built custom from the ground up tailored directly around conversion objectives.</p>
-                            <div class="sub-spec"><strong>Blender:</strong> 3D environment layout & product animation.</div>
-                            <div class="sub-spec"><strong>After Effects:</strong> Broadcast motion tracking & kinetic compositions.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stream 3: Printing Designs -->
-                <div id="successCommercialVideo" class="stream-layer">
-                    <div class="stream-info-list">
-                        <div class="info-row">
-                            <span class="material-symbols-outlined">layers</span>
-                            <div>
-                                <h4>Identity Layout Architecture</h4>
-                                <p>Clean vector blueprints for modern brand logotypes, packaging, and high-format retail display prints.</p>
-                            </div>
-                        </div>
-                        <div class="info-row">
-                            <span class="material-symbols-outlined">movie_filter</span>
-                            <div>
-                                <h4>Cinematic Brand Compositing</h4>
-                                <p>Dynamic frame timing, advanced color corrections, and structural 3D production pipelines.</p>
-                            </div>
+                        <div class="text-box animate-text">
+                            <h3>High-Performance Interface Graphics</h3>
+                            <p>Engineered campaign content optimized for cross-platform visual retention, featuring custom social grids, digital asset toolkits, and dynamic screen real estate layouts.</p>
+                            <div class="sub-spec"><strong>Creative Execution:</strong> Tailored interface systems & asset hierarchies.</div>
+                            <div class="sub-spec"><strong>Target Optimization:</strong> Rendered specifically for fast load times and community visibility.</div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span class="material-symbols-outlined header-icon">video_library</span>
+                    <div class="header-text">
+                        <h3>Branding Video</h3>
+                        <p>Motion Graphics & Broadcast Commercials</p>
+                    </div>
+                    <span class="material-symbols-outlined arrow-indicator">expand_more</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="stream-grid single-media">
+                        <div class="media-box">
+                            <iframe src="https://www.youtube.com/embed/5nzNeDllXy8" title="HeinPop Video Production Reel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        <div class="text-box animate-text">
+                            <h3>Pure Structural Creation</h3>
+                            <p>Zero templates. Every asset is engineered completely from scratch based directly around clear target audience conversion metrics.</p>
+                            <div class="sub-spec"><strong>Blender Architecture:</strong> Environmental geometry layouts & mechanical rigging.</div>
+                            <div class="sub-spec"><strong>After Effects Layering:</strong> Spatial camera tracking & kinetic vector animations.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span class="material-symbols-outlined header-icon">engineering</span>
+                    <div class="header-text">
+                        <h3>Printing Design</h3>
+                        <p>Premium Structural Packaging & Die-Cut Paths</p>
+                    </div>
+                    <span class="material-symbols-outlined arrow-indicator">expand_more</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="stream-grid single-media">
+                        <div class="media-box">
+                            <img src="img/shirt.jpg" alt="Technical Layout Mapping Overview">
+                        </div>
+                        <div class="text-box animate-text">
+                            <h3>Premium Branding Layouts</h3>
+                            <p>Industrial structural assets compiled natively for CMYK printing pipelines and high-resolution plate transfers.</p>
+                            <div class="sub-spec"><strong>Adobe Illustrator:</strong> Vector precision profiles & geometric layout paths.</div>
+                            <div class="sub-spec"><strong>Adobe InDesign:</strong> Exact structural spacing & typographic column configurations.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- Interactive 3D Model Section -->
-    <section id="projects" class="showcase-3d">
+    <section id="print-3d" class="showcase-3d">
         <div class="threed-header reveal-on-scroll">
-            <h2>3D Interactive Projects</h2>
-            <p>Rotate, zoom, and inspect custom asset pipelines built completely from scratch.</p>
+            <h2>3D Packaging Mockups</h2>
+            <p>Freely examine spatial frameworks. Select an individual component link item below to dynamically refresh the workspace geometry.</p>
         </div>
         
         <div class="threed-container">
-            <!-- 3D Viewer Element Sizing -->
             <div class="threed-display-box reveal-on-scroll reveal-delay-1">
-                <model-viewer id="active-3d-model" src="models/Wall-mockup.glb" ar ar-modes="webxr scene-viewer quick-look" camera-controls poster="img/poster.webp" shadow-intensity="1">
+                <model-viewer 
+                    id="active-3d-model" 
+                    src="models/box-mockup.glb" 
+                    ar 
+                    camera-controls 
+                    interaction-prompt="none"
+                    camera-orbit="0deg 75deg 2.5m" 
+                    field-of-view="auto"
+                    poster="img/poster.webp" 
+                    shadow-intensity="1">
                     <div id="lazy-load-poster" slot="poster">
                         <span class="material-symbols-outlined loading-icon">progress_activity</span>
                     </div>
                 </model-viewer>
             </div>
             
-            <!-- Sidebar Selection Controls -->
             <div class="threed-controls-sidebar reveal-on-scroll reveal-delay-2">
-                <button class="threed-btn active" data-model="models/project1.gltf">
-                    <span class="material-symbols-outlined">view_in_ar</span>
+                <button class="threed-btn active" data-model="models/box-mockup.glb">
+                    <span class="material-symbols-outlined">package_2</span>
                     <div class="btn-text">
-                        <h3>Hard-Surface Asset</h3>
-                        <p>Custom topology modeling</p>
+                        <h3>Premium Box</h3>
+                        <p>High-fidelity CMYK skins</p>
                     </div>
                 </button>
-                <button class="threed-btn" data-model="models/project2.gltf">
-                    <span class="material-symbols-outlined">deployed_code</span>
+                <button class="threed-btn" data-model="models/merch-mockup.glb">
+                    <span class="material-symbols-outlined">brand_awareness</span>
                     <div class="btn-text">
-                        <h3>Product Package Architecture</h3>
-                        <p>High-fidelity vector skinning</p>
+                        <h3>Brand Merch</h3>
+                        <p>Die-cut label configurations</p>
                     </div>
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Footer Contact Section -->
-    <footer id="contact">
+    <footer>
         <div class="social reveal-on-scroll">
             <div class="social-links">
-                <a href="#" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
-                <a href="#" aria-label="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
-                <a href="#" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
-                <a href="#" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+                <a href="#" aria-label="Review Technical Source Code via GitHub Platforms"><span class="material-symbols-outlined">code</span></a>
+                <a href="#" aria-label="Follow Creative Design Updates via Instagram Workstreams"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="#" aria-label="Connect Professionally via LinkedIn Corporate Networks"><span class="material-symbols-outlined">group</span></a>
+                <a href="#" aria-label="Stream Video Production Content via YouTube Channels"><span class="material-symbols-outlined">video_library</span></a>
             </div>
         </div>
-        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All rights reserved.</p>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All production parameters reserved.</p>
         
-        <div class="contact-info-strip reveal-on-scroll reveal-delay-1">
+        <div class="contact-info-strip reveal-on-scroll reveal-delay-1" id="contact">
             <div class="contact-item">
                 <span class="material-symbols-outlined">mail</span>
                 <div class="contact-text">
-                    <h3>Email Me</h3>
-                    <a href="mailto:hello@heinpop.com">hello@heinpop.com</a>
+                    <h3>Direct Inquiries</h3>
+                    <a href="mailto:ffheinminzaw@gmail.com">ffheinminzaw@gmail.com</a>
                 </div>
             </div>
             <div class="contact-item">
                 <span class="material-symbols-outlined">call</span>
                 <div class="contact-text">
-                    <h3>Call Me</h3>
-                    <a href="tel:+959123456789">+95 9 123 456 789</a>
+                    <h3>Secure Studio Line</h3>
+                    <a href="tel:+95986255420">+95 9 986 255 420</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- HubSpot Embed Code -->
-    <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/243801321.js"></script>
-    <!-- Link to JavaScript file -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/24380132.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
