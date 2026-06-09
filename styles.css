@@ -237,10 +237,30 @@ section {
     font-weight: 600;
     transition: color 0.2s ease;
     display: inline-block;
+    position: relative;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.scroll-active {
     color: var(--accent) !important;
+}
+
+/* Base line underline for active scrolling indicator */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent);
+    border-radius: 2px;
+    transition: width 0.25s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.scroll-active::after {
+    width: 100%;
 }
 
 .menu-toggle {
@@ -748,7 +768,7 @@ footer {
     text-align: center; 
 }
 
-/* 1. Neon Strip styling mechanics */
+/* Neon Strip styling mechanics */
 .neon-wrapper {
     position: relative;
     padding-bottom: 2px; 
@@ -819,16 +839,49 @@ footer p { font-size: 0.85rem; color: var(--text-deep-muted); margin-bottom: 2re
         background-color: var(--bg-nav);
         padding: 2rem; 
         gap: 1.5rem; 
-        display: none;
         border-bottom: 1px solid var(--border-alpha);
         margin-right: 0;
+        
+        /* Smooth Slide-Fade Down Transitions */
+        display: flex;
+        opacity: 0;
+        transform: translateY(-12px);
+        pointer-events: none;
+        visibility: hidden;
+        transition: opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+                    transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+                    visibility 0.35s;
     }
     
     .nav-links.mobile-active { 
-        display: flex; 
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        visibility: visible;
     }
     
     .hero-content h1 { font-size: 2.4rem; }
     .timeline-meta { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
     .contact-info-strip { flex-direction: column; gap: 1.5rem; align-items: center; }
+
+    /* SMART ROTATE VIEW OPTIMIZATION (Landscape Orientation Fixes) */
+    @media (orientation: landscape) and (max-height: 480px) {
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1.2rem 5%;
+            max-height: 78vh;
+            overflow-y: auto;
+        }
+        section {
+            padding: 4.5rem 5%;
+        }
+        .hero {
+            height: auto;
+            min-height: 100vh;
+            padding-top: 6rem;
+            padding-bottom: 4rem;
+        }
+    }
 }
