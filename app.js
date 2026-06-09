@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const themeIcon = themeToggle ? themeToggle.querySelector(".material-symbols-outlined") : null;
 
-    // Load custom configuration from local memory cache
     const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
     if (savedTheme === "light") {
         body.classList.remove("dark-theme");
@@ -30,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
 
-            // Use native view transition API if browser supports it, otherwise fallback
             if (!document.startViewTransition) {
                 toggleThemeLogic();
             } else {
@@ -41,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// 2. RUNTIME NATIVE LANGUAGE TOGGLE SYSTEM (CROSS-FADE SHIMMER)
+// 2. RUNTIME NATIVE LANGUAGE TOGGLE SYSTEM
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const langToggle = document.getElementById("lang-toggle");
@@ -51,11 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateDOMText = (lang) => {
         const translatableElements = document.querySelectorAll("[data-en]");
         
-        // 1. Trigger modern blur-out sequence
         translatableElements.forEach(el => el.classList.add("text-swapping"));
         if (langText) langText.classList.add("text-swapping");
 
-        // 2. Swap textual targets mid-animation framework
         setTimeout(() => {
             translatableElements.forEach(el => {
                 const translation = el.getAttribute(`data-${lang}`);
@@ -73,14 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }, 200);
 
-        // 3. Clear transient tracking wrappers to protect runtime layouts
         setTimeout(() => {
             translatableElements.forEach(el => el.classList.remove("text-swapped-in"));
             if (langText) langText.classList.remove("text-swapped-in");
         }, 450);
     };
 
-    // Initialize display state cleanly on boot
     document.querySelectorAll("[data-en]").forEach(el => {
         const translation = el.getAttribute(`data-${currentLang}`);
         if (translation) el.textContent = translation;
@@ -97,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// 3. HERO ROLE TEXT INTERVAL ENGINE (CURRENT ROLE)
+// 3. HERO ROLE TEXT INTERVAL ENGINE
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const subtitleElement = document.getElementById("dynamic-subtitle");
@@ -183,23 +177,55 @@ if (slider && foreground && line && button) {
 }
 
 // ==========================================
-// 5. ACCORDION CARD HIGHLIGHT CONTROLLER
+// 5. ACCORDION CARD CONTROLLER (WITH MOBILE AUTO-OPEN OVERRIDE)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const accordionHeaders = document.querySelectorAll('.accordion-header');
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    
+    const evaluateResponsiveLayoutBehavior = () => {
+        const isMobileScreen = window.innerWidth <= 768;
+
+        if (isMobileScreen) {
+            // Auto-open ALL panels on mobile layout configurations
+            accordionItems.forEach(item => {
+                item.classList.add('active');
+            });
+        } else {
+            // Restore interactive accordion style for desktop screens
+            accordionItems.forEach((item, index) => {
+                if (index === 0) {
+                    item.classList.add('active'); // Default first item open
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+    };
+
     accordionHeaders.forEach(header => {
         header.addEventListener('click', () => {
-            const currentItem = header.parentElement;
-            const isAlreadyActive = currentItem.classList.contains('active');
+            if (window.innerWidth > 768) {
+                const currentItem = header.parentElement;
+                const isAlreadyActive = currentItem.classList.contains('active');
 
-            document.querySelectorAll('.accordion-item').forEach(item => {
-                item.classList.remove('active');
-            });
+                accordionItems.forEach(item => {
+                    item.classList.remove('active');
+                });
 
-            if (!isAlreadyActive) {
-                currentItem.classList.add('active');
+                if (!isAlreadyActive) {
+                    currentItem.classList.add('active');
+                }
             }
         });
+    });
+
+    evaluateResponsiveLayoutBehavior();
+
+    let resizeDebounceTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeDebounceTimeout);
+        resizeDebounceTimeout = setTimeout(evaluateResponsiveLayoutBehavior, 150);
     });
 });
 
