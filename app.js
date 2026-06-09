@@ -187,15 +187,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const isMobileScreen = window.innerWidth <= 768;
 
         if (isMobileScreen) {
-            // Auto-open ALL panels on mobile layout configurations
             accordionItems.forEach(item => {
                 item.classList.add('active');
             });
         } else {
-            // Restore interactive accordion style for desktop screens
             accordionItems.forEach((item, index) => {
                 if (index === 0) {
-                    item.classList.add('active'); // Default first item open
+                    item.classList.add('active');
                 } else {
                     item.classList.remove('active');
                 }
@@ -247,23 +245,67 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// 7. VIEWPORT NAVIGATION MOBILE MENUS
+// 7. VIEWPORT NAVIGATION & SMART SCROLLSPY CORE
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
+    const individualLinks = document.querySelectorAll('.nav-links a');
+    const trackedSections = document.querySelectorAll('section, footer, #home');
 
     if (menuToggle && navLinks) {
+        // Toggle mobile drawer
         menuToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             navLinks.classList.toggle('mobile-active');
         });
+
+        // Click outside closes drawer
         document.addEventListener('click', (e) => {
             if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('mobile-active');
             }
         });
+
+        // Clicking a menu item closes drawer
+        individualLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('mobile-active');
+            });
+        });
     }
+
+    // Viewport Center Reach Architecture (Simulates Desktop Hover on Mobile Scroll)
+    const spyOptions = {
+        root: null,
+        rootMargin: "-46% 0px -46% 0px", // Focus tracking window on a 8% strip in center screen
+        threshold: 0
+    };
+
+    const scrollspyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const sectionId = entry.target.getAttribute('id');
+                if (!sectionId) return;
+
+                individualLinks.forEach(link => {
+                    const hrefAttr = link.getAttribute('href');
+                    if (hrefAttr === `#${sectionId}`) {
+                        link.classList.add('scroll-active');
+                    } else {
+                        link.classList.remove('scroll-active');
+                    }
+                });
+            }
+        });
+    }, spyOptions);
+
+    // Track valid container targets
+    trackedSections.forEach(sec => {
+        if (sec.getAttribute('id')) {
+            scrollspyObserver.observe(sec);
+        }
+    });
 });
 
 // ==========================================
