@@ -245,29 +245,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// 7. VIEWPORT NAVIGATION & SMART SCROLLSPY CORE
+// 7. VIEWPORT NAVIGATION MOBILE MENUS & ACCURATE TRACKING
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     const individualLinks = document.querySelectorAll('.nav-links a');
-    const trackedSections = document.querySelectorAll('section, footer, #home');
+    const trackedSections = document.querySelectorAll('section, footer');
 
     if (menuToggle && navLinks) {
-        // Toggle mobile drawer
         menuToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             navLinks.classList.toggle('mobile-active');
         });
 
-        // Click outside closes drawer
         document.addEventListener('click', (e) => {
             if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
                 navLinks.classList.remove('mobile-active');
             }
         });
 
-        // Clicking a menu item closes drawer
         individualLinks.forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('mobile-active');
@@ -275,37 +272,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Viewport Center Reach Architecture (Simulates Desktop Hover on Mobile Scroll)
-    const spyOptions = {
-        root: null,
-        rootMargin: "-46% 0px -46% 0px", // Focus tracking window on a 8% strip in center screen
-        threshold: 0
-    };
+    // High-performance scroll tracking algorithm targeting viewport layout intersection center point
+    const processActiveScrollspyTrack = () => {
+        const viewportCenterLine = window.innerHeight / 2;
+        let activeSectionId = "";
 
-    const scrollspyObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const sectionId = entry.target.getAttribute('id');
-                if (!sectionId) return;
-
-                individualLinks.forEach(link => {
-                    const hrefAttr = link.getAttribute('href');
-                    if (hrefAttr === `#${sectionId}`) {
-                        link.classList.add('scroll-active');
-                    } else {
-                        link.classList.remove('scroll-active');
-                    }
-                });
+        trackedSections.forEach(section => {
+            const boundary = section.getBoundingClientRect();
+            // Verify if the center point of screen sits comfortably inside a specific container layout block
+            if (boundary.top <= viewportCenterLine && boundary.bottom >= viewportCenterLine) {
+                activeSectionId = section.getAttribute('id');
             }
         });
-    }, spyOptions);
 
-    // Track valid container targets
-    trackedSections.forEach(sec => {
-        if (sec.getAttribute('id')) {
-            scrollspyObserver.observe(sec);
+        // Backup fallback mechanism targeting the layout head layer
+        if (window.scrollY < 120) {
+            activeSectionId = "home";
         }
-    });
+
+        individualLinks.forEach(link => {
+            const targetHref = link.getAttribute('href');
+            if (targetHref === `#${activeSectionId}`) {
+                link.classList.add('scroll-active');
+            } else {
+                link.classList.remove('scroll-active');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', processActiveScrollspyTrack, { passive: true });
+    window.addEventListener('resize', processActiveScrollspyTrack, { passive: true });
+    processActiveScrollspyTrack();
 });
 
 // ==========================================
