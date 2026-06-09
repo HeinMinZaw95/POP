@@ -1,83 +1,131 @@
 // ==========================================
-// 1. SMOOTH NAVIGATION LINK ACTIONS
-// ==========================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const navLinks = document.querySelector('.nav-links');
-            if (navLinks) navLinks.classList.remove('mobile-active');
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-    });
-});
-
-// ==========================================
-// 2. HERO VIDEO AUTO-PLAY PIPELINE
-// ==========================================
-const video = document.getElementById('my-background-video');
-if (video) {
-    const setVideoPoster = () => {
-        const posterSrc = window.innerWidth >= 800 ? 'video/desktop-thumbnail.jpg' : 'video/mobile-thumbnail.jpg';
-        video.setAttribute('poster', posterSrc);
-    };
-    window.addEventListener('DOMContentLoaded', setVideoPoster);
-    window.addEventListener('load', () => { video.play().catch(() => {}); });
-
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            video.load();
-            video.play().catch(() => {});
-        }, 250); 
-    });
-}
-
-// ==========================================
-// 3. HERO ROLE TEXT INTERVAL ENGINE
+// 1. THEME SWITCHER MANAGEMENT ENGINE (WITH VIEW TRANSITIONS)
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
-    const roles = ["Motion Graphic Designer", "3D Multimedia Artist", "Visual Content Director"];
-    const subtitleElement = document.getElementById("dynamic-subtitle");
-    let currentRoleIndex = 0;
+    const themeToggle = document.getElementById("theme-toggle");
+    const body = document.body;
+    const themeIcon = themeToggle ? themeToggle.querySelector(".material-symbols-outlined") : null;
 
-    if (subtitleElement) {
-        setInterval(() => {
-            subtitleElement.style.opacity = '0';
-            subtitleElement.style.transform = 'translateY(5px)';
-            setTimeout(() => {
-                currentRoleIndex = (currentRoleIndex + 1) % roles.length;
-                subtitleElement.textContent = roles[currentRoleIndex];
-                subtitleElement.style.opacity = '1';
-                subtitleElement.style.transform = 'translateY(0)';
-            }, 300); 
-        }, 3500); 
+    // Load custom configuration from local memory cache
+    const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
+    if (savedTheme === "light") {
+        body.classList.remove("dark-theme");
+        body.classList.add("light-theme");
+        if (themeIcon) themeIcon.textContent = "dark_mode";
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            const toggleThemeLogic = () => {
+                if (body.classList.contains("dark-theme")) {
+                    body.classList.remove("dark-theme");
+                    body.classList.add("light-theme");
+                    localStorage.setItem("portfolio-theme", "light");
+                    if (themeIcon) themeIcon.textContent = "dark_mode";
+                } else {
+                    body.classList.remove("light-theme");
+                    body.classList.add("dark-theme");
+                    localStorage.setItem("portfolio-theme", "dark");
+                    if (themeIcon) themeIcon.textContent = "light_mode";
+                }
+            };
+
+            // Use native view transition API if browser supports it, otherwise fallback
+            if (!document.startViewTransition) {
+                toggleThemeLogic();
+            } else {
+                document.startViewTransition(() => toggleThemeLogic());
+            }
+        });
     }
 });
 
 // ==========================================
-// 4. NAVBAR SCROLL COLOR TRANSITIONS
+// 2. RUNTIME NATIVE LANGUAGE TOGGLE SYSTEM (CROSS-FADE SHIMMER)
 // ==========================================
-const navbar = document.querySelector('.navbar');
-let ticking = false;
-if (navbar) {
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            window.requestAnimationFrame(() => {
-                navbar.style.backgroundColor = window.scrollY > 50 
-                    ? 'rgba(10, 10, 10, 0.98)' 
-                    : 'rgba(10, 10, 10, 0.95)';
-                ticking = false;
+document.addEventListener("DOMContentLoaded", () => {
+    const langToggle = document.getElementById("lang-toggle");
+    const langText = langToggle ? langToggle.querySelector(".lang-text") : null;
+    let currentLang = localStorage.getItem("portfolio-lang") || "en";
+
+    const updateDOMText = (lang) => {
+        const translatableElements = document.querySelectorAll("[data-en]");
+        
+        // 1. Trigger modern blur-out sequence
+        translatableElements.forEach(el => el.classList.add("text-swapping"));
+        if (langText) langText.classList.add("text-swapping");
+
+        // 2. Swap textual targets mid-animation framework
+        setTimeout(() => {
+            translatableElements.forEach(el => {
+                const translation = el.getAttribute(`data-${lang}`);
+                if (translation) {
+                    el.textContent = translation;
+                }
+                el.classList.remove("text-swapping");
+                el.classList.add("text-swapped-in");
             });
-            ticking = true;
-        }
-    }, { passive: true }); 
-}
+
+            if (langText) {
+                langText.textContent = lang === "en" ? "MM" : "EN";
+                langText.classList.remove("text-swapping");
+                langText.classList.add("text-swapped-in");
+            }
+        }, 200);
+
+        // 3. Clear transient tracking wrappers to protect runtime layouts
+        setTimeout(() => {
+            translatableElements.forEach(el => el.classList.remove("text-swapped-in"));
+            if (langText) langText.classList.remove("text-swapped-in");
+        }, 450);
+    };
+
+    // Initialize display state cleanly on boot
+    document.querySelectorAll("[data-en]").forEach(el => {
+        const translation = el.getAttribute(`data-${currentLang}`);
+        if (translation) el.textContent = translation;
+    });
+    if (langText) langText.textContent = currentLang === "en" ? "MM" : "EN";
+
+    if (langToggle) {
+        langToggle.addEventListener("click", () => {
+            currentLang = currentLang === "en" ? "mm" : "en";
+            localStorage.setItem("portfolio-lang", currentLang);
+            updateDOMText(currentLang);
+        });
+    }
+});
 
 // ==========================================
-// 5. SPLIT-SCREEN PHOTO COMPARE SLIDER (WITH AUTOMATED PEEK)
+// 3. HERO ROLE TEXT INTERVAL ENGINE (CURRENT ROLE)
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const subtitleElement = document.getElementById("dynamic-subtitle");
+    
+    const rolesEN = ["Motion Graphic Designer", "3D Multimedia Artist", "Visual Content Creator"];
+    const rolesMM = ["မိုရှင်းဂရပ်ဖစ် ဒီဇိုင်နာ", "၃ဒီ မာလ်တီမီဒီယာ ပညာရှင်", "ဗီဒီယို ဖန်တီးမှု ဒါရိုက်တာ"];
+    let currentRoleIndex = 0;
+
+    if (subtitleElement) {
+        setInterval(() => {
+            const activeLang = localStorage.getItem("portfolio-lang") || "en";
+            const currentRolesList = activeLang === "en" ? rolesEN : rolesMM;
+            
+            subtitleElement.style.opacity = '0';
+            subtitleElement.style.transform = 'translateY(5px)';
+            
+            setTimeout(() => {
+                currentRoleIndex = (currentRoleIndex + 1) % currentRolesList.length;
+                subtitleElement.textContent = currentRolesList[currentRoleIndex];
+                subtitleElement.style.opacity = '1';
+                subtitleElement.style.transform = 'translateY(0)';
+            }, 300);
+        }, 3500);
+    }
+});
+
+// ==========================================
+// 4. ASYMMETRIC IMAGE CONTRAST SLIDER
 // ==========================================
 const slider = document.getElementById('slider');
 const foreground = document.getElementById('foreground');
@@ -89,7 +137,6 @@ if (slider && foreground && line && button) {
     let isUserInteracting = false;
     let startTime = null;
 
-    // Core update layout function
     const updateSplit = (percentage) => {
         const cappedPercent = Math.max(0, Math.min(100, percentage));
         foreground.style.clipPath = `polygon(0 0, ${cappedPercent}% 0, ${cappedPercent}% 100%, 0 100%)`;
@@ -97,28 +144,17 @@ if (slider && foreground && line && button) {
         button.style.left = `${cappedPercent}%`;
     };
 
-    // Calculate mouse/touch positioning relative to container boundaries
     const handleMove = (clientX) => {
-        stopAutoMovement(); // Kill the animation loop permanently on user contact
+        stopAutoMovement();
         const rect = slider.getBoundingClientRect();
-        const mouseX = clientX - rect.left;
-        const percentage = (mouseX / rect.width) * 100;
+        const percentage = ((clientX - rect.left) / rect.width) * 100;
         updateSplit(percentage);
     };
 
-    // Auto-movement loop equation: Sway back and forth using a simple sine wave
     const animatePeek = (timestamp) => {
         if (isUserInteracting) return;
         if (!startTime) startTime = timestamp;
-        
-        const elapsed = timestamp - startTime;
-        
-        // Configuration Parameters:
-        // Math.sin speed coefficient = 0.0015 (Adjust for faster/slower movement)
-        // Amplitude multiplier = 12 (Sways +/- 12% from center midpoint)
-        const centerMidpoint = 50;
-        const autoPercentage = centerMidpoint + (Math.sin(elapsed * 0.0015) * 12);
-        
+        const autoPercentage = 50 + (Math.sin((timestamp - startTime) * 0.0015) * 12);
         updateSplit(autoPercentage);
         animationFrameId = requestAnimationFrame(animatePeek);
     };
@@ -127,49 +163,39 @@ if (slider && foreground && line && button) {
         if (!isUserInteracting) {
             isUserInteracting = true;
             cancelAnimationFrame(animationFrameId);
-            // Smoothly remove temporary transition properties so manual drag feels instant
             line.style.transition = 'none';
             button.style.transition = 'none';
             foreground.style.transition = 'none';
         }
     };
 
-    // Initialize subtle transitions for the auto-movement phase
     line.style.transition = 'left 0.1s ease-out';
     button.style.transition = 'left 0.1s ease-out';
     foreground.style.transition = 'clip-path 0.1s ease-out';
-
-    // Kickstart the auto animation loop
     animationFrameId = requestAnimationFrame(animatePeek);
 
-    // Human Interaction Listeners
     slider.addEventListener('mousemove', (e) => handleMove(e.clientX));
     slider.addEventListener('touchmove', (e) => {
         if (e.touches.length > 0) handleMove(e.touches[0].clientX);
     }, { passive: true });
-
-    // Additional safeguard events to drop auto-movement on subtle contact
     slider.addEventListener('mouseenter', stopAutoMovement);
     slider.addEventListener('touchstart', stopAutoMovement, { passive: true });
 }
 
-// ==========================================================
-// 6. ACCORDION / DROPDOWN SELECTION MANAGER
-// ==========================================================
+// ==========================================
+// 5. ACCORDION CARD HIGHLIGHT CONTROLLER
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const accordionHeaders = document.querySelectorAll('.accordion-header');
-
     accordionHeaders.forEach(header => {
         header.addEventListener('click', () => {
             const currentItem = header.parentElement;
             const isAlreadyActive = currentItem.classList.contains('active');
 
-            // Close all active open dropdown cards uniformly
             document.querySelectorAll('.accordion-item').forEach(item => {
                 item.classList.remove('active');
             });
 
-            // Toggle active card element state
             if (!isAlreadyActive) {
                 currentItem.classList.add('active');
             }
@@ -178,7 +204,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ==========================================
-// 7. MOBILE DRAWER INTERACTION EXPANSION
+// 6. GLOBAL VIEWPORT INTERSECT SCROLL ENGINE
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    const revealElements = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('appeared');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    revealElements.forEach(el => observer.observe(el));
+});
+
+// ==========================================
+// 7. VIEWPORT NAVIGATION MOBILE MENUS
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.querySelector('.menu-toggle');
@@ -197,52 +240,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ==========================================================
-// 8. CLEAN STANDARD 3D MOCKUP SWITCHER (STABLE VIEWPORT)
-// ==========================================================
+// ==========================================
+// 8. AR MOCKUP SELECTION LINK CHASSIS
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     const modelViewer = document.getElementById('active-3d-model');
     const threedButtons = document.querySelectorAll('.threed-btn');
 
-    if (modelViewer && threedButtons.length > 0) {
-        threedButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (button.classList.contains('active')) return;
-                
-                // Track standard button links active highlight
-                threedButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                // Read structural file route path
-                const targetModelPath = button.getAttribute('data-model');
-                if (targetModelPath) {
-                    modelViewer.setAttribute('src', targetModelPath);
-                }
-            });
+    threedButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('active') || !modelViewer) return;
+            threedButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            modelViewer.setAttribute('src', button.getAttribute('data-model'));
         });
-    }
-});
-
-// ==========================================
-// 9. HIGH-PERFORMANCE GLOBAL SCROLL REVEAL ENGINE
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
-    const observerOptions = {
-        root: null, 
-        threshold: 0.12, 
-        rootMargin: "0px 0px -40px 0px" 
-    };
-
-    const revealCallback = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('appeared');
-                observer.unobserve(entry.target); 
-            }
-        });
-    };
-
-    const scrollObserver = new IntersectionObserver(revealCallback, observerOptions);
-    revealElements.forEach(element => scrollObserver.observe(element));
+    });
 });

@@ -3,48 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HeinPop | Professional Motion Graphics & 3D Multimedia Artistry</title>
+    <title>HeinPop | Motion Graphics & 3D Multimedia Specialist</title>
     
-    <meta name="description" content="Professional motion graphics production, high-fidelity 3D packaging mockups, and strategic visual direction by HeinPop. Explore an immersive portfolio of custom-engineered layouts, animations, and corporate branding assets.">
-    <meta name="keywords" content="Motion Graphic Designer, 3D Multimedia Artist, 3D Packaging Mockups, Video Editing, Blender Pipelines, Creative Branding, After Effects, Typography Systems, HeinPop Portfolio">
+    <meta name="description" content="Portfolio of Hein Min Zaw (HeinPop). Professional motion graphics, commercial video editing, 3D packaging mockups, and front-end layouts.">
+    <meta name="keywords" content="Motion Graphic Designer, 3D Multimedia Artist, Video Editing, Blender, After Effects, HeinPop Portfolio, Yangon">
     <meta name="author" content="HeinPop">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://heinpop.com/">
     <meta name="google-site-verification" content="HY9HbENiVSk6F7LhIHKzQdf1Nq-7w1SPKz8-RwDo0sU" />
 
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="HeinPop | Professional Motion Graphics & 3D Multimedia Artistry">
-    <meta property="og:description" content="Transforming ordinary visual assets into high-performance corporate narratives. Explore professional 3D pipelines, custom environments, and fluid kinetic layouts.">
-    <meta property="og:url" content="https://heinpop.com/">
-    <meta property="og:image" content="img/og-preview.jpg">
-    <meta property="og:site_name" content="HeinPop">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="HeinPop | Professional Motion Graphics & 3D Multimedia Artistry">
-    <meta name="twitter:description" content="Transforming ordinary visual assets into high-performance corporate narratives via custom 3D engines and broadcast motion tracking.">
-    <meta name="twitter:image" content="img/og-preview.jpg">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="img/logo.svg">
     
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
-<body>
+<body class="dark-theme">
     <nav class="navbar">
         <div class="logo">
-            <img src="img/logo.svg" alt="HeinPop Corporate Emblem" class="logo_img">
+            <img src="img/logo.svg" alt="HeinPop Logo" class="logo_img">
             <a href="#home" class="logo_name">HeinPop</a>
         </div>
-        <button class="menu-toggle" aria-label="Toggle Mobile Navigation Menu">
-            <span class="material-symbols-outlined">menu</span>
-        </button>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about-slider">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#print-3d">3D Work</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="#about-slider" data-en="About" data-mm="ကျွန်ုပ်အကြောင်း">About</a></li>
+            <li><a href="#workflow" data-en="Workflow" data-mm="လုပ်ငန်းစဉ်">Workflow</a></li>
+            <li><a href="#experience" data-en="Experience" data-mm="လုပ်ငန်းအတွေ့အကြုံ">Experience</a></li>
+            <li><a href="#skills" data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</a></li>
+            <li><a href="#print-3d" data-en="3D Work" data-mm="၃ဒီ လက်ရာများ">3D Work</a></li>
+            <li><a href="#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
         </ul>
     </nav>
 
@@ -53,108 +53,159 @@
             <video id="my-background-video" muted loop autoplay playsinline preload="auto" class="background_video">
                 <source src="video/heinpop_hero.mp4" type="video/mp4" media="(min-width: 800px)">
                 <source src="video/heinpop_hero_m.mp4" type="video/mp4" media="(max-width: 799px)">
-                Your browser does not support the video tag.
             </video>
             <div class="hero-left-subtitle">
-                <span class="subtitle-label">Current Role</span>
-                <div id="dynamic-subtitle" class="subtitle-text">Motion Graphic Designer</div>
+                <span class="subtitle-label" data-en="Current Position" data-mm="လက်ရှိရာထူး">Current Position</span>
+                <div id="dynamic-subtitle" class="subtitle-text" data-en="Motion Graphic Designer" data-mm="မိုရှင်းဂရပ်ဖစ် ဒီဇိုင်နာ">Motion Graphic Designer</div>
             </div>
         </div>
         
         <div class="hero-wrapper">
             <div class="hero-content reveal-on-scroll">
-                <h1>Motion <br>Graphic Designer</h1>
-                <p>Every brand has an intrinsic story waiting to be expressed. I help you project yours with clarity through high-performance motion design and calculated spatial compositions.</p>
-                <p class="highlight">Engineering immersive digital environments that hook attention instantly and foster community engagement.</p>
-                <a href="#contact" class="cta-button">Let's Create</a>
+                <h1 data-en="Motion Graphic Designer" data-mm="မိုရှင်းဂရပ်ဖစ် ဒီဇိုင်နာ">Motion Graphic Designer</h1>
+                <p data-en="I am Hein Min Zaw (HeinPop), a results-driven Creative Professional specializing in end-to-end graphic design and cinematic commercial video editing." 
+                   data-mm="ကျွန်တော်သည် ဟိန်းမင်းဇော် (HeinPop) ဖြစ်ပြီး၊ စီးပွားရေးလုပ်ငန်းသုံး ဗီဒီယိုတည်းဖြတ်ခြင်းနှင့် ဂရပ်ဖစ်ဒီဇိုင်းလုပ်ငန်းများကို အဆုံးတိုင် တာဝန်ယူလုပ်ဆောင်ပေးသော ဖန်တီးမှုပညာရှင်တစ်ဦး ဖြစ်ပါသည်။">
+                   I am Hein Min Zaw (HeinPop), a results-driven Creative Professional specializing in end-to-end graphic design and cinematic commercial video editing.
+                </p>
+                <p class="highlight" data-en="Delivering high-converting social media assets, premium print media, and engaging advertisements."
+                   data-mm="လူမှုကွန်ရက်စာမျက်နှာများအတွက် စိတ်ဝင်စားဖွယ်ရာ ဗီဒီယိုများ၊ အဆင့်မြင့်ပုံနှိပ်မီဒီယာများနှင့် ထိရောက်သော ကြော်ငြာများကို ဖန်တီးပေးနေပါသည်။">
+                   Delivering high-converting social media assets, premium print media, and engaging advertisements.
+                </p>
+                <a href="#contact" class="cta-button" data-en="Let's Create" data-mm="အတူတူဖန်တီးကြစို့">Let's Create</a>
             </div>
         </div>
     </section>
 
     <section id="about-slider" class="slider-showcase-section">
         <div class="about-slider-grid">
-            
             <div class="slider-column reveal-on-scroll">        
                 <div class="slider-container" id="slider">
-                    <img src="Normal.jpg" alt="Baseline Post-Production Vector Layout Canvas">
-                    <img src="Fireman.jpg" alt="Final High-Fidelity Multimedia Production Render Asset" class="img-foreground" id="foreground">
+                    <img src="Normal.jpg" alt="Baseline Post-Production Process">
+                    <img src="Fireman.jpg" alt="Final Production Render" class="img-foreground" id="foreground">
                     <div class="slider-line" id="line"></div>
                     <div class="slider-button" id="button"></div>
                 </div>
             </div>
 
-            <div class="about-column reveal-on-scroll reveal-delay-1">
-                <span class="section-tagline">Behind The Pixels</span>
-                <h2>Crafting Immersive Digital Experiences</h2>
-                <p class="about-lead">I am a specialized Motion Graphic Designer and Multimedia Artist dedicated to shifting ordinary visual assets into dynamic consumer narratives.</p>
-                <p class="about-body">By merging spatial 3D architecture, meticulous layouts, and fluid kinetic tracking, I design digital environments that hook attention instantly. My background balances technical production strategy with artistic expression—ensuring that every frame engineered translates directly to a concrete community vision and memorable presence.</p>
+            <div class="about-column reveal-on-scroll">
+                <span class="section-tagline" data-en="Behind The Pixels" data-mm="ပစ်ဇယ်များရဲ့နောက်ကွယ်">Behind The Pixels</span>
+                <h2 data-en="Crafting Engaging Visual Experiences" data-mm="ဆွဲဆောင်မှုရှိသော မြင်ကွင်းအတွေ့အကြုံများ ဖန်တီးခြင်း">Crafting Engaging Visual Experiences</h2>
+                <p class="about-body" data-en="With a strong educational background in physics combined with certified technical training in both frontend web development and corporate graphic design, I bring structural discipline to artistic media timelines."
+                   data-mm="ရူပဗေဒသိပ္ပံဘွဲ့ နောက်ခံနှင့်အတူ ရှေ့တန်းဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု (Frontend Dev) နှင့် ကော်ပိုရိတ်ဂရပ်ဖစ်ဒီဇိုင်း လက်မှတ်ရ သင်တန်းဆင်းထားသူဖြစ်သဖြင့် အနုပညာဖန်တီးမှုများတွင် စနစ်ကျသော နည်းပညာပိုင်းဆိုင်ရာ ပေါင်းစပ်မှုများကို ထည့်သွင်းလုပ်ဆောင်နိုင်ပါသည်။">
+                   With a strong educational background in physics combined with certified technical training in both frontend web development and corporate graphic design, I bring structural discipline to artistic media timelines.
+                </p>
                 
                 <div class="mini-metrics-grid">
                     <div class="metric-card">
-                        <h4>3D Pipelines</h4>
-                        <p>Custom commercial models built from absolute zero engineering guidelines.</p>
+                        <h4 data-en="B.Sc. Physics" data-mm="ရူပဗေဒသိပ္ပံဘွဲ့">B.Sc. Physics</h4>
+                        <p data-en="Dagon University Graduate" data-mm="ဒဂုံတက္ကသိုလ် ဘွဲ့ရ">Dagon University Graduate</p>
                     </div>
                     <div class="metric-card">
-                        <h4>Brand Impact</h4>
-                        <p>Tailored interface layouts focusing on high strategic target conversion.</p>
+                        <h4 data-en="Dual Focused" data-mm="နှစ်ဖက်ကျွမ်းကျင်မှု">Dual Focused</h4>
+                        <p data-en="Bridging technical code structures with premium dynamic art profiles." data-mm="နည်းပညာပိုင်းဆိုင်ရာ ကုဒ်များနှင့် အဆင့်မြင့် ဒီဇိုင်းအနုပညာကို ပေါင်းစပ်ခြင်း။">Bridging technical code structures with premium dynamic art profiles.</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
+    <section id="workflow" class="workflow-section">
+        <div class="max-container reveal-on-scroll">
+            <div class="workflow-header">
+                <span class="section-tagline" data-en="Why Partners Hire Me" data-mm="ဘာကြောင့် ကျွန်တော့်ကို ရွေးချယ်သင့်သလဲ">Why Partners Hire Me</span>
+                <h2 data-en="Engineered Creativity, Structured Delivery" data-mm="စနစ်ကျသော ဖန်တီးမှု၊ တိကျသော အကောင်အထည်ဖော်မှု">Engineered Creativity, Structured Delivery</h2>
+                <p data-en="I don't just create assets; I build visual execution blueprints designed for retention and high marketplace conversion rates." data-mm="ကျွန်တော်သည် သာမန်ဒီဇိုင်းများကိုသာ ဖန်တီးရုံတင်မဟုတ်ဘဲ စျေးကွက်အတွင်း ထိရောက်ပြီး လူစိတ်ဝင်စားမှု အမြင့်ဆုံးရရှိစေမည့် မြင်ကွင်းဗျူဟာများကို တည်ဆောက်ပါသည်။">I don't just create assets; I build visual execution blueprints designed for retention and high marketplace conversion rates.</p>
+            </div>
+            
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <span class="material-symbols-outlined workflow-icon">analytics</span>
+                    <h3 data-en="1. Analytical Precision" data-mm="၁။ စနစ်ကျသော တွက်ချက်မှု">1. Analytical Precision</h3>
+                    <p data-en="Applying structural physics principles to animation pacing, weight distribution, and motion physics for incredibly natural, high-retention cinematic timelines." data-mm="ရူပဗေဒသဘောတရားများကို အခြေခံ၍ အန်နီမေးရှင်းများ၏ ရွေ့လျားမှုနှုန်း၊ အလေးချိန်နှင့် တုန့်ပြန်မှုများကို သဘာဝကျကျနှင့် ဆွဲဆောင်မှုအရှိဆုံးဖြစ်အောင် ဖန်တီးတွက်ချက်ပါသည်။">Applying structural physics principles to animation pacing, weight distribution, and motion physics for incredibly natural, high-retention cinematic timelines.</p>
+                </div>
+                <div class="workflow-card">
+                    <span class="material-symbols-outlined workflow-icon">architecture</span>
+                    <h3 data-en="2. End-to-End Asset Control" data-mm="၂။ စတင်ခြင်းမှ အဆုံးထိ ကိုင်တွယ်ခြင်း">2. End-to-End Asset Control</h3>
+                    <p data-en="Eliminating project communication friction by single-handedly managing 3D packaging layout engineering, dynamic vector graphics, audio mixing, and commercial rendering pipelines." data-mm="၃ဒီ ကုန်ပစ္စည်းဒီဇိုင်းများ၊ ဗက်တာဂရပ်ဖစ်များ၊ အသံပိုင်းဆိုင်ရာ မစ်ဆင်နှင့် ဗီဒီယိုတည်းဖြတ်မှုများကို တစ်ဦးတည်း အစအဆုံး တာဝန်ယူနိုင်သောကြောင့် လုပ်ငန်းတွင်း အလွဲအချော်များကို အပြည့်အဝ တားဆီးပေးပါသည်။">Eliminating project communication friction by single-handedly managing 3D packaging layout engineering, dynamic vector graphics, audio mixing, and commercial rendering pipelines.</p>
+                </div>
+                <div class="workflow-card">
+                    <span class="material-symbols-outlined workflow-icon">speed</span>
+                    <h3 data-en="3. Technical Optimization" data-mm="၃။ နည်းပညာပိုင်းဆိုင်ရာ မြှင့်တင်မှု">3. Technical Optimization</h3>
+                    <p data-en="Certified front-end knowledge ensuring media files are exported cleanly with maximized optimization—optimized for responsive web environments, fast loading speeds, and high-impact UI presentation." data-mm="ရှေ့တန်းဝဘ်ပိုင်း ကျွမ်းကျင်မှုအတွေ့အကြုံအရ ဗီဒီယိုနှင့် ဒီဇိုင်းဖိုင်များကို ဝဘ်ဆိုက်များပေါ်တွင် အမြန်ဆုံး Loading တက်စေရန်နှင့် အရည်အသွေးမကျဘဲ အပွင့်လင်းဆုံး ပြသနိုင်ရန် နည်းပညာပိုင်းအရ အကောင်းဆုံး ပြင်ဆင်တင်ဆက်ပေးပါသည်။">Certified front-end knowledge ensuring media files are exported cleanly with maximized optimization—optimized for responsive web environments, fast loading speeds, and high-impact UI presentation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="experience-section">
+        <div class="max-container reveal-on-scroll">
+            <h2 class="section-title" data-en="Work History" data-mm="လုပ်ငန်းအတွေ့အကြုံ">Work History</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <h3>Bridging International</h3>
+                        <span class="timeline-date">2024 - 2026</span>
+                    </div>
+                    <p class="role-title" data-en="Motion Graphic Designer" data-mm="မိုရှင်းဂရပ်ဖစ် ဒီဇိုင်နာ">Motion Graphic Designer</p>
+                    <p data-en="Led the development of premium high-converting social marketing video streams and commercial animation systems."
+                       data-mm="လူမှုကွန်ရက် ကြော်ငြာဗီဒီယိုများနှင့် စီးပွားရေးလုပ်ငန်းသုံး အန်နီမေးရှင်းစနစ်များကို အဓိက တာဝန်ယူ လုပ်ဆောင်ခဲ့သည်။">
+                       Led the development of premium high-converting social marketing video streams and commercial animation systems.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <h3>The House</h3>
+                        <span class="timeline-date">2023 - 2024</span>
+                    </div>
+                    <p class="role-title" data-en="Graphic Designer" data-mm="ဂရပ်ဖစ် ဒီဇိုင်နာ">Graphic Designer</p>
+                    <p data-en="Constructed commercial brand packaging designs, digital campaign grids, layouts, and typography systems."
+                       data-mm="ကုန်အမှတ်တံဆိပ် ထုပ်ပိုးမှုဒီဇိုင်းများ၊ ဒီဂျစ်တယ်ကမ်ပိန်းများနှင့် စာလုံးအပြင်အဆင် စနစ်များကို ဖန်တီးခဲ့သည်။">
+                       Constructed commercial brand packaging designs, digital campaign grids, layouts, and typography systems.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-meta">
+                        <h3>Mr Fone</h3>
+                        <span class="timeline-date">2017 - 2018</span>
+                    </div>
+                    <p class="role-title" data-en="Mobile Service Technician" data-mm="မိုဘိုင်းဖုန်း ပြုပြင်ရေးကျွမ်းကျင်သူ">Mobile Service Technician</p>
+                    <p data-en="Diagnosed core physical hardware failures and optimized user hardware workflows."
+                       data-mm="မိုဘိုင်းဖုန်း ဟာ့ဒ်ဝဲပြဿနာများကို ရှာဖွေဖော်ထုတ်ခြင်းနှင့် စနစ်ပိုင်းဆိုင်ရာ ပြုပြင်ထိန်းရှိမ်းမှုများကို လုပ်ဆောင်ခဲ့သည်။">
+                       Diagnosed core physical hardware failures and optimized user hardware workflows.
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="skills" class="skills-studio">
         <div class="studio-header reveal-on-scroll">
-            <h2>Specializations</h2>
-            <p>Click any skill block below to drop down details and matching active project layouts.</p>
+            <h2 data-en="Specializations" data-mm="ကျွမ်းကျင်မှု နယ်ပယ်များ">Specializations</h2>
+            <p data-en="Click any production block below to review matching system tools and workflows." data-mm="အသေးစိတ် အချက်အလက်များနှင့် အသုံးပြုသည့် Tool များကို ကြည့်ရန် ကတ်များကို နှိပ်ပါ။">Click any production block below to review matching system tools and workflows.</p>
         </div>
         
         <div class="accordion-container max-container reveal-on-scroll">
-            
             <div class="accordion-item active">
-                <div class="accordion-header">
-                    <span class="material-symbols-outlined header-icon">format_color_fill</span>
-                    <div class="header-text">
-                        <h3>Digital Design</h3>
-                        <p>Social Marketing & Dynamic Campaign Media</p>
-                    </div>
-                    <span class="material-symbols-outlined arrow-indicator">expand_more</span>
-                </div>
-                <div class="accordion-content">
-                    <div class="stream-grid single-media">
-                        <div class="media-box">
-                            <img src="img/cpufan.jpg" alt="Digital Graphic & Concept Campaign Architecture">
-                        </div>
-                        <div class="text-box animate-text">
-                            <h3>High-Performance Interface Graphics</h3>
-                            <p>Engineered campaign content optimized for cross-platform visual retention, featuring custom social grids, digital asset toolkits, and dynamic screen real estate layouts.</p>
-                            <div class="sub-spec"><strong>Creative Execution:</strong> Tailored interface systems & asset hierarchies.</div>
-                            <div class="sub-spec"><strong>Target Optimization:</strong> Rendered specifically for fast load times and community visibility.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
                 <div class="accordion-header">
                     <span class="material-symbols-outlined header-icon">video_library</span>
                     <div class="header-text">
-                        <h3>Branding Video</h3>
-                        <p>Motion Graphics & Broadcast Commercials</p>
+                        <h3 data-en="Motion Graphics & Video Editing" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယိုတည်းဖြတ်ခြင်း">Motion Graphics & Video Editing</h3>
+                        <p>After Effects, Premiere Pro, Blender</p>
                     </div>
                     <span class="material-symbols-outlined arrow-indicator">expand_more</span>
                 </div>
                 <div class="accordion-content">
-                    <div class="stream-grid single-media">
+                    <div class="stream-grid">
                         <div class="media-box">
-                            <iframe src="https://www.youtube.com/embed/5nzNeDllXy8" title="HeinPop Video Production Reel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <iframe src="https://www.youtube.com/embed/5nzNeDllXy8" title="HeinPop Video Production Reel" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                         </div>
                         <div class="text-box animate-text">
-                            <h3>Pure Structural Creation</h3>
-                            <p>Zero templates. Every asset is engineered completely from scratch based directly around clear target audience conversion metrics.</p>
-                            <div class="sub-spec"><strong>Blender Architecture:</strong> Environmental geometry layouts & mechanical rigging.</div>
-                            <div class="sub-spec"><strong>After Effects Layering:</strong> Spatial camera tracking & kinetic vector animations.</div>
+                            <h3 data-en="Cinematic Editing Pipelines" data-mm="ရုပ်ရှင်ဆန်သော ဗီဒီယိုတည်းဖြတ်မှုစနစ်">Cinematic Editing Pipelines</h3>
+                            <p data-en="Production of commercial assets built inside precise keyframe environments. No generic setups—optimized target output for modern community spaces."
+                               data-mm="ပစ်မှတ်ထားရာ လူမှုကွန်ရက်များအတွက် အထူးကောင်းမွန်အောင် ပြုလုပ်ထားသော စီးပွားရေးလုပ်ငန်းသုံး ဗီဒီယိုများ ထုတ်လုပ်ခြင်း။">
+                               Production of commercial assets built inside precise keyframe environments. No generic setups—optimized target output for modern community spaces.
+                            </p>
+                            <div class="sub-spec"><strong>Tools:</strong> After Effects, Premiere Pro, Audition</div>
                         </div>
                     </div>
                 </div>
@@ -162,39 +213,66 @@
 
             <div class="accordion-item">
                 <div class="accordion-header">
-                    <span class="material-symbols-outlined header-icon">engineering</span>
+                    <span class="material-symbols-outlined header-icon">format_color_fill</span>
                     <div class="header-text">
-                        <h3>Printing Design</h3>
-                        <p>Premium Structural Packaging & Die-Cut Paths</p>
+                        <h3 data-en="Graphic & UI Layout Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Layout Design</h3>
+                        <p>Photoshop, Illustrator</p>
                     </div>
                     <span class="material-symbols-outlined arrow-indicator">expand_more</span>
                 </div>
                 <div class="accordion-content">
-                    <div class="stream-grid single-media">
+                    <div class="stream-grid">
                         <div class="media-box">
-                            <img src="img/shirt.jpg" alt="Technical Layout Mapping Overview">
+                            <img src="img/cpufan.jpg" alt="Digital Graphic Design Architecture">
                         </div>
                         <div class="text-box animate-text">
-                            <h3>Premium Branding Layouts</h3>
-                            <p>Industrial structural assets compiled natively for CMYK printing pipelines and high-resolution plate transfers.</p>
-                            <div class="sub-spec"><strong>Adobe Illustrator:</strong> Vector precision profiles & geometric layout paths.</div>
-                            <div class="sub-spec"><strong>Adobe InDesign:</strong> Exact structural spacing & typographic column configurations.</div>
+                            <h3 data-en="High-Impact Campaign Graphics" data-mm="ထိရောက်မှုမြင့်မားသော ကြော်ငြာဒီဇိုင်းများ">High-Impact Campaign Graphics</h3>
+                            <p data-en="Building balanced vector configurations and marketing layouts. Tailored structural identity grids mapped specifically for visibility profiles."
+                               data-mm="လူအများ သတိပြုမိလွယ်စေရန် အထူးပုံဖော်ထားသော ကော်ပိုရိတ် ဒီဇိုင်းစနစ်များနှင့် စျေးကွက်ရှာဖွေရေး ဒီဇိုင်းများ ဖန်တီးခြင်း။">
+                               Building balanced vector configurations and marketing layouts. Tailored structural identity grids mapped specifically for visibility profiles.
+                            </p>
+                            <div class="sub-spec"><strong>Tools:</strong> Photoshop, Illustrator</div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span class="material-symbols-outlined header-icon">code</span>
+                    <div class="header-text">
+                        <h3 data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</h3>
+                        <p>HTML5, CSS3, Native JavaScript</p>
+                    </div>
+                    <span class="material-symbols-outlined arrow-indicator">expand_more</span>
+                </div>
+                <div class="accordion-content">
+                    <div class="stream-grid">
+                        <div class="media-box">
+                            <img src="img/shirt.jpg" alt="Web Development Environment">
+                        </div>
+                        <div class="text-box animate-text">
+                            <h3 data-en="Clean UI Development" data-mm="ရှင်းလင်းသပ်ရပ်သော ဝဘ်စနစ် တည်ဆောက်ခြင်း">Clean UI Development</h3>
+                            <p data-en="Certified by W3Schools as a Front-End Web Developer. Writing clean, responsive, and lightweight interfaces to host asset models and portfolios."
+                               data-mm="W3Schools မှ အသိအမှတ်ပြု လက်မှတ်ရ ရှေ့တန်းဝဘ်ဒီဇိုင်နာ။ သင့်ဒီဇိုင်းနှင့် မော်ဒယ်များကို ကောင်းမွန်စွာ ပြသနိုင်ရန် ပေါ့ပါးသွက်လက်ပြီး စနစ်ကျသော ဝဘ်ဆိုက်များကို ကိုယ်တိုင် ရေးသားတည်ဆောက်ပါသည်။">
+                               Certified by W3Schools as a Front-End Web Developer. Writing clean, responsive, and lightweight interfaces to host asset models and portfolios.
+                            </p>
+                            <div class="sub-spec"><strong>Stack:</strong> Semantic HTML, Modern CSS Grid/Flexbox, ES6+ JS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="print-3d" class="showcase-3d">
         <div class="threed-header reveal-on-scroll">
-            <h2>3D Packaging Mockups</h2>
-            <p>Freely examine spatial frameworks. Select an individual component link item below to dynamically refresh the workspace geometry.</p>
+            <h2 data-en="3D Space & Packaging Work" data-mm="၃ဒီ ကုန်ပစ္စည်းထုပ်ပိုးမှု ဖန်တီးမှုများ">3D Space & Packaging Work</h2>
+            <p data-en="Interact with the canvas layout below. Click to toggle runtime environment models." data-mm="အောက်ပါ ၃ဒီ ပတ်ဝန်းကျင်ကို စိတ်ကြိုက် လှည့်ပတ်ကြည့်ရှုနိုင်ပါသည်။ မော်ဒယ်ပြောင်းလဲရန် ခလုတ်များကို နှိပ်ပါ။">Interact with the canvas layout below. Click to toggle runtime environment models.</p>
         </div>
         
-        <div class="threed-container">
-            <div class="threed-display-box reveal-on-scroll reveal-delay-1">
+        <div class="threed-container max-container">
+            <div class="threed-display-box reveal-on-scroll">
                 <model-viewer 
                     id="active-3d-model" 
                     src="models/monkey.glb" 
@@ -211,19 +289,19 @@
                 </model-viewer>
             </div>
             
-            <div class="threed-controls-sidebar reveal-on-scroll reveal-delay-2">
+            <div class="threed-controls-sidebar reveal-on-scroll">
                 <button class="threed-btn active" data-model="models/monkey.glb">
                     <span class="material-symbols-outlined">package_2</span>
                     <div class="btn-text">
-                        <h3>Premium Box</h3>
-                        <p>High-fidelity CMYK skins</p>
+                        <h3 data-en="Premium Box Setup" data-mm="အဆင့်မြင့် ဗူးဒီဇိုင်း">Premium Box Setup</h3>
+                        <p data-en="High-fidelity product rendering" data-mm="အရည်အသွေးမြင့် ကုန်ပစ္စည်းပုံဖော်မှု">High-fidelity product rendering</p>
                     </div>
                 </button>
                 <button class="threed-btn" data-model="models/Delivery_Box_Mockup.glb">
                     <span class="material-symbols-outlined">brand_awareness</span>
                     <div class="btn-text">
-                        <h3>Brand Merch</h3>
-                        <p>Die-cut label configurations</p>
+                        <h3 data-en="Corporate Merchandise" data-mm="ကော်ပိုရိတ် အမှတ်တံဆိပ် ပစ္စည်းများ">Corporate Merchandise</h3>
+                        <p data-en="Die-cut path verification assets" data-mm="ပုံနှိပ်ပုံစံကျစနစ် အစမ်းစစ်ဆေးမှု">Die-cut path verification assets</p>
                     </div>
                 </button>
             </div>
@@ -233,26 +311,26 @@
     <footer>
         <div class="social reveal-on-scroll">
             <div class="social-links">
-                <a href="https://github.com/HeinMinZaw95" aria-label="Review Technical Source Code via GitHub Platforms"><span class="material-symbols-outlined">code</span></a>
-                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Follow Creative Design Updates via Facebook Workstreams"><span class="material-symbols-outlined">photo_camera</span></a>
-                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BK9JXNVAxRn2%2Fo10v6ZCzPg%3D%3D" aria-label="Connect Professionally via LinkedIn Corporate Networks"><span class="material-symbols-outlined">group</span></a>
-                <a href="https://youtube.com/@hein-pop?si=-BW6BzKBvDfuB0UU" aria-label="Stream Video Production Content via YouTube Channels"><span class="material-symbols-outlined">video_library</span></a>
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
             </div>
         </div>
-        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All production parameters reserved.</p>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
         
-        <div class="contact-info-strip reveal-on-scroll reveal-delay-1" id="contact">
+        <div class="contact-info-strip reveal-on-scroll" id="contact">
             <div class="contact-item">
                 <span class="material-symbols-outlined">mail</span>
                 <div class="contact-text">
-                    <h3>Direct Inquiries</h3>
+                    <h3 data-en="Direct Inquiries" data-mm="တိုက်ရိုက် ဆက်သွယ်ရန်">Direct Inquiries</h3>
                     <a href="mailto:heinpop95@gmail.com">heinpop95@gmail.com</a>
                 </div>
             </div>
             <div class="contact-item">
                 <span class="material-symbols-outlined">call</span>
                 <div class="contact-text">
-                    <h3>Secure Studio Line</h3>
+                    <h3 data-en="Studio Business Line" data-mm="ဆက်သွယ်ရန် ဖုန်းနံပါတ်">Studio Business Line</h3>
                     <a href="tel:+95986255420">+95 9 986 255 420</a>
                 </div>
             </div>
