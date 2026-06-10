@@ -265,7 +265,7 @@
         </div>
     </section>
 
-    <section id="print-3d" class="showcase-3d">
+       <section id="print-3d" class="showcase-3d">
         <div class="threed-header reveal-on-scroll">
             <h2 data-en="3D Space & Packaging Work" data-mm="၃ဒီ ကုန်ပစ္စည်းထုပ်ပိုးမှု ဖန်တီးမှုများ">3D Space & Packaging Work</h2>
             <p data-en="Interact with the canvas layout below. Click to toggle runtime environment models." data-mm="အောက်ပါ ၃ဒီ ပတ်ဝန်းကျင်ကို စိတ်ကြိုက် လှည့်ပတ်ကြည့်ရှုနိုင်ပါသည်။ မော်ဒယ်ပြောင်းလဲရန် ခလုတ်များကို နှိပ်ပါ။">Interact with the canvas layout below. Click to toggle runtime environment models.</p>
@@ -273,31 +273,36 @@
         
         <div class="threed-container max-container">
             <div class="threed-display-box reveal-on-scroll">
-                <model-viewer 
-                    id="active-3d-model" 
-                    src="models/monkey.glb" 
-                    ar 
-                    camera-controls 
-                    interaction-prompt="none"
-                    camera-orbit="0deg 75deg 2.5m" 
-                    field-of-view="auto"
-                    poster="img/poster.webp" 
-                    shadow-intensity="1">
-                    <div id="lazy-load-poster" slot="poster">
-                        <span class="material-symbols-outlined loading-icon">progress_activity</span>
-                    </div>
-                </model-viewer>
+        <model-viewer 
+        id="active-3d-model" 
+        src="models/shoe.glb" 
+        poster="img/poster.webp" 
+        alt="A 3D model of a shoe"
+        camera-controls 
+        touch-action="pan-y"
+        ar
+        interaction-prompt="none"
+        camera-orbit="0deg 75deg 2.5m" 
+        field-of-view="auto"
+        interpolation-decay="200"
+        shadow-intensity="1"
+        shadow-softness="1">
+        
+        <div id="lazy-load-poster" slot="poster">
+            <span class="material-symbols-outlined loading-icon">progress_activity</span>
+        </div>
+        </model-viewer>
             </div>
             
             <div class="threed-controls-sidebar reveal-on-scroll">
-                <button class="threed-btn active" data-model="models/monkey.glb">
+                <button class="threed-btn active" data-model="models/shoe.glb">
                     <span class="material-symbols-outlined">package_2</span>
                     <div class="btn-text">
                         <h3 data-en="Premium Box Setup" data-mm="အဆင့်မြင့် ဗူးဒီဇိုင်း">Premium Box Setup</h3>
                         <p data-en="High-fidelity product rendering" data-mm="အရည်အသွေးမြင့် ကုန်ပစ္စည်းပုံဖော်မှု">High-fidelity product rendering</p>
                     </div>
                 </button>
-                <button class="threed-btn" data-model="models/Delivery_Box_Mockup.glb">
+                <button class="threed-btn" data-model="models/shoe.glb">
                     <span class="material-symbols-outlined">brand_awareness</span>
                     <div class="btn-text">
                         <h3 data-en="Corporate Merchandise" data-mm="ကော်ပိုရိတ် အမှတ်တံဆိပ် ပစ္စည်းများ">Corporate Merchandise</h3>
@@ -307,7 +312,7 @@
             </div>
         </div>
     </section>
-
+    
     <footer id="contact" class="neon-wrapper">
         <div class="social reveal-on-scroll">
             <div class="social-links">
