@@ -319,5 +319,30 @@ document.addEventListener("DOMContentLoaded", () => {
             button.classList.add('active');
             modelViewer.setAttribute('src', button.getAttribute('data-model'));
         });
+
+        
+// ==========================================
+// 9. MODEL VIEWER TOUCH TO PLAY
+// ==========================================
+const viewer = document.querySelector('#active-3d-model');
+
+// 1. Wait for the model to fully load before attaching triggers
+viewer.addEventListener('load', () => {
+  
+  // Start animation when user presses down (Click or Touch)
+  viewer.addEventListener('pointerdown', () => {
+    viewer.play();
+  });
+
+  // Pause animation when they let go
+  viewer.addEventListener('pointerup', () => {
+    viewer.pause();
+  });
+
+  // Safety net: Pause animation if their finger drags entirely off the element
+  viewer.addEventListener('pointerleave', () => {
+    viewer.pause();
+  });
+});
     });
 });
