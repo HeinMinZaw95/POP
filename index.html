@@ -297,6 +297,14 @@
         </div>
     </section>
 
+    <section id="print-3d" class="three-space">
+    <div class="threed-header reveal-on-scroll">
+            <h2 data-en="3D Interactive Technology" data-mm="၃ဒီ ထိတွေ့ကိုင်တွယ်နိုင်သော နည်းပညာ">3D Interactive Technology</h2>
+            <p data-en="Interact with the canvas layout below. Click on floor to move and look around" data-mm="အောက်ပါ ၃ဒီ ပတ်ဝန်းကျင်ကို စိတ်ကြိုက် လှည့်ပတ်ကြည့်ရှုနိုင်ပါသည်။ သွားလိုသည့်နေရာကို မောက်ဖြင်ထောက်သွားနိုင်ပါသည်။">Interact with the canvas layout below. Click on floor to move and look around</p>
+        </div>  
+    </section>
+    <div id="three-container"></div>
+        
        <section id="print-3d" class="showcase-3d">
         <div class="threed-header reveal-on-scroll">
             <h2 data-en="3D Space & Packaging Work" data-mm="၃ဒီ ကုန်ပစ္စည်းထုပ်ပိုးမှု ဖန်တီးမှုများ">3D Space & Packaging Work</h2>
@@ -376,5 +384,15 @@
 
     <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/24380132.js"></script>
     <script src="app.js"></script>
+     <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="/main.js"></script>
 </body>
 </html>

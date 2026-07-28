@@ -706,6 +706,11 @@ section {
 .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
 .accordion-item.active .accordion-content { max-height: 900px; }
 
+#three-container{
+    width: 100%;
+    height: 100vh;
+}
+
 @media (max-width: 768px) {
     .accordion-item.active .accordion-content, 
     .accordion-item .accordion-content { 
