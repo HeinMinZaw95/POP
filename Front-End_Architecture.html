@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Construction | HeinPop Portfolio</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.svg">
+
+    <style>
+        .maintenance-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .maintenance-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-alpha);
+            border-radius: 12px;
+            padding: 3.5rem 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .maintenance-icon {
+            font-size: 4rem !important;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .maintenance-card h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .maintenance-card p {
+            color: var(--text-sub);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 2rem;
+            background-color: var(--accent);
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(238, 28, 75, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .back-home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(238, 28, 75, 0.5);
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            filter: blur(140px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="index.html" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN MAINTENANCE CONTENT -->
+    <main class="maintenance-container">
+        <div class="glow-effect"></div>
+        
+        <div class="maintenance-card">
+            <span class="material-symbols-outlined maintenance-icon">construction</span>
+            
+            <h1 data-en="Under Construction" data-mm="စာမျက်နှာ ယာယီပြုပြင်နေပါသည်။">Under Construction</h1>
+            
+            <p data-en="This specific portfolio section is currently being updated with new projects and interactive content. Please check back soon!"
+               data-mm="ဤ စာမျက်နှာကို ပိုမိုကောင်းမွန်သော ပရောဂျက်သစ်များ၊ ပြသမှုများနှင့်အတူ ပြင်ဆင်မွမ်းမံနေပါသည်။ မကြာမီ ပြန်လည် ကြည့်ရှုနိုင်ပါမည်။">
+               This specific portfolio section is currently being updated with new projects and interactive content. Please check back soon!
+            </p>
+
+            <a href="index.html" class="back-home-btn">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span data-en="Back to Home" data-mm="ပင်မစာမျက်နှာသို့ ပြန်သွားရန်">Back to Home</span>
+            </a>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
