@@ -6,6 +6,7 @@ Allow: /
 Allow: /img/
 Allow: /models/
 Allow: /video/
+Allow: /Grade-12_Physics/
 
 # XML Sitemap လိပ်စာကို ညွှန်ပြပေးခြင်း (Sitemap ပြုလုပ်ပြီးပါက မိမိ Domain ဖြင့် ပြင်ပါ)
 Sitemap: https://heinpop.xyz/sitemap.xml
