@@ -3,80 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under Construction | HeinPop Portfolio</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>3D Interactive Physics Labs | HeinPop Portfolio</title>
+    <meta name="description" content="Explore an interactive 3D physics lab simulation for Grade 12 Myanmar Curriculum, featuring Faraday's Law, Solenoid coils, and real-time electron flow built with Three.js by HeinPop[cite: 10].">
+    <meta name="keywords" content="Grade 12 Physics, Electromagnetic Induction, Faraday's Law, Lenz's Law, Three.js 3D Lab, Interactive Physics Simulation, HeinPop Portfolio[cite: 10]">
+    <meta name="author" content="HeinPop[cite: 10]">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.xyz/3D_Interactive.html">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="3D Interactive Physics Labs | HeinPop Portfolio">
+    <meta property="og:description" content="Explore interactive 3D physics simulations and educational labs built for Grade 12 Myanmar curriculum by HeinPop[cite: 10].">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://heinpop.xyz/3D_Interactive.html">
+    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="3D Interactive Physics Labs | HeinPop Portfolio">
+    <meta name="twitter:description" content="Explore interactive 3D physics simulations and educational labs built for Grade 12 Myanmar curriculum by HeinPop[cite: 10].">
+    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- Structured Data (JSON-LD Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "3D Interactive Physics Labs",
+      "description": "Interactive 3D physics lab simulations featuring Faraday's Law and Solenoid coils.",
+      "url": "https://heinpop.xyz/3D_Interactive.html",
+      "author": {
+        "@type": "Person",
+        "name": "HeinPop"
+      }
+    }
+    </script>
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="img/logo.svg">
 
     <style>
-        .maintenance-container {
+        .lab-section-container {
             min-height: 100vh;
+            padding: 4rem 5%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 2rem 5%;
             position: relative;
             overflow: hidden;
         }
 
-        .maintenance-card {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-alpha);
-            border-radius: 12px;
-            padding: 3.5rem 2.5rem;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            position: relative;
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
             z-index: 2;
         }
 
-        .maintenance-icon {
-            font-size: 4rem !important;
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
-        }
-
-        .maintenance-card h1 {
-            font-size: 2rem;
+        .section-header h1 {
+            font-size: 2.5rem;
             font-weight: 800;
-            margin-bottom: 1rem;
-            color: var(--text-main);
+            color: var(--text-main, #ffffff);
+            margin-bottom: 0.5rem;
         }
 
-        .maintenance-card p {
-            color: var(--text-sub);
-            font-size: 1.05rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
+        .section-header p {
+            color: var(--text-sub, #a0a0ab);
+            font-size: 1.1rem;
         }
 
-        .back-home-btn {
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+            z-index: 2;
+        }
+
+        .portfolio-card.lab-card {
+            background-color: var(--bg-secondary, #121218);
+            border: 1px solid var(--border-alpha, rgba(255, 255, 255, 0.1));
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .portfolio-card.lab-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent, #ee1c4b);
+            box-shadow: 0 12px 30px rgba(238, 28, 75, 0.2);
+        }
+
+        .card-image-wrapper {
+            position: relative;
+            height: 190px;
+            background: linear-gradient(135deg, #0b0b10 0%, #1a1a2e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .lab-preview-bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .lab-preview-bg::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #00ffcc;
+            filter: blur(50px);
+            opacity: 0.3;
+        }
+
+        .lab-card-icon {
+            font-size: 3.8rem !important;
+            color: #00ffcc;
+            z-index: 2;
+            animation: pulseIcon 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseIcon {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #00ffcc); }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 255, 204, 0.15);
+            color: #00ffcc;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main, #ffffff);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-content p {
+            font-size: 0.92rem;
+            color: var(--text-sub, #a0a0ab);
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-alpha, rgba(255, 255, 255, 0.08));
+            padding-top: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tech-tag {
+            font-size: 0.75rem;
+            color: #00ffcc;
+            background: rgba(0, 255, 204, 0.08);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .explore-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.9rem 2rem;
-            background-color: var(--accent);
-            color: #ffffff !important;
-            text-decoration: none;
+            gap: 6px;
+            font-size: 0.9rem;
             font-weight: 600;
-            border-radius: 6px;
-            box-shadow: 0 4px 15px rgba(238, 28, 75, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            color: var(--accent, #ee1c4b);
+            text-decoration: none;
         }
 
-        .back-home-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(238, 28, 75, 0.5);
+        .explore-link .arrow-icon {
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-card.lab-card:hover .explore-link .arrow-icon {
+            transform: translateX(5px);
         }
 
         .glow-effect {
@@ -84,14 +222,15 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background: var(--accent);
-            filter: blur(140px);
-            opacity: 0.15;
+            filter: blur(160px);
+            opacity: 0.12;
             pointer-events: none;
             z-index: 1;
         }
+
     </style>
 </head>
 <body class="dark-theme">
@@ -100,9 +239,27 @@
     <nav class="navbar">
         <div class="logo">
             <img src="img/logo.svg" alt="HeinPop Logo" class="logo_img">
-            <a href="index.html" class="logo_name">HeinPop</a>
+            <a href="index.html#home" class="logo_name">HeinPop</a>
         </div>
         
+        <ul class="nav-links">
+            <li><a href="index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">My-workflow</a></li>
+            <li class="dropdown">
+                <a href="index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+
         <div class="nav-controls">
             <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
                 <span class="material-symbols-outlined">light_mode</span>
@@ -110,30 +267,133 @@
             <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
                 <span class="lang-text">MM</span>
             </button>
+            
+
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
         </div>
     </nav>
 
-    <!-- MAIN MAINTENANCE CONTENT -->
-    <main class="maintenance-container">
+    <!-- MAIN INTERACTIVE LABS SECTION -->
+    <main class="lab-section-container">
         <div class="glow-effect"></div>
         
-        <div class="maintenance-card">
-            <span class="material-symbols-outlined maintenance-icon">construction</span>
-            
-            <h1 data-en="Under Construction" data-mm="စာမျက်နှာ ယာယီပြုပြင်နေပါသည်။">Under Construction</h1>
-            
-            <p data-en="This specific portfolio section is currently being updated with new projects and interactive content. Please check back soon!"
-               data-mm="ဤ စာမျက်နှာကို ပိုမိုကောင်းမွန်သော ပရောဂျက်သစ်များ၊ ပြသမှုများနှင့်အတူ ပြင်ဆင်မွမ်းမံနေပါသည်။ မကြာမီ ပြန်လည် ကြည့်ရှုနိုင်ပါမည်။">
-               This specific portfolio section is currently being updated with new projects and interactive content. Please check back soon!
-            </p>
+        <div class="section-header">
+            <h1 data-en="Interactive 3D Physics Labs" data-mm="အပြန်အလှန်တုံ့ပြန်နိုင်သော 3D ရူပဗေဒစမ်းသပ်ခန်းများ">Interactive 3D Physics Labs</h1>
+            <p data-en="Bridges the gap between abstract theoretical concepts and practical visual understanding, enhancing student engagement and critical thinking." data-mm="သီအိုရီသဘောတရားများနှင့် လက်တွေ့မြင်ကွင်းများကို ပေါင်းစပ်ပေးခြင်းဖြင့် ကျောင်းသားများ၏ သင်ယူလိုစိတ်နှင့် ဝေဖန်ပိုင်းခြားတွေးခေါ်နိုင်စွမ်းကို မြှင့်တင်ပေးသည်။">Bridges the gap between abstract theoretical concepts and practical visual understanding, enhancing student engagement and critical thinking.</p>
+        </div>
+        
+        <div class="labs-grid">
+            <!-- Electromagnetic Induction Lab Card -->
+            <div class="portfolio-card lab-card" onclick="location.href='Grade-12_Physics/lab-em-induction.html';">
+                <div class="card-image-wrapper">
+                    <div class="lab-preview-bg">
+                        <span class="material-symbols-outlined lab-card-icon">bolt</span>
+                    </div>
+                    <div class="card-badge">Grade 12 Physics</div>
+                </div>
+                
+                <div class="card-content">
+                    <h3 data-en="Electromagnetic Induction" data-mm="လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်း">Electromagnetic Induction</h3>
+                    <p data-en="Interactive 3D simulation featuring Faraday's Law, Solenoid coils, and real-time electron flow."
+                       data-mm="Grade 12 ရူပဗေဒ ဖာရာဒေးဥပဒေ၊ Solenoid ကွိုင်များနှင့် Electrons စီးဆင်းမှုကို 3D ဖြင့် လေ့လာနိုင်သော စမ်းသပ်ခန်း။">
+                       Interactive 3D simulation featuring Faraday's Law, Solenoid coils, and real-time electron flow.
+                    </p>
+                    
+                    <div class="card-footer">
+                        <div class="tech-tags">
+                            <span class="tech-tag">3D Interaction</span>
+                            <span class="tech-tag">Physics</span>
+                        </div>
+                        <span class="explore-link">
+                            <span data-en="Launch Lab" data-mm="စမ်းသပ်မည်">Launch Lab</span>
+                            <span class="material-symbols-outlined arrow-icon">arrow_forward</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
 
-            <a href="index.html" class="back-home-btn">
-                <span class="material-symbols-outlined">arrow_back</span>
-                <span data-en="Back to Home" data-mm="ပင်မစာမျက်နှာသို့ ပြန်သွားရန်">Back to Home</span>
-            </a>
+            <!-- Future Lab Slot -->
+            <div class="portfolio-card lab-card" style="opacity: 0.6; cursor: default;" onclick="alert('Coming Soon!');">
+                <div class="card-image-wrapper" style="background: linear-gradient(135deg, #0b0b10 0%, #161622 100%);">
+                    <div class="lab-preview-bg">
+                        <span class="material-symbols-outlined lab-card-icon" style="color: var(--text-sub);">science</span>
+                    </div>
+                    <div class="card-badge" style="background: rgba(255,255,255,0.08); color: var(--text-sub); border-color: rgba(255,255,255,0.1);">Coming Soon</div>
+                </div>
+                
+                <div class="card-content">
+                    <h3 data-en="More Labs on the Way" data-mm="အခြားစမ်းသပ်ခန်းများ မကြာမီလာမည်">More Labs on the Way</h3>
+                    <p data-en="New physics and interactive simulations are currently under development. Stay tuned!"
+                       data-mm="အခြားသော ရူပဗေဒနှင့် အပြန်အလှန်တုံ့ပြန်နိုင်သော စမ်းသပ်ခန်းများကို ဆက်လက်ဖန်တီးနေပါသည်။">
+                       New physics and interactive simulations are currently under development. Stay tuned!
+                    </p>
+                    
+                    <div class="card-footer">
+                        <div class="tech-tags">
+                            <span class="tech-tag" style="background: rgba(255,255,255,0.05); color: var(--text-sub);">EdTech</span>
+                        </div>
+                        <span class="explore-link" style="color: var(--text-sub);">
+                            <span data-en="Soon" data-mm="မကြာမီ">Soon</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+        
+        <div class="contact-info-strip reveal-on-scroll">
+            <div class="contact-item">
+                <span class="material-symbols-outlined">mail</span>
+                <div class="contact-text">
+                    <h3 data-en="Direct Inquiries" data-mm="တိုက်ရိုက် ဆက်သွယ်ရန်">Direct Inquiries</h3>
+                    <a href="mailto:heinpop95@gmail.com">heinpop95@gmail.com</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <span class="material-symbols-outlined">call</span>
+                <div class="contact-text">
+                    <h3 data-en="Studio Business Line" data-mm="ဆက်သွယ်ရန် ဖုန်းနံပါတ်">Studio Business Line</h3>
+                    <a href="tel:+95986255420">+95 9 986 255 420</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
     <script src="app.js"></script>
+    <script>
+        const userHPointsSpan = document.getElementById('user-h-points');
+
+        function loadGameScore() {
+            let currentPoints = localStorage.getItem('heinpop_lab_points');
+            if (!currentPoints) {
+                currentPoints = 0;
+                localStorage.setItem('heinpop_lab_points', currentPoints);
+            }
+            if (userHPointsSpan) userHPointsSpan.textContent = currentPoints;
+        }
+
+        window.addLabPoints = function(points) {
+            let currentPoints = parseInt(localStorage.getItem('heinpop_lab_points') || '0');
+            currentPoints += points;
+            localStorage.setItem('heinpop_lab_points', currentPoints);
+            if (userHPointsSpan) userHPointsSpan.textContent = currentPoints;
+        }
+
+        loadGameScore();
+    </script>
 </body>
 </html>

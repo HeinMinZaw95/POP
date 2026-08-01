@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- === SEO META TAGS === -->
+    <title>Lab 1: Electromagnetic Induction | Grade 12 Physics Lab Simulation</title>
+    <meta name="description" content="Explore an interactive 3D simulation of Faraday's Law and Lenz's Law for Grade 12 Myanmar curriculum. Observe induced EMF, magnetic flux, and test your knowledge.">
+    <meta name="keywords" content="Grade 12 Physics, Electromagnetic Induction Lab, Faraday's Law, Lenz's Law, Physics Simulation, HeinPop, Myanmar Curriculum, 3D Physics Lab">
+    <meta name="author" content="HeinPop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html">
+
+    <!-- === OPEN GRAPH / SOCIAL MEDIA SEO (Facebook, LinkedIn, etc.) === -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html">
+    <meta property="og:title" content="Lab 1: Electromagnetic Induction | Grade 12 Physics Lab Simulation">
+    <meta property="og:description" content="Interactive 3D simulation of Faraday's and Lenz's Law for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === TWITTER CARD SEO === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html">
+    <meta name="twitter:title" content="Lab 1: Electromagnetic Induction | Grade 12 Physics Lab Simulation">
+    <meta name="twitter:description" content="Interactive 3D simulation of Faraday's and Lenz's Law for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === STRUCTURED DATA (JSON-LD Schema for Educational Resource) === -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Electromagnetic Induction Lab Simulation",
+      "description": "Interactive 3D simulation of Faraday's and Lenz's Law designed for Grade 12 Physics students.",
+      "educationalLevel": "Grade 12",
+      "learningResourceType": "Interactive Simulation",
+      "author": {
+        "@type": "Person",
+        "name": "HeinPop"
+      },
+      "url": "https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html"
+    }
+    </script>
+
+    <!-- Material Symbols & Styles (Root folder မှ လှမ်းခေါ်ရန် ../ သုံးထားသည်) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="lab-em-induction.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.svg">
+    
+    <!-- Three.js CDN & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- Lab Custom Script (ဖိုင်တွဲအတူတူဖြစ်므로 ပုံမှန်ခေါ်သည်) -->
+    <script src="lab-em-induction.js" defer></script>
+</head>
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="#home" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="../index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
+            <li class="dropdown">
+                <a href="../index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN LAB HERO SECTION -->
+    <section class="lab-hero max-container">
+        <div class="lab-header reveal-on-scroll">
+            <span class="section-tagline" data-en="Chapter 10: Electrodynamics & Induction" data-mm="အခန်း ၁၀ - လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်း">Chapter 10: Electromagnetic Induction</span>
+            <h1 data-en="Faraday's & Lenz's Law Simulation" data-mm="ဖာရာဒေးနှင့် လင်းဇ်ဥပဒေ စမ်းသပ်ခန်း">Faraday's & Lenz's Law Simulation</h1>
+            <p data-en="Observe how moving a bar magnet through a solenoid coil induces an electromotive force (EMF) and current." 
+               data-mm="သံလိုက်တံကို ကွိုင်ထဲသို့ ရွေ့သွင်းသည့်အခါ လျှပ်စီးကြောင်းနှင့် လျှပ်စစ်တွန်းအား (EMF) ဖြစ်ပေါ်လာပုံကို လေ့လာပါ။">
+               Observe how moving a bar magnet through a solenoid coil induces an electromotive force (EMF) and current.
+            </p>
+        </div>
+
+        <div class="lab-workspace reveal-on-scroll">
+            <!-- Left Panel: Controls & Theory info -->
+            <div class="lab-controls-panel">
+                <h3 data-en="Control Center" data-mm="ထိန်းချုပ်ရန်နေရာ">Control Center</h3>
+                
+                <div class="control-group">
+                    <label for="speedRange" data-en="Motion Speed" data-mm="ရွေ့လျားနှုန်းအမြန်နှုန်း">Motion Speed: <span id="speedVal">1.0</span>x</label>
+                    <input type="range" id="speedRange" min="0.2" max="3.0" step="0.1" value="1.0">
+                </div>
+
+                <div class="control-group">
+                    <label for="insertRange" data-en="Manual Position" data-mm="တည်နေရာ">Manual Position</label>
+                    <input type="range" id="insertRange" min="-3.0" max="3.0" step="0.1" value="0">
+                </div>
+
+                <div class="control-group">
+                    <label for="coilTurnsRange" data-en="Numbers of Coil Turns" data-mm="ကွီင်အပါတ်ရေ">Numbers of Coil Turns</label>
+                    <input type="range" id="coilTurnsRange" min="4" max="24" step="2" value="12">
+                </div>
+
+                <div class="control-group">
+                    <label for="fluxStrengthRange" data-en="Magnetic Flux" data-mm="သံလိုက်စက်ကွင်းအား">Magnetic Flux<span id="fluxVal">1.0</span>x</label>
+                    <input type="range" id="fluxStrengthRange" min="0.2" max="2.5" step="0.1" value="1.0">
+                </div>
+
+                <!-- Theory Card & Equation -->
+                <div class="theory-card">
+                    <h4 data-en="Key Concept & Equation" data-mm="အဓိက သဘောတရားနှင့် ညီမျှခြင်း">Key Concept & Equation</h4>
+                    <p data-en="The induced EMF is directly proportional to the rate of change of magnetic flux."
+                       data-mm="ဖြစ်ပေါ်လာသော လျှပ်စစ်တွန်းအား (EMF) သည် သံလိုက်စက်ကွင်း ပြောင်းလဲနှုန်းနှင့် တိုက်ရိုက်အချိုးကျသည်။">
+                       The induced EMF is directly proportional to the rate of change of magnetic flux.
+                    </p>
+                    <!-- ရူပဗေဒ ညီမျှခြင်း Box -->
+                    <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 14px; color: #00ffcc;">
+                        ε = - N <span style="font-size: 16px;">(</span> ΔΦ / Δt <span style="font-size: 16px;">)</span>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" data-mm="ε = လျှပ်စစ်တွန်းအား (EMF) | N = ကွိုင်အပတ်ရေ | ΔΦ/Δt = သံလိုက်စက်ကွင်းပြောင်းလဲနှုန်း">
+                        ε = Induced EMF | N = Number of Turns | ΔΦ/Δt = Rate of Change of Flux
+                    </p>
+                </div>
+
+                <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
+                <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a>
+            </div>
+
+            <!-- Right Panel: 3D Canvas Viewport -->
+            <div class="lab-canvas-container">
+                <!-- Live Telemetry Badge Overlay -->
+                <div class="telemetry-overlay">
+                    <div>Induced EMF: <span id="emfValue">0.00 V</span></div>
+                    <div>Current Flow: <span id="currentStatus">Zero (No Motion)</span></div>
+                </div>
+
+                <canvas id="physics-canvas"></canvas>
+            </div>
+        </div>
+        <!-- POST-LAB RANDOM QUIZ SECTION (20 Questions Pool -> 3 Random Questions) -->
+        <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
+            <div class="quiz-header" style="margin-bottom: 1.5rem;">
+                <h3 data-en="Post-Lab Knowledge Check (3 Random Questions)" data-mm="စမ်းသပ်ခန်းအပြီး ဗဟုသုတစစ်ဆေးရန် (ကျပန်းမေးခွန်း ၃ ပုဒ်)">Post-Lab Knowledge Check</h3>
+                <p data-en="Test your understanding through 3 random questions selected from our physics question bank."
+                   data-mm="ရူပဗေဒ မေးခွန်းဘဏ်ကြီးထဲမှ ကျပန်းထုတ်ပေးသော မေးခွန်း ၃ ပုဒ်ဖြင့် သင်၏နားလည်မှုကို စမ်းသပ်ပါ။">
+                   Test your understanding through 3 random questions selected from our physics question bank.
+                </p>
+            </div>
+
+            <div id="quiz-form-container">
+                <div id="dynamic-quiz-questions">
+                    <!-- JavaScript ဖြင့် ကျပန်းမေးခွန်း ၃ ပုဒ်ကို ဤနေရာတွင် ထည့်သွင်းပေးမည် -->
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button id="submit-quiz" class="lab-btn btn-primary" data-en="Submit Answers" data-mm="အဖြေလွှာတင်မည်">Submit Answers</button>
+                    <button id="refresh-quiz" class="lab-btn btn-secondary" data-en="New Questions" data-mm="မေးခွန်းအသစ်လဲမည်">New Questions</button>
+                    <span id="quiz-result-msg" style="font-weight: bold; font-size: 0.95rem;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+    </footer>
+
+    <!-- Firebase & Quiz Script -->
+    <script>
+        // 20 Questions Question Bank
+        const questionBank = [
+            {
+                qEn: "What factors increase the magnitude of induced EMF in a coil?",
+                qMm: "ကွိုင်တစ်ခုအတွင်း ဖြစ်ပေါ်လာသော လျှပ်စစ်တွန်းအား (EMF) ကို ပိုမိုများပြားစေသည့် အကြောင်းရင်းမှာ အဘယ်နည်း။",
+                optionsEn: ["Moving the magnet slower", "Increasing the number of coil turns (N)", "Removing the magnetic core"],
+                optionsMm: ["သံလိုက်တံကို နှေးကွေးစွာ ရွေ့ခြင်း", "ကွိုင်အပတ်ရေ (N) ကို တိုးမြှင့်ခြင်း", "သံလိုက်စက်ကွင်းကို ဖယ်ရှားခြင်း"],
+                answer: 1
+            },
+            {
+                qEn: "According to Faraday's Law, induced EMF is proportional to what?",
+                qMm: "ဖာရာဒေးဥပဒေအရ ဖြစ်ပေါ်လာသော လျှပ်စစ်တွန်းအား (EMF) သည် မည်သည်နှင့် တိုက်ရိုက်အချိုးကျသနည်း။",
+                optionsEn: ["Rate of change of magnetic flux", "Resistance of the wire", "Temperature of the magnet"],
+                optionsMm: ["သံလိုက်စက်ကွင်း ပြောင်းလဲနှုန်း", "ဝါယာကြိုး၏ ခံအား", "သံလိုက်၏ အပူချိန်"],
+                answer: 0
+            },
+            {
+                qEn: "What does Lenz's law determine in electromagnetic induction?",
+                qMm: "လင်းဇ်ဥပဒေက လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်းတွင် မည်သည်ကို ဆုံးဖြတ်ပေးသနည်း။",
+                optionsEn: ["Magnitude of current", "Direction of the induced current", "Weight of the magnet"],
+                optionsMm: ["လျှပ်စီးကြောင်း၏ ပမာဏ", "ဖြစ်ပေါ်လာသော လျှပ်စီးကြောင်း၏ ဦးတည်ရာ", "သံလိုက်၏ အလေးချိန်"],
+                answer: 1
+            },
+            {
+                qEn: "The negative sign in Faraday's law equation represents which principle?",
+                qMm: "ဖာရာဒေးညီမျှခြင်းပါ အနှုတ် (-) လက္ခဏာသည် မည်သည့်မူကို ကိုယ်စားပြုသနည်း။",
+                optionsEn: ["Ohm's Law", "Lenz's Law (Conservation of Energy)", "Coulomb's Law"],
+                optionsMm: ["အုမ်းဥပဒေ", "လင်းဇ်ဥပဒေ (စွမ်းအင်တည်မြဲခြင်းမူ)", "ကူလွန်ဥပဒေ"],
+                answer: 1
+            },
+            {
+                qEn: "What is the SI unit of Magnetic Flux ($\Phi$)?",
+                qMm: "သံလိုက်စက်ကွင်း စီးဆင်းမှု ($\Phi$) ၏ SI ယူနစ်မှာ အဘယ်နည်း။",
+                optionsEn: ["Tesla (T)", "Weber (Wb)", "Volt (V)"],
+                optionsMm: ["တက်စလာ (Tesla)", "ဝီဘာ (Weber)", "ဗို့ဒ် (Volt)"],
+                answer: 1
+            },
+            {
+                qEn: "What happens to the induced current if the magnet remains stationary inside the coil?",
+                qMm: "သံလိုက်တံသည် ကွိုင်အတွင်း ငြိမ်သက်စွာ ရပ်နေပါက ဖြစ်ပေါ်လာမည့် လျှပ်စီးကြောင်း အခြေအနေမှာ မည်သို့ရှိမည်နည်း။",
+                optionsEn: ["Maximum current", "Zero current", "Infinite current"],
+                optionsMm: ["လျှပ်စီးကြောင်း အများဆုံးဖြစ်မည်", "လျှပ်စီးကြောင်း မရှိပါ (သုည)", "လျှပ်စီးကြောင်း အနန္တဖြစ်မည်"],
+                answer: 1
+            },
+            {
+                qEn: "Which device operates primarily on the principle of electromagnetic induction?",
+                qMm: "အောက်ပါတို့အနက် မည်သည့်စက်ပစ္စည်းသည် လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်း နည်းပညာကို အဓိကအသုံးပြုသနည်း။",
+                optionsEn: ["Resistor", "Transformer", "Capacitor"],
+                optionsMm: ["ခုခံအားပစ္စည်း (Resistor)", "ထရန်စဖော်မာ (Transformer)", "လျှပ်စစ်ဓာတ်စု (Capacitor)"],
+                answer: 1
+            },
+            {
+                qEn: "If the speed of the moving magnet is doubled, what happens to the induced EMF?",
+                qMm: "ရွေ့လျားနေသော သံလိုက်တံ၏ အမြန်နှုန်းကို နှစ်ဆတိုးလိုက်ပါက လျှပ်စစ်တွန်းအား (EMF) မည်သို့ပြောင်းလဲမည်နည်း။",
+                optionsEn: ["Halved", "Doubled", "Remains unchanged"],
+                optionsMm: ["တစ်ဝက်ကျဆင်းမည်", "နှစ်ဆတိုးလာမည်", "ပြောင်းလဲမှုမရှိပါ"],
+                answer: 1
+            },
+            {
+                qEn: "Magnetic flux is defined as the product of magnetic field and what else?",
+                qMm: "သံလိုက်စက်ကွင်း စီးဆင်းမှု (Magnetic Flux) ဆိုသည်မှာ သံလိုက်စက်ကွင်းပြင်းအားနှင့် မည်သည်ကို မြှောက်ရလဒ်နည်း။",
+                optionsEn: ["Area perpendicular to the field", "Velocity of wire", "Length of the magnet"],
+                optionsMm: ["စက်ကွင်းနှင့် ထောင့်မှန်ကျသော ဧရိယာ", "ဝါယာ၏ အမြန်နှုန်း", "သံလိုက်၏ အလျား"],
+                answer: 0
+            },
+            {
+                qEn: "Who discovered electromagnetic induction independently in 1831?",
+                qMm: "၁၈၃၁ ခုနှစ်တွင် လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်းကို လွတ်လပ်စွာ စတင်တွေ့ရှိခဲ့သူမှာ မည်သူနည်း။",
+                optionsEn: ["Albert Einstein", "Michael Faraday", "Isaac Newton"],
+                optionsMm: ["အယ်လ်ဘတ် အင်စတိုင်း", "မိုက်ကယ် ဖာရာဒေး", "အိုက်ဇက် နယူတန်"],
+                answer: 1
+            },
+            {
+                qEn: "What is the formula for magnetic flux ($\Phi$)?",
+                qMm: "သံလိုက်စက်ကွင်း စီးဆင်းမှု ဖော်မြူလာမှာ အဘယ်နည်း။",
+                optionsEn: ["$\Phi = B \cdot A \cdot \cos(\theta)$", "$I = V / R$", "$E = mc^2$"],
+                optionsMm: ["$\Phi = B \cdot A \cdot \cos(\theta)$", "$I = V / R$", "$E = mc^2$"],
+                answer: 0
+            },
+            {
+                qEn: "In a generator, mechanical energy is converted into which form of energy?",
+                qMm: "ဂျင်နရေတာ တစ်ခုတွင် စက်မှုစွမ်းအင်ကို မည်သည့်စွမ်းအင်အမျိုးအစားသို့ ပြောင်းလဲပေးသနည်း။",
+                optionsEn: ["Thermal energy", "Electrical energy", "Chemical energy"],
+                optionsMm: ["အပူစွမ်းအင်", "လျှပ်စစ်စွမ်းအင်", "ဓာတုစွမ်းအင်"],
+                answer: 1
+            },
+            {
+                qEn: "Which factor does NOT affect the induced EMF in a simple coil setup?",
+                qMm: "ရိုးရှင်းသော ကွိုင်စနစ်တစ်ခုတွင် လျှပ်စစ်တွန်းအား (EMF) ကို မည်သည့်အချက်က မသက်ရောက်စေသနည်း။",
+                optionsEn: ["Color of the wire insulation", "Number of turns", "Speed of flux change"],
+                optionsMm: ["ဝါယာအကာအရောင်", "ကွိုင်အပတ်ရေ", "စက်ကွင်းပြောင်းလဲနှုန်း"],
+                answer: 0
+            },
+            {
+                qEn: "Lenz's Law is a consequence of which fundamental conservation law?",
+                qMm: "လင်းဇ်ဥပဒေသည် မည်သည့် အခြေခံ တည်မြဲခြင်းဥပဒေပေါ်တွင် အခြေခံသနည်း။",
+                optionsEn: ["Conservation of Mass", "Conservation of Energy", "Conservation of Momentum"],
+                optionsMm: ["ထုထည်တည်မြဲခြင်းဥပဒေ", "စွမ်းအင်တည်မြဲခြင်းဥပဒေ", "ရွေ့ဟုန်တည်မြဲခြင်းဥပဒေ"],
+                answer: 1
+            },
+            {
+                qEn: "When a north pole of a magnet approaches a coil, what magnetic pole is induced at that end of the coil?",
+                qMm: "သံလိုက်တံ၏ မြောက်ဝင်ရိုးသည် ကွိုင်ဆီသို့ ချဉ်းကပ်လာသည့်အခါ ကွိုင်၏ထိုဘက်အခြမ်းတွင် မည်သည့်ဝင်ရိုး ဖြစ်ပေါ်လာမည်နည်း။",
+                optionsEn: ["North Pole", "South Pole", "No pole"],
+                optionsMm: ["မြောက်ဝင်ရိုး (North Pole)", "တောင်ဝင်ရိုး (South Pole)", "ဝင်ရိုးမရှိပါ"],
+                answer: 0
+            },
+            {
+                qEn: "What unit is used to measure Induced Electromotive Force (EMF)?",
+                qMm: "ဖြစ်ပေါ်လာသော လျှပ်စစ်တွန်းအား (EMF) ကို တိုင်းတာသည့် ယူနစ်မှာ အဘယ်နည်း။",
+                optionsEn: ["Ampere", "Volt", "Ohm"],
+                optionsMm: ["အမ်ပီယာ (Ampere)", "ဗို့ဒ် (Volt)", "အုမ်း (Ohm)"],
+                answer: 1
+            },
+            {
+                qEn: "Increasing the strength of the magnetic field (B) will result in what effect on induced EMF?",
+                qMm: "သံလိုက်စက်ကွင်းပြင်းအား (B) ကို တိုးမြှင့်လိုက်ပါက လျှပ်စစ်တွန်းအား (EMF) အပေါ် မည်သို့ သက်ရောက်မည်နည်း။",
+                optionsEn: ["Increase", "Decrease", "No effect"],
+                optionsMm: ["တိုးလာမည်", "ကျဆင်းမည်", "သက်ရောက်မှုမရှိပါ"],
+                answer: 0
+            },
+            {
+                qEn: "An alternating current (AC) generator produces current by rotating a coil inside a what?",
+                qMm: "လျှပ်စီးကြောင်းပြောင်း ဂျင်နရေတာ (AC Generator) သည် ကွိုင်ကို မည်သည့်အရာအတွင်း လည်ပတ်စေခြင်းဖြင့် လျှပ်စီးကြောင်းထုတ်သနည်း။",
+                optionsEn: ["Vacuum chamber", "Magnetic field", "Water bath"],
+                optionsMm: ["လေဟာနယ်အခန်း", "သံလိုက်စက်ကွင်း", "ရေကန်"],
+                answer: 1
+            },
+            {
+                qEn: "Eddy currents are induced currents that circulate inside what structures?",
+                qMm: "Eddy Currents ဆိုသည်မှာ မည်သည့်ဖွဲ့စည်းပုံများအတွင်း လှည့်ပတ်စီးဆင်းနေသော လျှပ်စီးကြောင်းများနည်း။",
+                optionsEn: ["Insulating plastics", "Bulk conductors / metal cores", "Glass tubes"],
+                optionsMm: ["လျှပ်ကာပလတ်စတစ်များ", "ထုထည်ရှိသော လျှပ်ကူးပစ္စည်း/သတ္တု قلبများ", "ဖန်ပြွန်များ"],
+                answer: 1
+            },
+            {
+                qEn: "What is the primary purpose of a galvanometer connected to a coil in induction experiments?",
+                qMm: "စမ်းသပ်ခန်းများတွင် ကွိုင်နှင့်ချိတ်ဆက်ထားသော ဂယ်ဗာနိုမီတာ (Galvanometer) ၏ အဓိက ရည်ရွယ်ချက်မှာ အဘယ်နည်း။",
+                optionsEn: ["To measure tiny electric currents", "To measure room temperature", "To provide high voltage"],
+                optionsMm: ["သေးငယ်သော လျှပ်စီးကြောင်းများကို တိုင်းတာရန်", "အခန်းအပူချိန် တိုင်းတာရန်", "ဗို့အားမြင့် ပေးပို့ရန်"],
+                answer: 0
+            }
+        ];
+
+        let activeQuizSet = [];
+
+        function loadRandomQuiz() {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            activeQuizSet = shuffled.slice(0, 3);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            if (activeQuizSet.length === 0) return;
+
+            const container = document.getElementById('dynamic-quiz-questions');
+            container.innerHTML = '';
+
+            const currentLang = localStorage.getItem("portfolio-lang") || "en";
+            const isMM = currentLang === "mm";
+
+            activeQuizSet.forEach((item, index) => {
+                const qText = isMM ? item.qMm : item.qEn;
+                const opts = isMM ? item.optionsMm : item.optionsEn;
+
+                let html = `
+                    <div class="quiz-question-card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: #00ffcc; margin-bottom: 0.5rem; font-size: 1rem;">${index + 1}. ${qText}</h4>
+                        <div class="quiz-options" style="display: flex; flex-direction: column; gap: 6px; padding-left: 10px;">
+                `;
+
+                opts.forEach((opt, oIndex) => {
+                    html += `
+                        <label style="cursor: pointer; font-size: 0.9rem;">
+                            <input type="radio" name="q_${index}" value="${oIndex}"> ${opt}
+                        </label>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+
+            document.getElementById('quiz-result-msg').textContent = '';
+        }
+
+        window.renderQuiz = renderQuiz;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('refresh-quiz').addEventListener('click', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
+            const msg = document.getElementById('quiz-result-msg');
+
+            let score = 0;
+            let allAnswered = true;
+
+            activeQuizSet.xxforEach?.((item, index) => {}); // fallback safety
+            activeQuizSet.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                } else if (parseInt(selected.value) === item.answer) {
+                    score++;
+                }
+            });
+
+            if (!allAnswered) {
+                msg.style.color = '#ee1c4b';
+                msg.textContent = isMM ? "ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပါ။" : "Please answer all questions.";
+                return;
+            }
+
+            msg.style.color = '#00ffcc';
+            msg.textContent = isMM 
+                ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` 
+                : `You got (${score}/3) score.`;
+        });
+    </script>
+    <script src="../app.js" defer></script>
+</body>
+</html>

@@ -86,6 +86,11 @@ document.addEventListener("DOMContentLoaded", () => {
             currentLang = currentLang === "en" ? "mm" : "en";
             localStorage.setItem("portfolio-lang", currentLang);
             updateDOMText(currentLang);
+
+       // မေးခွန်းအသစ် ပြန်မလဲဘဲ ရွေးထားပြီးသား မေးခွန်း ၃ ပုဒ်ကို ဘာသာစကားပဲ ပြောင်းပေးမည်
+        if (typeof window.renderQuiz === "function") {
+            window.renderQuiz();
+        }
         });
     }
 });
