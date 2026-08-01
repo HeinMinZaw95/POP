@@ -2,10 +2,28 @@
 <?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
+  <!-- ပင်မစာမျက်နှာ -->
   <url>
        <loc>https://heinpop.xyz/</loc>
        <lastmod>2026-07-29T03:38:18+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>1.0000</priority>
   </url>
+
+  <!-- 3D Interactive စာမျက်နှာအသစ် -->
+  <url>
+       <loc>https://heinpop.xyz/3D_Interactive.html</loc>
+       <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.8000</priority>
+  </url>
+
+  <!-- Grade 12 Physics Lab စာမျက်နှာအသစ် -->
+  <url>
+       <loc>https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html</loc>
+       <lastmod>2026-08-01T00:00:00+00:00</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>0.8000</priority>
+  </url>
+
 </urlset>
