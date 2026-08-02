@@ -3,67 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 1: Electromagnetic Induction | Grade 12 Physics Lab</title>
     
-    <!-- === SEO META TAGS === -->
-    <title>Electromagnetic Induction | HeinPop-Lab</title>
-    <meta name="description" content="Explore an interactive 3D simulation of Faraday's Law and Lenz's Law for Grade 12 Myanmar curriculum. Observe induced EMF, magnetic flux, and test your knowledge.">
-    <meta name="keywords" content="Grade 12 Physics, Electromagnetic Induction Lab, Faraday's Law, Lenz's Law, Physics Simulation, HeinPop, Myanmar Curriculum, 3D Physics Lab">
+    <meta name="description" content="Interactive 3D simulation of Faraday's and Lenz's Law for Grade 12 Myanmar curriculum built with Three.js.">
     <meta name="author" content="HeinPop">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/Electromagnetic_Induction/Electromagnetic_Induction.html">
 
-    <!-- === OPEN GRAPH / SOCIAL MEDIA SEO (Facebook, LinkedIn, etc.) === -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html">
-    <meta property="og:title" content="Lab 1: Electromagnetic Induction | Grade 12 Physics Lab Simulation">
-    <meta property="og:description" content="Interactive 3D simulation of Faraday's and Lenz's Law for Grade 12 Myanmar curriculum built by HeinPop.">
-    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
-
-    <!-- === TWITTER CARD SEO === -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html">
-    <meta name="twitter:title" content="Lab 1: Electromagnetic Induction | Grade 12 Physics Lab Simulation">
-    <meta name="twitter:description" content="Interactive 3D simulation of Faraday's and Lenz's Law for Grade 12 Myanmar curriculum built by HeinPop.">
-    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
-
-    <!-- === STRUCTURED DATA (JSON-LD Schema for Educational Resource) === -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LearningResource",
-      "name": "Electromagnetic Induction Lab Simulation",
-      "description": "Interactive 3D simulation of Faraday's and Lenz's Law designed for Grade 12 Physics students.",
-      "educationalLevel": "Grade 12",
-      "learningResourceType": "Interactive Simulation",
-      "author": {
-        "@type": "Person",
-        "name": "HeinPop"
-      },
-      "url": "https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html"
-    }
-    </script>
-
-    <!-- Material Symbols & Styles (Root folder မှ လှမ်းခေါ်ရန် ../ သုံးထားသည်) -->
+    <!-- Material Symbols & Styles -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="lab.css">
+    <link rel="stylesheet" href="lab-em-induction.css">
     <link rel="icon" type="image/x-icon" href="../img/logo.svg">
     
     <!-- Three.js CDN & OrbitControls -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     
-    <!-- Lab Custom Script (ဖိုင်တွဲအတူတူဖြစ်ပုံမှန်ခေါ်သည်) -->
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    
+    <!-- Lab Custom Script -->
     <script src="lab-em-induction.js" defer></script>
 </head>
 <body class="dark-theme">
 
+    <!-- NAVIGATION BAR -->
     <nav class="navbar">
         <div class="logo">
             <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
-            <a href="#home" class="logo_name">HeinPop</a>
+            <a href="../index.html" class="logo_name">HeinPop</a>
         </div>
         
+        <!-- Auth Profile Widget / Sign-in State -->
+        <div id="auth-nav-widget" style="display: flex; align-items: center; gap: 10px;">
+            <button id="nav-google-signin" class="lab-btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;" data-en="Sign in to Save Scores" data-mm="ရမှတ်သိမ်းရန် အကောင့်ဝင်မည်">Sign in to Save Scores</button>
+            <div id="user-profile-display" style="display: none; align-items: center; gap: 8px;">
+                <img id="user-avatar" src="" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; border: 1px solid #00ffcc;">
+                <span id="user-name" style="font-size: 0.85rem; color: var(--text-main);"></span>
+                <button id="nav-sign-out" class="lab-btn" style="padding: 4px 8px; font-size: 0.75rem; background: rgba(238,28,75,0.2); color: #ee1c4b; border: none; border-radius: 4px;" data-en="Logout" data-mm="ထွက်ရန်">Logout</button>
+            </div>
+        </div>
+
         <div class="nav-controls">
             <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
                 <span class="material-symbols-outlined">light_mode</span>
@@ -78,33 +59,22 @@
 
         <ul class="nav-links">
             <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
-            <li><a href="../index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
-            <li class="dropdown">
-                <a href="../index.html#skills" class="dropdown-btn">
-                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
-                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
-                    <li><a href="Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
-                    <li><a href="Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
-                    <li><a href="3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
-                </ul>
-            </li>
-            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+            <li><a href="../index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">My-workflow</a></li>
+            <li><a href="../index.html#skills" data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</a></li>
+            <li><a href="../index.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
         </ul>
     </nav>
 
     <!-- MAIN LAB HERO SECTION -->
     <section class="lab-hero max-container">
         <div class="lab-header reveal-on-scroll">
-            <span class="section-tagline" data-en="Chapter 11: Electrodynamics & Induction" data-mm="အခန်း ၁၁ - လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်း">Chapter 11: Electromagnetic Induction</span>
+            <span class="section-tagline" data-en="Chapter 10: Electrodynamics & Induction" data-mm="အခန်း ၁၀ - လျှပ်စစ်သံလိုက် လျှပ်စီးကြောင်း">Chapter 10: Electromagnetic Induction</span>
             <h1 data-en="Faraday's & Lenz's Law Simulation" data-mm="ဖာရာဒေးနှင့် လင်းဇ်ဥပဒေ စမ်းသပ်ခန်း">Faraday's & Lenz's Law Simulation</h1>
             <p data-en="Observe how moving a bar magnet through a solenoid coil induces an electromotive force (EMF) and current." 
                data-mm="သံလိုက်တံကို ကွိုင်ထဲသို့ ရွေ့သွင်းသည့်အခါ လျှပ်စီးကြောင်းနှင့် လျှပ်စစ်တွန်းအား (EMF) ဖြစ်ပေါ်လာပုံကို လေ့လာပါ။">
                Observe how moving a bar magnet through a solenoid coil induces an electromotive force (EMF) and current.
             </p>
-        </div>>
+        </div>
 
         <div class="lab-workspace reveal-on-scroll">
             <!-- Left Panel: Controls & Theory info -->
@@ -117,17 +87,17 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="insertRange" data-en="Manual Position" data-mm="တည်နေရာ">Manual Position</label>
+                    <label for="insertRange" data-en="Manual Position" data-mm="လက်တံနေရာ အနေအထား">Manual Position</label>
                     <input type="range" id="insertRange" min="-3.0" max="3.0" step="0.1" value="0">
                 </div>
 
                 <div class="control-group">
-                    <label for="coilTurnsRange" data-en="Numbers of Coil Turns" data-mm="ကွီင်အပါတ်ရေ">Numbers of Coil Turns</label>
+                    <label for="coilTurnsRange" data-en="Coil Turns" data-mm="ကွိုင်အပတ်ရေ (Coil Turns)">Coil Turns: <span id="turnsVal">12</span></label>
                     <input type="range" id="coilTurnsRange" min="4" max="24" step="2" value="12">
                 </div>
 
                 <div class="control-group">
-                    <label for="fluxStrengthRange" data-en="Magnetic Flux" data-mm="သံလိုက်စက်ကွင်းအား">Magnetic Flux<span id="fluxVal">1.0</span>x</label>
+                    <label for="fluxStrengthRange" data-en="Magnetic Flux" data-mm="သံလိုက်စက်ကွင်းအား (Magnetic Flux)">Magnetic Flux: <span id="fluxVal">1.0</span>x</label>
                     <input type="range" id="fluxStrengthRange" min="0.2" max="2.5" step="0.1" value="1.0">
                 </div>
 
@@ -138,22 +108,17 @@
                        data-mm="ဖြစ်ပေါ်လာသော လျှပ်စစ်တွန်းအား (EMF) သည် သံလိုက်စက်ကွင်း ပြောင်းလဲနှုန်းနှင့် တိုက်ရိုက်အချိုးကျသည်။">
                        The induced EMF is directly proportional to the rate of change of magnetic flux.
                     </p>
-                    <!-- ရူပဗေဒ ညီမျှခြင်း Box -->
                     <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 14px; color: #00ffcc;">
                         ε = - N <span style="font-size: 16px;">(</span> ΔΦ / Δt <span style="font-size: 16px;">)</span>
                     </div>
-                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" data-mm="ε = လျှပ်စစ်တွန်းအား (EMF) | N = ကွိုင်အပတ်ရေ | ΔΦ/Δt = သံလိုက်စက်ကွင်းပြောင်းလဲနှုန်း">
-                        ε = Induced EMF | N = Number of Turns | ΔΦ/Δt = Rate of Change of Flux
-                    </p>
                 </div>
 
                 <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
-                <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a>
+                <a href="../index.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Portfolio" data-mm="ပင်မစာမျက်နှာသို့ ပြန်ရန်">Back to Portfolio</a>
             </div>
 
             <!-- Right Panel: 3D Canvas Viewport -->
             <div class="lab-canvas-container">
-                <!-- Live Telemetry Badge Overlay -->
                 <div class="telemetry-overlay">
                     <div>Induced EMF: <span id="emfValue">0.00 V</span></div>
                     <div>Current Flow: <span id="currentStatus">Zero (No Motion)</span></div>
@@ -162,6 +127,7 @@
                 <canvas id="physics-canvas"></canvas>
             </div>
         </div>
+
         <!-- POST-LAB RANDOM QUIZ SECTION (20 Questions Pool -> 3 Random Questions) -->
         <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
             <div class="quiz-header" style="margin-bottom: 1.5rem;">
@@ -201,6 +167,54 @@
 
     <!-- Firebase & Quiz Script -->
     <script>
+   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCnLiaF3G5aB2FlBOzPQh7RCF3XKQGMAiE",
+  authDomain: "training-c4166.firebaseapp.com",
+  projectId: "training-c4166",
+  storageBucket: "training-c4166.firebasestorage.app",
+  messagingSenderId: "690111842932",
+  appId: "1:690111842932:web:5f6ff5d80ac9ad6d2b1f21",
+  measurementId: "G-DFHCJH1Y6F"
+};
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const auth = firebase.auth();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        const signinBtn = document.getElementById('nav-google-signin');
+        const signoutBtn = document.getElementById('nav-sign-out');
+        const profileDisplay = document.getElementById('user-profile-display');
+        const userNameSpan = document.getElementById('user-name');
+        const userAvatar = document.getElementById('user-avatar');
+
+        let currentUser = null;
+
+        signinBtn.addEventListener('click', () => {
+            auth.signInWithPopup(googleProvider).catch((error) => {
+                console.error("Auth Error: ", error);
+            });
+        });
+
+        signoutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            if (user) {
+                signinBtn.style.display = 'none';
+                profileDisplay.style.display = 'flex';
+                userNameSpan.textContent = user.displayName || "User";
+                if (user.photoURL) userAvatar.src = user.photoURL;
+            } else {
+                signinBtn.style.display = 'block';
+                profileDisplay.style.display = 'none';
+            }
+        });
+
         // 20 Questions Question Bank
         const questionBank = [
             {
@@ -348,19 +362,14 @@
         let activeQuizSet = [];
 
         function loadRandomQuiz() {
+            // Shuffle and pick 3 questions
             const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
             activeQuizSet = shuffled.slice(0, 3);
-            renderQuiz();
-        }
-
-        function renderQuiz() {
-            if (activeQuizSet.length === 0) return;
 
             const container = document.getElementById('dynamic-quiz-questions');
             container.innerHTML = '';
 
-            const currentLang = localStorage.getItem("portfolio-lang") || "en";
-            const isMM = currentLang === "mm";
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
 
             activeQuizSet.forEach((item, index) => {
                 const qText = isMM ? item.qMm : item.qEn;
@@ -387,8 +396,7 @@
             document.getElementById('quiz-result-msg').textContent = '';
         }
 
-        window.renderQuiz = renderQuiz;
-
+        // Initialize Quiz on load
         window.addEventListener('DOMContentLoaded', () => {
             loadRandomQuiz();
         });
@@ -397,6 +405,7 @@
             loadRandomQuiz();
         });
 
+        // Submit Quiz & Login Gate Check
         document.getElementById('submit-quiz').addEventListener('click', () => {
             const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
             const msg = document.getElementById('quiz-result-msg');
@@ -404,7 +413,6 @@
             let score = 0;
             let allAnswered = true;
 
-            activeQuizSet.xxforEach?.((item, index) => {}); // fallback safety
             activeQuizSet.forEach((item, index) => {
                 const selected = document.querySelector(`input[name="q_${index}"]:checked`);
                 if (!selected) {
@@ -420,10 +428,29 @@
                 return;
             }
 
+            // LOGIN GATE: ရမှတ်သိမ်းဆည်းမည်ဆိုမှ အကောင့်ဝင်ခိုင်းခြင်း
+            if (!currentUser) {
+                msg.style.color = '#ffcc00';
+                msg.textContent = isMM 
+                    ? `သင်၏ရမှတ် (${score}/3) ရရှိပါသည်။ ရမှတ်သိမ်းဆည်းရန် Google ဖြင့် အကောင့်ဝင်ပါ။` 
+                    : `You scored ${score}/3! Sign in with Google to save your score.`;
+                
+                // Prompt Google Sign-in automatically
+                auth.signInWithPopup(googleProvider).then((result) => {
+                    // Saved successfully after login
+                    msg.style.color = '#00ffcc';
+                    msg.textContent = isMM ? "အကောင့်ဝင်ရောက်ပြီး ရမှတ်ကို အောင်မြင်စွာ သိမ်းဆည်းလိုက်ပါပြီ!" : "Signed in and score saved successfully!";
+                }).catch((error) => {
+                    console.error("Sign-in required to save score", error);
+                });
+                return;
+            }
+
+            // If already logged in
             msg.style.color = '#00ffcc';
             msg.textContent = isMM 
-                ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` 
-                : `You got (${score}/3) score.`;
+                ? `ဂုဏ်ယူပါတယ် ${currentUser.displayName}! သင့်ရမှတ် (${score}/3) ကို အကောင့်တွင် သိမ်းဆည်းပြီးပါပြီ။` 
+                : `Great job, ${currentUser.displayName}! Your score (${score}/3) has been saved to your account.`;
         });
     </script>
     <script src="../app.js" defer></script>

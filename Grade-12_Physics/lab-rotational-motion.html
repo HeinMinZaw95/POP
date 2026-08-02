@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotational Motion | HeinPop-Lab</title>
+<meta name="description" content="Explore an interactive 3D simulation of Centrifuge Rotor Dynamics and Rotational Motion for Grade 12 Myanmar curriculum. Observe angular velocity, centripetal acceleration, and test your knowledge.">
+    <meta name="keywords" content="Grade 12 Physics, Rotational Motion Lab, Centrifuge Simulation, Angular Velocity, Centripetal Acceleration, Physics Simulation, HeinPop, Myanmar Curriculum, 3D Physics Lab">
+    <meta name="author" content="HeinPop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/rotational-motion.html">
+
+    <!-- === OPEN GRAPH / SOCIAL MEDIA SEO (Facebook, LinkedIn, etc.) === -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://heinpop.xyz/Grade-12_Physics/rotational-motion.html">
+    <meta property="og:title" content="Centrifuge Rotor Dynamics Lab | Grade 12 Physics Simulation">
+    <meta property="og:description" content="Interactive 3D simulation of Centrifuge Rotor Dynamics and Rotational Motion for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === TWITTER CARD SEO === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://heinpop.xyz/Grade-12_Physics/rotational-motion.html">
+    <meta name="twitter:title" content="Centrifuge Rotor Dynamics Lab | Grade 12 Physics Simulation">
+    <meta name="twitter:description" content="Interactive 3D simulation of Centrifuge Rotor Dynamics and Rotational Motion for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === STRUCTURED DATA (JSON-LD Schema for Educational Resource) === -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Centrifuge Rotor Dynamics Lab Simulation",
+      "description": "Interactive 3D simulation of Centrifuge Rotor Dynamics, angular velocity, and centripetal acceleration designed for Grade 12 Physics students.",
+      "educationalLevel": "Grade 12",
+      "learningResourceType": "Interactive Simulation",
+      "author": {
+        "@type": "Person",
+        "name": "HeinPop"
+      },
+      "url": "https://heinpop.xyz/Grade-12_Physics/rotational-motion.html"
+    }
+    </script>
+
+    <!-- Material Symbols & Styles (Root folder မှ လှမ်းခေါ်ရန် ../ သုံးထားသည်) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="lab.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.svg">
+    
+    <!-- Three.js Core & Controls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- GLTFLoader for Blender GLB Files -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    
+    <!-- MathJax for Beautiful LaTeX Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="lab-rotational-motion.js" defer></script>
+</head>
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="#home" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="../index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
+            <li class="dropdown">
+                <a href="../index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN LAB HERO SECTION -->
+    <section class="lab-hero max-container">
+        <div class="lab-header reveal-on-scroll">
+            <span class="section-tagline" data-en="Chapter 1: Rotational Motion" data-mm="အခန်း ၁ - လည်ပတ်ခြင်းဆိုင်ရာ ရွေ့လျားမှု">Chapter 1: Rotational Motion</span>
+            <h1 data-en="Centrifuge Rotor Dynamics Simulation" data-mm="စင်ထရီဖျူဂ့် ရိုတာ ရွေ့လျားမှု စမ်းသပ်ခန်း">Centrifuge Rotor Dynamics Simulation</h1>
+            <p data-en="Observe angular velocity and centripetal acceleration using a real laboratory centrifuge model." 
+               data-mm="စင်ထရီဖျူဂ့်စက် မော်ဒယ်ကို အသုံးပြု၍ ထောင့်အလျင် (Angular Velocity) နှင့် ဗဟိုရှာအရှိန် (Centripetal Acceleration) တို့ကို လေ့လာပါ။">
+               Observe angular velocity and centripetal acceleration using a real laboratory centrifuge model.
+            </p>
+        </div>
+
+
+            <div class="lab-workspace reveal-on-scroll">
+                <!-- Controls Panel -->
+                <div class="lab-controls-panel">
+                    <h3>Control Center</h3>
+                    
+                    <div class="control-group">
+                        <label for="rpmRange">Rotation Speed (RPM): <span id="rpmVal">100</span></label>
+                        <input type="range" id="rpmRange" min="0" max="3000" step="50" value="100">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="radiusRange">Sample Radius (r): <span id="radiusVal">0.15</span> m</label>
+                        <!-- Radius max ကို 0.3 သို့ ပြင်ဆင်ထားသည် -->
+                        <input type="range" id="radiusRange" min="0.05" max="0.3" step="0.01" value="0.15">
+                    </div>
+
+                    <!-- Theory Card & Equation -->
+                    <div class="theory-card">
+                        <h4 data-en="Key Concept & Equation" data-mm="အဓိက သဘောတရားနှင့် ညီမျှခြင်း">Key Concept & Equation</h4>
+                        <p data-en="Centripetal acceleration is proportional to the square of angular velocity and the radius."
+                        data-mm="ဗဟိုရှာအရှိန်သည် ထောင့်အလျင်၏ နှစ်ထပ်ကိန်းနှင့် အကွာအဝေး (Radius) တို့အပေါ် တိုက်ရိုက်အချိုးကျသည်။">
+                        Centripetal acceleration is proportional to the square of angular velocity and the radius.
+                        </p>
+                        
+                        <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 14px; color: #00ffcc;">                                 <!-- MathJax LaTeX Integration -->
+                            <p>\( \omega = \frac{2\pi \times \text{RPM}}{60} \)</p>
+                            <p style="margin-top: 10px;">\( a_c = \omega^2 r \)</p>
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" data-mm="ω = ထောင့်အလျင် (Angular Velocity) | r = အကွာအဝေး (Radius) | ac = ဗဟိုရှာအရှိန်">
+                            ω = Angular Velocity | r = Sample Radius | ac = Centripetal Acceleration
+                        </p>
+                    </div>
+
+                    <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
+                    <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a>
+                </div>
+
+                <!-- 3D Canvas Viewport -->
+                <div class="lab-canvas-container">
+                    <div class="telemetry-overlay">
+                        <div>Angular Velocity (\( \omega \)): <span id="omegaVal">10.47</span> rad/s</div>
+                        <div style="margin-top: 8px;">Centripetal Acc (\( a_c \)): <span id="accVal">16.45</span> m/s²</div>
+                    </div>
+                    <canvas id="physics-canvas"></canvas>
+                </div>
+            </div>
+            <!-- POST-LAB RANDOM QUIZ SECTION (20 Questions Pool -> 3 Random Questions) -->
+        <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
+            <div class="quiz-header" style="margin-bottom: 1.5rem;">
+                <h3 data-en="Post-Lab Knowledge Check (3 Random Questions)" data-mm="စမ်းသပ်ခန်းအပြီး ဗဟုသုတစစ်ဆေးရန် (ကျပန်းမေးခွန်း ၃ ပုဒ်)">Post-Lab Knowledge Check</h3>
+                <p data-en="Test your understanding through 3 random questions selected from our physics question bank."
+                   data-mm="ရူပဗေဒ မေးခွန်းဘဏ်ကြီးထဲမှ ကျပန်းထုတ်ပေးသော မေးခွန်း ၃ ပုဒ်ဖြင့် သင်၏နားလည်မှုကို စမ်းသပ်ပါ။">
+                   Test your understanding through 3 random questions selected from our physics question bank.
+                </p>
+            </div>
+
+            <div id="quiz-form-container">
+                <div id="dynamic-quiz-questions">
+                    <!-- JavaScript ဖြင့် ကျပန်းမေးခွန်း ၃ ပုဒ်ကို ဤနေရာတွင် ထည့်သွင်းပေးမည် -->
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button id="submit-quiz" class="lab-btn btn-primary" data-en="Submit Answers" data-mm="အဖြေလွှာတင်မည်">Submit Answers</button>
+                    <button id="refresh-quiz" class="lab-btn btn-secondary" data-en="New Questions" data-mm="မေးခွန်းအသစ်လဲမည်">New Questions</button>
+                    <span id="quiz-result-msg" style="font-weight: bold; font-size: 0.95rem;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+    </footer>
+    <!-- Firebase & Quiz Script -->
+    <script>
+        // 20 Questions Question Bank for Rotational Motion & Centrifuge
+        const questionBank = [
+            {
+                qEn: "What formula is used to calculate angular velocity (ω) from RPM?",
+                qMm: "RPM မှ ထောင့်အလျင် (ω) ကို တွက်ချက်သည့် ဖော်မြူလာမှာ အဘယ်နည်း။",
+                optionsEn: ["ω = (2π × RPM) / 60", "ω = RPM / 2π", "ω = RPM × 60"],
+                optionsMm: ["ω = (2π × RPM) / 60", "ω = RPM / 2π", "ω = RPM × 60"],
+                answer: 0
+            },
+            {
+                qEn: "How does centripetal acceleration (ac) change if the radius is doubled at constant RPM?",
+                qMm: "RPM ပမာဏ တူညီနေစဉ် အကွာအဝေး (Radius) ကို နှစ်ဆတိုးလိုက်ပါက ဗဟိုရှာအရှိန် (ac) မည်သို့ပြောင်းလဲမည်နည်း။",
+                optionsEn: ["Halved", "Doubled", "Quadrupled"],
+                optionsMm: ["တစ်ဝက်ကျဆင်းမည်", "နှစ်ဆတိုးလာမည်", "လေးဆတိုးလာမည်"],
+                answer: 1
+            },
+            {
+                qEn: "What is the SI unit of angular velocity (ω)?",
+                qMm: "ထောင့်အလျင် (ω) ၏ SI ယူနစ်မှာ အဘယ်နည်း။",
+                optionsEn: ["m/s", "rad/s", "RPM"],
+                optionsMm: ["မီတာ/စက္ကန့် (m/s)", "ရေဒီယန်/စက္ကန့် (rad/s)", "အာပီအမ် (RPM)"],
+                answer: 1
+            },
+            {
+                qEn: "What happens to centripetal acceleration if the angular velocity is doubled?",
+                qMm: "ထောင့်အလျင် (ω) ကို နှစ်ဆတိုးမြှင့်လိုက်ပါက ဗဟိုရှာအရှိန် (ac) သည် မည်မျှတိုးလာမည်နည်း။",
+                optionsEn: ["Doubled", "Tripled", "Quadrupled (4 times)"],
+                optionsMm: ["နှစ်ဆတိုးမည်", "သုံးဆတိုးမည်", "လေးဆ (4 times) တိုးမည်"],
+                answer: 2
+            },
+            {
+                qEn: "What force is responsible for keeping objects moving in a circular path in a centrifuge?",
+                qMm: "စင်ထရီဖျူဂ့်စက်အတွင်း ပစ္စည်းများကို စက်ဝိုင်းပုံလမ်းကြောင်းအတိုင်း လည်ပတ်စေရန် ထိန်းပေးသော အဓိကအားမှာ အဘယ်နည်း။",
+                optionsEn: ["Centripetal force", "Gravitational force", "Frictional force"],
+                optionsMm: ["ဗဟိုရှာအား (Centripetal force)", "ေမြဆွဲအား (Gravitational force)", "ပွတ်တိုက်အား (Frictional force)"],
+                answer: 0
+            },
+            {
+                qEn: "If the RPM of a centrifuge is increased, what happens to the angular velocity?",
+                qMm: "စင်ထရီဖျူဂ့်စက်၏ RPM ကို မြှင့်တင်လိုက်ပါက ထောင့်အလျင် (ω) မည်သို့ပြောင်းလဲမည်နည်း။",
+                optionsEn: ["Increases", "Decreases", "Remains constant"],
+                optionsMm: ["တိုးလာမည်", "လျော့သွားမည်", "ပြောင်းလဲမှုမရှိပါ"],
+                answer: 0
+            },
+            {
+                qEn: "What does 'r' represent in the centripetal acceleration formula (ac = ω²r)?",
+                qMm: "ဗဟိုရှာအရှိန် ဖော်မြူလာ (ac = ω²r) ပါ 'r' သည် ကိုယ်စားပြုသည်မှာ အဘယ်နည်း။",
+                optionsEn: ["Mass of the sample", "Radius of the circular path", "Rotational speed"],
+                optionsMm: ["နမူနာ၏ ထုထည်", "စက်ဝိုင်းလမ်းကြောင်း၏ အကွာအဝေး (Radius)", "လည်ပတ်သည့် အမြန်နှုန်း"],
+                answer: 1
+            },
+            {
+                qEn: "Which factor has a squared relationship with centripetal acceleration in uniform circular motion?",
+                qMm: "တသမတ်တည်း စက်ဝိုင်းပုံ ရွေ့လျားမှုတွင် ဗဟိုရှာအရှိန်နှင့် နှစ်ထပ်ကိန်း ဆက်နွှယ်မှုရှိသော အချက်မှာ အဘယ်နည်း။",
+                optionsEn: ["Angular velocity (ω)", "Radius (r)", "Time period (T)"],
+                optionsMm: ["ထောင့်အလျင် (ω)", "အကွာအဝေး (Radius)", "ကြာချိန် (T)"],
+                answer: 0
+            },
+            {
+                qEn: "What is the primary function of a laboratory centrifuge?",
+                qMm: "ဓာတ်ခွဲခန်းသုံး စင်ထရီဖျူဂ့်စက်၏ အဓိက လုပ်ဆောင်ချက်မှာ အဘယ်နည်း။",
+                optionsEn: ["To heat liquid samples", "To separate components based on density using high-speed rotation", "To measure electrical resistance"],
+                optionsMm: ["အရည်နမူနာများကို အပူပေးရန်", "အမြန်နှုန်းမြင့် လည်ပတ်စေခြင်းဖြင့် သိပ်သည်းဆအလိုက် ပစ္စည်းများကို ခွဲထုတ်ရန်", "လျှပ်စစ်ခံအား တိုင်းတာရန်"],
+                answer: 1
+            },
+            {
+                qEn: "In the formula ac = ω²r, if ω = 10 rad/s and r = 0.2 m, what is ac?",
+                qMm: "ဖော်မြူလာ ac = ω²r တွင် ω = 10 rad/s နှင့် r = 0.2 m ဖြစ်ပါက ac တန်ဖိုး မည်မျှရှိမည်နည်း။",
+                optionsEn: ["2 m/s²", "20 m/s²", "200 m/s²"],
+                optionsMm: ["2 m/s²", "20 m/s²", "200 m/s²"],
+                answer: 1
+            },
+            {
+                qEn: "What direction does centripetal acceleration point during circular motion?",
+                qMm: "စက်ဝိုင်းပုံ ရွေ့လျားမှုတွင် ဗဟိုရှာအရှိန်၏ ဦးတည်ချက်သည် မည်သည့်ဘက်သို့ ရှိသနည်း။",
+                optionsEn: ["Toward the center of the circle", "Away from the center (Outward)", "Tangent to the circle"],
+                optionsMm: ["စက်ဝိုင်း၏ အလယ်ဗဟိုဘက်သို့", "ဗဟိုချက်မှ အပြင်ဘက်သို့", "စက်ဝိုင်းမျဉ်းနှင့် ထိစပ်လျက် (Tangent)"],
+                answer: 0
+            },
+            {
+                qEn: "If you double both the radius and the angular velocity, how does ac change?",
+                qMm: "Radius နှင့် ထောင့်အလျင် နှစ်ခုစလုံးကို နှစ်ဆတိုးလိုက်ပါက ဗဟိုရှာအရှိန် (ac) မည်မျှပြောင်းလဲမည်နည်း။",
+                optionsEn: ["Doubled", "Quadrupled", "Increased by 8 times"],
+                optionsMm: ["နှစ်ဆတိုးမည်", "လေးဆတိုးမည်", "၈ ဆ တိုးလာမည်"],
+                answer: 2
+            },
+            {
+                qEn: "What unit is used to measure rotational frequency in machinery?",
+                qMm: "စက်ပစ္စည်းများတွင် လည်ပတ်နှုန်း (Frequency) ကို တိုင်းတာရန် အသုံးအများဆုံး ယူနစ်မှာ အဘယ်နည်း။",
+                optionsEn: ["RPM (Revolutions Per Minute)", "Watts", "Joules"],
+                optionsMm: ["အာပီအမ် (RPM - တစ်မိနစ်လျှင် လည်ပတ်သည့်အကြိမ်ရေ)", "ဝပ် (Watts)", "ဂျူးလ် (Joules)"],
+                answer: 0
+            },
+            {
+                qEn: "Why are sample tubes placed symmetrically in a centrifuge rotor?",
+                qMm: "စင်ထရီဖျူဂ့် ရိုတာတွင် စမ်းသပ်ပြွန်များကို အဘယ်ကြောင့် အချိုးကျညီညာစွာ ထည့်သွင်းကြသနည်း။",
+                optionsEn: ["To balance the rotation and prevent vibration", "To make it look colorful", "To increase the temperature"],
+                optionsMm: ["လည်ပတ်မှုကို တန်ချိန်ညှိရန်နှင့် တုန်ခါမှု မဖြစ်စေရန်", "ကြည့်ကောင်းစေရန်", "အပူချိန် မြှင့်တင်ရန်"],
+                answer: 0
+            },
+            {
+                qEn: "Which physical quantity represents the rate of change of angular displacement?",
+                qMm: "ထောင့်ရွှေ့လျားမှု ပြောင်းလဲနှုန်းကို ကိုယ်စားပြုသော ရူပဗေဒပမာဏမှာ အဘယ်နည်း။",
+                optionsEn: ["Angular velocity", "Centripetal force", "Linear momentum"],
+                optionsMm: ["ထောင့်အလျင် (Angular velocity)", "ဗဟိုရှာအား", "ရွေ့ဟုန်"],
+                answer: 0
+            },
+            {
+                qEn: "If RPM is zero, what is the value of centripetal acceleration?",
+                qMm: "RPM တန်ဖိုး သုညဖြစ်နေပါက ဗဟိုရှာအရှိန် (ac) တန်ဖိုး မည်မျှဖြစ်မည်နည်း။",
+                optionsEn: ["Zero", "Maximum", "Infinite"],
+                optionsMm: ["သုည (Zero)", "အများဆုံး", "အနန္တ"],
+                answer: 0
+            },
+            {
+                qEn: "What happens to the linear speed of a test tube at the tip if the radius is increased?",
+                qMm: "အကွာအဝေး (Radius) ကို တိုးမြှင့်လိုက်ပါက စမ်းသပ်ပြွန်၏ ရေးဆွဲအလျင် (Linear speed) မည်သို့ပြောင်းလဲမည်နည်း။",
+                optionsEn: ["Increases", "Decreases", "Stays the same"],
+                optionsMm: ["တိုးလာမည်", "လျော့ကျမည်", "အတိုင်းაင် ဆက်ရှိမည်"],
+                answer: 0
+            },
+            {
+                qEn: "In rotational dynamics, what does one full revolution correspond to in radians?",
+                qMm: "လည်ပတ်မှု ရွေ့လျားမှုတွင် တစ်ပတ်အပြည့် လည်ပတ်ခြင်းသည် ရေဒီယန် (Radians) အားဖြင့် မည်မျှနှင့် ညီမျှသနည်း။",
+                optionsEn: ["π radians", "2π radians", "4π radians"],
+                optionsMm: ["π ရေဒီယန်", "2π ရေဒီယန်", "4π ရေဒီယန်"],
+                answer: 1
+            },
+            {
+                qEn: "Which equation correctly relates centripetal acceleration, linear velocity (v), and radius (r)?",
+                qMm: "ဗဟိုရှာအရှိန်၊ မျဉ်းဖြောင့်အလျင် (v) နှင့် အကွာအဝေး (r) တို့ကို မှန်ကန်စွာ ဆက်သွယ်ပေးသော ဖော်မြူလာမှာ အဘယ်နည်း။",
+                optionsEn: ["ac = v² / r", "ac = v × r", "ac = r / v²"],
+                optionsMm: ["ac = v² / r", "ac = v × r", "ac = r / v²"],
+                answer: 0
+            },
+            {
+                qEn: "How does increasing the sample radius affect the separation efficiency in a centrifuge at constant speed?",
+                qMm: "အမြန်နှုန်း တူညီနေစဉ် စမ်းသပ်ပြွန်၏ အကွာအဝေး (Radius) ကို တိုးမြှင့်ခြင်းသည် ခွဲထုတ်နိုင်စွမ်းအပေါ် မည်သို့ သက်ရောက်သနည်း။",
+                optionsEn: ["Increases acceleration and separation force", "Decreases separation", "Has no effect"],
+                optionsMm: ["အရှိန်နှင့် ခွဲထုတ်အားကို ပိုမိုတိုးမြှင့်စေသည်", "ခွဲထုတ်မှုကို လျော့ကျစေသည်", "သက်ရောက်မှု မရှိပါ"],
+                answer: 0
+            }
+        ];
+
+        let activeQuizSet = [];
+
+        function loadRandomQuiz() {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            activeQuizSet = shuffled.slice(0, 3);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            if (activeQuizSet.length === 0) return;
+
+            const container = document.getElementById('dynamic-quiz-questions');
+            container.innerHTML = '';
+
+            const currentLang = localStorage.getItem("portfolio-lang") || "en";
+            const isMM = currentLang === "mm";
+
+            activeQuizSet.forEach((item, index) => {
+                const qText = isMM ? item.qMm : item.qEn;
+                const opts = isMM ? item.optionsMm : item.optionsEn;
+
+                let html = `
+                    <div class="quiz-question-card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: #00ffcc; margin-bottom: 0.5rem; font-size: 1rem;">${index + 1}. ${qText}</h4>
+                        <div class="quiz-options" style="display: flex; flex-direction: column; gap: 6px; padding-left: 10px;">
+                `;
+
+                opts.forEach((opt, oIndex) => {
+                    html += `
+                        <label style="cursor: pointer; font-size: 0.9rem;">
+                            <input type="radio" name="q_${index}" value="${oIndex}"> ${opt}
+                        </label>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+
+            document.getElementById('quiz-result-msg').textContent = '';
+        }
+
+        window.renderQuiz = renderQuiz;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('refresh-quiz').addEventListener('click', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
+            const msg = document.getElementById('quiz-result-msg');
+
+            let score = 0;
+            let allAnswered = true;
+
+            activeQuizSet.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                } else if (parseInt(selected.value) === item.answer) {
+                    score++;
+                }
+            });
+
+            if (!allAnswered) {
+                msg.style.color = '#ee1c4b';
+                msg.textContent = isMM ? "ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပါ။" : "Please answer all questions.";
+                return;
+            }
+
+            msg.style.color = '#00ffcc';
+            msg.textContent = isMM 
+                ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` 
+                : `You got (${score}/3) score.`;
+        });
+    </script>
+    <script src="../app.js" defer></script>
+
+</body>
+</html>
