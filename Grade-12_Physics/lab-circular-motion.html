@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forces in Circular Motion | HeinPop-Lab</title>
+    <meta name="description" content="Explore an interactive 3D simulation of Forces in Circular Motion, Centripetal Force, and Centrifugal Force for Grade 12 Myanmar curriculum.">
+    <meta name="keywords" content="Grade 12 Physics, Forces in Circular Motion, Centripetal Force, Centrifugal Force, Physics Simulation, HeinPop, Myanmar Curriculum, 3D Physics Lab">
+    <meta name="author" content="HeinPop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/lab-forces-in-circular-motion.html">
+
+    <!-- === OPEN GRAPH / SOCIAL MEDIA SEO === -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://heinpop.xyz/Grade-12_Physics/lab-forces-in-circular-motion.html">
+    <meta property="og:title" content="Forces in Circular Motion Lab | Grade 12 Physics Simulation">
+    <meta property="og:description" content="Interactive 3D simulation of Forces in Circular Motion and Centripetal Force for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === TWITTER CARD SEO === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://heinpop.xyz/Grade-12_Physics/lab-forces-in-circular-motion.html">
+    <meta name="twitter:title" content="Forces in Circular Motion Lab | Grade 12 Physics Simulation">
+    <meta name="twitter:description" content="Interactive 3D simulation of Forces in Circular Motion and Centripetal Force for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === STRUCTURED DATA (JSON-LD Schema for Educational Resource) === -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Forces in Circular Motion Lab Simulation",
+      "description": "Interactive 3D simulation of Centripetal Force, Centrifugal Force, and circular dynamics designed for Grade 12 Physics students.",
+      "educationalLevel": "Grade 12",
+      "learningResourceType": "Interactive Simulation",
+      "author": {
+        "@type": "Person",
+        "name": "HeinPop"
+      },
+      "url": "https://heinpop.xyz/Grade-12_Physics/lab-forces-in-circular-motion.html"
+    }
+    </script>
+
+    <!-- Material Symbols & Styles (Root folder မှ လှမ်းခေါ်ရန် ../ သုံးထားသည်) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="lab.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.svg">
+    
+    <!-- Three.js Core & Controls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- GLTFLoader for Blender GLB Files -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    
+    <!-- MathJax for Beautiful LaTeX Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- MathJax Configuration for Single Dollar Signs -->
+    <script>
+    window.MathJax = {
+        tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="lab-circular-motion.js" defer></script>
+</head>
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="../index.html#home" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="../index.html#my-workflow" data-en="About" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
+            <li class="dropdown">
+                <a href="../index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="../Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="../Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="../Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="../3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN LAB HERO SECTION -->
+    <section class="lab-hero max-container">
+        <div class="lab-header reveal-on-scroll">
+            <span class="section-tagline" data-en="Chapter 2: Forces in Circular Motion" data-mm="အခန်း ၂ - စက်ဝိုင်းပုံရွေ့လျားမှုဆိုင်ရာ အားများ">Chapter 2: Forces in Circular Motion</span>
+            <h1 data-en="Centripetal & Centrifugal Force Simulation" data-mm="ဗဟိုရှာအားနှင့် ဗဟိုခွာအား စမ်းသပ်ခန်း">Centripetal & Centrifugal Force Simulation</h1>
+            <p data-en="Explore centripetal force acting towards the center of rotation and investigate rotational dynamics based on Myanmar Grade 12 curriculum." 
+               data-mm="စက်ဝိုင်းဗဟိုချက်သို့ သက်ရောက်သော ဗဟိုရှာအား (Centripetal Force) နှင့် စက်ဝိုင်းပုံရွေ့လျားမှုဆိုင်ရာ သဘောတရားများကို လေ့လာပါ။">
+               Explore centripetal force acting towards the center of rotation and investigate rotational dynamics.
+            </p>
+        </div>
+
+        <div class="lab-workspace reveal-on-scroll">
+            <!-- Controls Panel -->
+            <div class="lab-controls-panel">
+                <h3>Control Center</h3>
+                
+                <div class="control-group">
+                    <label for="massRange">Mass (m): <span id="massVal">1.0</span> kg</label>
+                    <input type="range" id="massRange" min="0.1" max="5.0" step="0.1" value="1.0">
+                </div>
+
+                <div class="control-group">
+                    <label for="speedRange">Speed (v): <span id="speedVal">2.0</span> m/s</label>
+                    <input type="range" id="speedRange" min="1.0" max="20.0" step="0.5" value="2.0">
+                </div>
+
+                <div class="control-group">
+                    <label for="radiusRange">Radius (r): <span id="radiusVal">2.0</span> m</label>
+                    <input type="range" id="radiusRange" min="0.5" max="3.0" step="0.1" value="2.0">
+                </div>
+
+                <!-- Theory Card & Equation -->
+                <div class="theory-card">
+                    <h4 data-en="Key Concept & Equation" data-mm="အဓိက သဘောတရားနှင့် ညီမျှခြင်း">Key Concept & Equation</h4>
+                    <p data-en="Centripetal force is the net force directed toward the center of the circular path."
+                       data-mm="ဗဟိုရှာအားသည် စက်ဝိုင်းပုံလမ်းကြောင်း၏ အလယ်ဗဟိုဘက်သို့ သက်ရောက်သော အကျိုးပြုစုစုပေါင်း အား ဖြစ်သည်။">
+                       Centripetal force is the net force directed toward the center of the circular path.
+                    </p>
+                    
+                    <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 14px; color: #00ffcc;">
+                        <p>\( F_c = \frac{m v^2}{r} \)</p>
+                        <p style="margin-top: 5px;">\( F_c = m \omega^2 r \)</p>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" data-mm="Fc = ဗဟိုရှာအား | m = ထုထည် | v = အလျင် | r = အကွာအဝေး">
+                        Fc = Centripetal Force | m = Mass | v = Velocity | r = Radius
+                    </p>
+                </div>
+
+                <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
+                <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a>
+            </div>
+
+            <!-- 3D Canvas Viewport -->
+            <div class="lab-canvas-container">
+                <div class="telemetry-overlay">
+                    <div>Centripetal Force (\( F_c \)): <span id="forceValue">2.00</span> N</div>
+                    <div style="margin-top: 8px;">Centripetal Acceleration (\( a_c \)): <span id="accValue">2.00</span> m/s²</div>
+                </div>
+                <canvas id="physics-canvas"></canvas>
+            </div>
+        </div>
+
+        <!-- POST-LAB RANDOM QUIZ SECTION -->
+        <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
+            <div class="quiz-header" style="margin-bottom: 1.5rem;">
+                <h3 data-en="Post-Lab Knowledge Check (3 Random Questions)" data-mm="စမ်းသပ်ခန်းအပြီး ဗဟုသုတစစ်ဆေးရန် (ကျပန်းမေးခွန်း ၃ ပုဒ်)">Post-Lab Knowledge Check</h3>
+                <p data-en="Test your understanding through 3 random questions selected from Chapter 2 exercises."
+                   data-mm="အခန်း (၂) လေ့ကျင့်ခန်း မေးခွန်းများထဲမှ ကျပန်းထုတ်ပေးသော မေးခွန်း ၃ ပုဒ်ဖြင့် သင်၏နားလည်မှုကို စမ်းသပ်ပါ။">
+                   Test your understanding through 3 random questions selected from Chapter 2 exercises.
+                </p>
+            </div>
+
+            <div id="quiz-form-container">
+                <div id="dynamic-quiz-questions"></div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button id="submit-quiz" class="lab-btn btn-primary" data-en="Submit Answers" data-mm="အဖြေလွှာတင်မည်">Submit Answers</button>
+                    <button id="refresh-quiz" class="lab-btn btn-secondary" data-en="New Questions" data-mm="မေးခွန်းအသစ်လဲမည်">New Questions</button>
+                    <span id="quiz-result-msg" style="font-weight: bold; font-size: 0.95rem;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+    </footer>
+
+    <!-- Quiz Script based on Chapter 2 Exercises -->
+    <script>
+        const questionBank = [
+            {
+                qEn: "What is the direction of centripetal force acting on an object in circular motion?",
+                qMm: "စက်ဝိုင်းပုံရွေ့လျားနေသော ပစ္စည်းတစ်ခုပေါ်သို့ သက်ရောက်သည့် ဗဟိုရှာအား၏ ဦးတည်ချက်မှာ မည်သို့နည်း။",
+                optionsEn: ["Directed towards the axis of rotation or centre of curvature", "Directed radially away from the centre", "Tangent to the circular path"],
+                optionsMm: ["လည်ပတ်သည့်ဝင်ရိုး သို့မဟုတ် စက်ဝိုင်းဗဟိုချက်ဆီသို့", "ဗဟိုချက်မှ အပြင်ဘက်သို့", "စက်ဝိုင်းလမ်းကြောင်းအတိုင်း ထိစပ်လျက်"],
+                answer: 0
+            },
+            {
+                qEn: "Is centrifugal force in a circular motion a real force?",
+                qMm: "စက်ဝိုင်းပုံရွေ့လျားမှုတွင် ဗဟိုခွာအား (Centrifugal force) သည် စစ်မှန်သောအား (Real force) ဟုတ်ပါသလား။",
+                optionsEn: ["No, it is not a real force; it results from inertia", "Yes, it is a fundamental force", "Yes, it equals the gravitational force"],
+                optionsMm: ["မဟုတ်ပါ၊ စစ်မှန်သောအားမဟုတ်ဘဲ ဖင့်နှေးမှု (Inertia) ကြောင့် ဖြစ်ပေါ်လာခြင်း ဖြစ်သည်", "ဟုတ်ကဲ့၊ ၎င်းသည် အခြေခံအားတစ်ခု ဖြစ်သည်", "ဟုတ်ကဲ့၊ မြေဆွဲအားနှင့် တူညီသည်"],
+                answer: 0
+            },
+            {
+                qEn: "What is the tension in a 1 m string spinning a 0.5 kg stone in a horizontal circle with 3 rps?",
+                qMm: "ထုထည် 0.5 kg ရှိသော ကျောက်ခဲတစ်လုံးကို 1 m ရှည်သော ကြိုးဖြင့် တစ်စက္ကန့်လျှင် 3 ပတ် (3 rps) နှုန်းဖြင့် အလျားလိုက်စက်ဝိုင်းပုံ လည်ပတ်စေပါက ကြိုး၏တင်းအား (Tension) ခန့်မှန်းခြေ မည်မျှရှိမည်နည်း။",
+                optionsEn: ["Approximately 177.6 N", "5.0 N", "50.2 N"],
+                optionsMm: ["ခန့်မှန်းခြေ 177.6 N", "5.0 N", "50.2 N"],
+                answer: 0
+            },
+            {
+                qEn: "What happens to the acceleration of an object moving in a circle with constant speed?",
+                qMm: "အမြန်နှုန်း (Speed) မပြောင်းလဲဘဲ စက်ဝိုင်းပုံစံ ရွေ့လျားနေသော ပစ္စည်းတစ်ခုတွင် အရှိန် (Acceleration) ရှိပါသလား။",
+                optionsEn: ["Yes, it has centripetal acceleration directed toward the center", "No, acceleration is zero", "Yes, acceleration points forward"],
+                optionsMm: ["ရှိသည်၊ ဗဟိုချက်ဆီသို့ ဦးတည်သော ဗဟိုရှာအရှိန် ရှိသည်", "မရှိပါ၊ အရှိန်သုည ဖြစ်သည်", "ရှိသည်၊ ရှေ့သို့ဦးတည်သည်"],
+                answer: 0
+            },
+            {
+                qEn: "If an 8.3 kg mass is attached to a string with a breaking strength of 1500 N and radius 80 cm, what is the maximum speed?",
+                qMm: "ခံနိုင်ဝန် 1500 N ရှိသော ကြိုးတွင် 8.3 kg ထုထည်ကိုချည်၍ 80 cm အကွာအဝေးဖြင့် အလျားလိုက် လည်ပတ်စေလျှင် အမြင့်ဆုံးအမြန်နှုန်း (Maximum speed) ခန့်မှန်းခြေ မည်မျှရှိနိုင်သနည်း။",
+                optionsEn: ["About 12.0 m/s", "5.0 m/s", "25.5 m/s"],
+                optionsMm: ["ခန့်မှန်းခြေ 12.0 m/s", "5.0 m/s", "25.5 m/s"],
+                answer: 0
+            },
+            {
+                qEn: "What is the unit of angular velocity (ω)?",
+                qMm: "ထောင့်ပြောင်းအလျင် (ω) ၏ ယူနစ်မှာ အဘယ်နည်း။",
+                optionsEn: ["rad/s", "m/s", "rad/s²"],
+                optionsMm: ["rad/s", "m/s", "rad/s²"],
+                answer: 0
+            },
+            {
+                qEn: "Centripetal force is always perpendicular to the ______.",
+                qMm: "ဗဟိုရှာအားသည် အမြဲတမ်း ______ နှင့် ထောင့်မတ်ကျနေသည်။",
+                optionsEn: ["Velocity vector", "Radius", "Center of circle"],
+                optionsMm: ["အလျင်ဗက်တာ (Velocity vector)", "အချင်းဝက် (Radius)", "စက်ဝိုင်းဗဟိုချက်"],
+                answer: 0
+            },
+            {
+                qEn: "The formula for centripetal acceleration ($a_c$) is:",
+                qMm: "ဗဟိုရှာအရှိန် ($a_c$) တွက်ချက်သည့် ပုံသေနည်းမှာ -",
+                optionsEn: ["$v^2/r$", "$vr$", "$v/r^2$"],
+                optionsMm: ["$v^2/r$", "$vr$", "$v/r^2$"],
+                answer: 0
+            },
+            {
+                qEn: "If the speed of an object in circular motion is doubled, the centripetal force becomes:",
+                qMm: "စက်ဝိုင်းပုံရွေ့လျားနေသော ပစ္စည်းတစ်ခု၏ အမြန်နှုန်းကို နှစ်ဆတိုးလိုက်ပါက ဗဟိုရှာအားသည် -",
+                optionsEn: ["Two times", "Four times", "Half"],
+                optionsMm: ["၂ ဆ ဖြစ်လာမည်", "၄ ဆ ဖြစ်လာမည်", "တစ်ဝက်ဖြစ်သွားမည်"],
+                answer: 1
+            },
+            {
+                qEn: "A force that keeps an object moving in a circle is called ______.",
+                qMm: "ပစ္စည်းတစ်ခုကို စက်ဝိုင်းပုံလမ်းကြောင်းအတိုင်း ဆက်လက်ရွေ့လျားစေရန် ထိန်းထားသောအားကို ______ ဟုခေါ်သည်။",
+                optionsEn: ["Centripetal Force", "Centrifugal Force", "Friction"],
+                optionsMm: ["ဗဟိုရှာအား", "ဗဟိုခွာအား", "ပွတ်တိုက်အား"],
+                answer: 0
+            },
+            {
+                qEn: "The period (T) and frequency (f) are related by:",
+                qMm: "လှည့်ပတ်ချိန် (T) နှင့် ကြိမ်နှုန်း (f) တို့၏ ဆက်သွယ်ချက်မှာ -",
+                optionsEn: ["$T = 1/f$", "$T = f$", "$T = 2\pi f$"],
+                optionsMm: ["$T = 1/f$", "$T = f$", "$T = 2\pi f$"],
+                answer: 0
+            },
+            {
+                qEn: "In a horizontal circle, the tension in the string provides the ______.",
+                qMm: "အလျားလိုက်စက်ဝိုင်းပုံရွေ့လျားမှုတွင် ကြိုး၏တင်းအားသည် ______ ကို ဖြစ်ပေါ်စေသည်။",
+                optionsEn: ["Centripetal force", "Weight", "Centrifugal force"],
+                optionsMm: ["ဗဟိုရှာအား", "အလေးချိန်", "ဗဟိုခွာအား"],
+                answer: 0
+            },
+            {
+                qEn: "Which of the following is a pseudo-force?",
+                qMm: "အောက်ပါတို့အနက် မည်သည်မှာ ပုံရိပ်ယောင်အား (Pseudo-force) ဖြစ်သနည်း။",
+                optionsEn: ["Centripetal force", "Centrifugal force", "Gravity"],
+                optionsMm: ["ဗဟိုရှာအား", "ဗဟိုခွာအား", "ကမ္ဘာ့မြေဆွဲအား"],
+                answer: 1
+            },
+            {
+                qEn: "For a car turning on a flat road, the centripetal force is provided by ______.",
+                qMm: "ညီညာသောလမ်းပေါ်တွင် ကွေ့နေသော ကားတစ်စီးအတွက် ဗဟိုရှာအားကို ______ က ပံ့ပိုးပေးသည်။",
+                optionsEn: ["Friction", "Normal force", "Gravity"],
+                optionsMm: ["ပွတ်တိုက်အား", "Normal force", "ကမ္ဘာ့မြေဆွဲအား"],
+                answer: 0
+            },
+            {
+                qEn: "Banking of roads is done to reduce ______ on tires.",
+                qMm: "လမ်းကွေ့များကို စောင်းထားခြင်း (Banking) သည် တာယာများ၏ ______ ကို လျှော့ချရန်ဖြစ်သည်။",
+                optionsEn: ["Friction", "Wear and tear", "Weight"],
+                optionsMm: ["ပွတ်တိုက်အား", "ပွန်းစားမှု (Wear and tear)", "အလေးချိန်"],
+                answer: 1
+            },
+            {
+                qEn: "The angle of banking (θ) is given by:",
+                qMm: "လမ်းစောင်းထောင့် (θ) ကို ရှာသောပုံသေနည်းမှာ -",
+                optionsEn: ["$\\\\tan \\\\theta = v^2/rg$", "$\\\\tan \\\\theta = rg/v^2$", "$\\\\sin \\\\theta = v/rg$"],
+                optionsMm: ["$\\\\tan \\\\theta = v^2/rg$", "$\\\\tan \\\\theta = rg/v^2$", "$\\\\sin \\\\theta = v/rg$"],
+                answer: 0
+            },
+            {
+                qEn: "In a vertical circle, the tension is maximum at the ______ point.",
+                qMm: "ဒေါင်လိုက်စက်ဝိုင်းပုံရွေ့လျားမှုတွင် တင်းအားသည် ______ အမှတ်၌ အများဆုံးဖြစ်သည်။",
+                optionsEn: ["Highest", "Lowest", "Horizontal"],
+                optionsMm: ["အမြင့်ဆုံး", "အနိမ့်ဆုံး", "အလယ်ဗဟို"],
+                answer: 1
+            },
+            {
+                qEn: "Angular velocity (ω) is related to linear velocity (v) by:",
+                qMm: "ထောင့်ပြောင်းအလျင် (ω) နှင့် အဖြောင့်အလျင် (v) တို့၏ ဆက်သွယ်ချက်မှာ -",
+                optionsEn: ["v = r\omega$", "$v = \omega/r$", "$\omega = vr$"],
+                optionsMm: ["v = r\omega$", "$v = \omega/r$", "$\omega = vr$"],
+                answer: 0
+            },
+            {
+                qEn: "A stone of mass 2 kg is whirled in a circle of radius 1 m at 5 m/s. What is the centripetal force?",
+                qMm: "ထုထည် 2 kg ရှိသော ကျောက်ခဲကို အချင်းဝက် 1 m ရှိသော စက်ဝိုင်းတွင် 5 m/s ဖြင့် လှည့်ပတ်ပါက ဗဟိုရှာအား မည်မျှရှိသနည်း။",
+                optionsEn: ["50 N", "10 N", "25 N"],
+                optionsMm: ["50 N", "10 N", "25 N"],
+                answer: 0
+            },
+            {
+                qEn: "When a passenger in a turning car feels pushed outwards, this is due to ______.",
+                qMm: "ကွေ့နေသောကားထဲမှ ခရီးသည်တစ်ဦး အပြင်ဘက်သို့ တွန်းထုတ်ခံရသလို ခံစားရခြင်းမှာ ______ ကြောင့်ဖြစ်သည်။",
+                optionsEn: ["Inertia", "Gravity", "Friction"],
+                optionsMm: ["ဖင့်နှေးမှု (Inertia)", "ကမ္ဘာ့မြေဆွဲအား", "ပွတ်တိုက်အား"],
+                answer: 0
+            },
+            {
+                qEn: "The number of revolutions per unit time is called ______.",
+                qMm: "ယူနစ်အချိန်အတွင်း လှည့်ပတ်သည့် အပတ်ရေကို ______ ဟုခေါ်သည်။",
+                optionsEn: ["Frequency", "Period", "Velocity"],
+                optionsMm: ["ကြိမ်နှုန်း (Frequency)", "လှည့်ပတ်ချိန် (Period)", "အလျင်"],
+                answer: 0
+            },
+            {
+                qEn: "For a conical pendulum, the period (T) depends on the ______ of the string.",
+                qMm: "Conical pendulum တစ်ခုတွင် လှည့်ပတ်ချိန် (T) သည် ကြိုး၏ ______ ပေါ်တွင် မူတည်သည်။",
+                optionsEn: ["Length", "Mass", "Color"],
+                optionsMm: ["အလျား (Length)", "ထုထည်", "အရောင်"],
+                answer: 0
+            },
+            {
+                qEn: "Which force acts as the centripetal force for planets orbiting the sun?",
+                qMm: "နေကို လှည့်ပတ်နေသော ဂြိုဟ်များအတွက် မည်သည့်အားက ဗဟိုရှာအားအဖြစ် လုပ်ဆောင်သနည်း။",
+                optionsEn: ["Gravitational force", "Magnetic force", "Frictional force"],
+                optionsMm: ["မြေဆွဲအား (Gravitational force)", "သံလိုက်အား", "ပွတ်တိုက်အား"],
+                answer: 0
+            },
+            {
+                qEn: "If the radius of the circular path is doubled while speed remains constant, the centripetal force:",
+                qMm: "အမြန်နှုန်းမပြောင်းဘဲ အချင်းဝက်ကို နှစ်ဆတိုးလိုက်ပါက ဗဟိုရှာအားသည် -",
+                optionsEn: ["Halves", "Doubles", "Remains same"],
+                optionsMm: ["တစ်ဝက်လျော့သွားမည်", "နှစ်ဆတိုးလာမည်", "မပြောင်းလဲပါ"],
+                answer: 0
+            }
+        ];
+
+        let activeQuizSet = [];
+
+        function loadRandomQuiz() {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            activeQuizSet = shuffled.slice(0, 3);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            if (activeQuizSet.length === 0) return;
+
+            const container = document.getElementById('dynamic-quiz-questions');
+            container.innerHTML = '';
+
+            const currentLang = localStorage.getItem("portfolio-lang") || "en";
+            const isMM = currentLang === "mm";
+
+            activeQuizSet.forEach((item, index) => {
+                const qText = isMM ? item.qMm : item.qEn;
+                const opts = isMM ? item.optionsMm : item.optionsEn;
+
+                let html = `
+                    <div class="quiz-question-card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: #00ffcc; margin-bottom: 0.5rem; font-size: 1rem;">${index + 1}. ${qText}</h4>
+                        <div class="quiz-options" style="display: flex; flex-direction: column; gap: 6px; padding-left: 10px;">
+                `;
+
+                opts.forEach((opt, oIndex) => {
+                    html += `
+                        <label style="cursor: pointer; font-size: 0.9rem;">
+                            <input type="radio" name="q_${index}" value="${oIndex}"> ${opt}
+                        </label>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+
+            document.getElementById('quiz-result-msg').textContent = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('refresh-quiz').addEventListener('click', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
+            const msg = document.getElementById('quiz-result-msg');
+
+            let score = 0;
+            let allAnswered = true;
+
+            activeQuizSet.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                } else if (parseInt(selected.value) === item.answer) {
+                    score++;
+                }
+            });
+
+            if (!allAnswered) {
+                msg.style.color = '#ee1c4b';
+                msg.textContent = isMM ? "ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပါ။" : "Please answer all questions.";
+                return;
+            }
+
+            msg.style.color = '#00ffcc';
+            msg.textContent = isMM 
+                ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` 
+                : `You got (${score}/3) score.`;
+        });
+    </script>
+    <script src="../app.js" defer></script>
+
+</body>
+</html>
