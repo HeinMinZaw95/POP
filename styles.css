@@ -60,6 +60,23 @@ section {
     width: 100%;
 }
 
+.lab-search-container{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.lab-search-container input{
+    padding: 10px 15px; 
+    width: 100%; 
+    max-width: 400px; 
+    border-radius: 8px; 
+    border: 1px solid var(--accent); 
+    background: var(--bg-secondary);
+    color: var(--text-sub); 
+    font-size: 1rem;
+}
+
+
 .navbar, .accordion-item, .threed-btn, footer, .metric-card, .workflow-card {
     transition: background-color 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
                 border-color 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
