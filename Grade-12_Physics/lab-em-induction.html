@@ -104,7 +104,7 @@
                data-mm="သံလိုက်တံကို ကွိုင်ထဲသို့ ရွေ့သွင်းသည့်အခါ လျှပ်စီးကြောင်းနှင့် လျှပ်စစ်တွန်းအား (EMF) ဖြစ်ပေါ်လာပုံကို လေ့လာပါ။">
                Observe how moving a bar magnet through a solenoid coil induces an electromotive force (EMF) and current.
             </p>
-        </div>
+        </div>>
 
         <div class="lab-workspace reveal-on-scroll">
             <!-- Left Panel: Controls & Theory info -->
@@ -345,6 +345,7 @@
             }
         ];
 
+        
         let activeQuizSet = [];
 
         function loadRandomQuiz() {
@@ -404,7 +405,7 @@
             let score = 0;
             let allAnswered = true;
 
-            activeQuizSet.((item, index) => {
+            activeQuizSet.forEach((item, index) => {
                 const selected = document.querySelector(`input[name="q_${index}"]:checked`);
                 if (!selected) {
                     allAnswered = false;
