@@ -95,9 +95,16 @@
         <div class="section-header">
             <h1 data-en="Interactive 3D Physics Labs" data-mm="အပြန်အလှန်တုံ့ပြန်နိုင်သော 3D ရူပဗေဒစမ်းသပ်ခန်းများ">Interactive 3D Physics Labs</h1>
             <p data-en="Bridges the gap between abstract theoretical concepts and practical visual understanding, enhancing student engagement and critical thinking." data-mm="သီအိုရီသဘောတရားများနှင့် လက်တွေ့မြင်ကွင်းများကို ပေါင်းစပ်ပေးခြင်းဖြင့် ကျောင်းသားများ၏ သင်ယူလိုစိတ်နှင့် ဝေဖန်ပိုင်းခြားတွေးခေါ်နိုင်စွမ်းကို မြှင့်တင်ပေးသည်။">Bridges the gap between abstract theoretical concepts and practical visual understanding, enhancing student engagement and critical thinking.</p>
+        
+            <!-- SEARCH BOX -->
+            <div class="lab-search-container" style="margin-top: 20px; text-align: center;">
+                <input type="text" id="labSearchInput" placeholder="Search physics labs (e.g., Faraday, Motion)..." 
+                       style="padding: 10px 15px; width: 100%; max-width: 400px; border-radius: 8px; border: 1px solid var(--text-sub, #555); background: var(--bg-card, #161622); color: inherit; font-size: 1rem;"
+                       onkeyup="filterLabs()">
+            </div>
         </div>
         
-        <div class="labs-grid">
+        <div class="labs-grid" id="labsGrid">
                     <!-- Rotational Motion Lab Card -->
                     <div class="portfolio-card lab-card" onclick="location.href='Grade-12_Physics/lab-rotational-motion.html';">
                         <div class="card-image-wrapper">
@@ -213,6 +220,10 @@
                     </div>
                 </div>
             </div>
+            <!-- ရှာမတွေ့ပါက ပြမည့် စာသား (အစပိုင်းမှာ ပုန်းနေပါမည်) -->
+            <p id="noResultsMessage" style="text-align: center; color: var(--text-sub, #888); margin-top: 30px; display: none; font-size: 1.1rem;">
+                No matching physics labs found.
+            </p>
         </div>
     </main>
 
@@ -267,6 +278,33 @@
         }
 
         loadGameScore();
+
+        // SEARCH FUNCTION
+        function filterLabs() {
+            let input = document.getElementById('labSearchInput').value.toLowerCase();
+            let grid = document.getElementById('labsGrid');
+            let cards = grid.getElementsByClassName('lab-card');
+            let noResultsMsg = document.getElementById('noResultsMessage');
+            
+            let matchCount = 0;
+
+            for (let i = 0; i < cards.length; i++) {
+                let cardText = cards[i].innerText.toLowerCase();
+                if (cardText.includes(input)) {
+                    cards[i].style.display = "";
+                    matchCount++;
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+
+            // အကယ်၍ ရှာမတွေ့ခဲ့လျှင် စာသားပြရန်
+            if (matchCount === 0) {
+                noResultsMsg.style.display = "block";
+            } else {
+                noResultsMsg.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>
