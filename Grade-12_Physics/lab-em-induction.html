@@ -404,7 +404,6 @@
             let score = 0;
             let allAnswered = true;
 
-            activeQuizSet.xx?.((item, index) => {}); // fallback safety
             activeQuizSet.((item, index) => {
                 const selected = document.querySelector(`input[name="q_${index}"]:checked`);
                 if (!selected) {
