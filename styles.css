@@ -69,6 +69,7 @@ section {
     padding: 10px 15px; 
     width: 100%; 
     max-width: 400px; 
+    min-height: 500px;
     border-radius: 8px; 
     border: 1px solid var(--accent); 
     background: var(--bg-secondary);
