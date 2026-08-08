@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/css" href="https://www.xml-sitemaps.com/css/sitemap.css"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-  <!-- ပင်မစာမျက်နှာ (Home) -->
-  <url>
-    <loc>[link removed]</loc>
-    <lastmod>2026-08-08T21:23:20+06:30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0000</priority>
-  </url>
-
-  <!-- 3D Interactive Main Gallery Page -->
-  <url>
-    <loc>[link removed]</loc>
-    <lastmod>2026-08-08T21:23:20+06:30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9000</priority>
-  </url>
-
-  <!-- Lab 1: Electromagnetic Induction Lab -->
-  <url>
-    <loc>https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html</loc>
-    <lastmod>2026-08-08T21:12:12+06:30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8000</priority>
-  </url>
-
-  <!-- Lab 2: Forces in Circular Motion Lab -->
-  <url>
-    <loc>[link removed]</loc>
-    <lastmod>2026-08-08T21:12:12+06:30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8000</priority>
-  </url>
-
-  <!-- Lab 3: Centrifuge Rotor Dynamics (Rotational Motion) Lab -->
-  <url>
-    <loc>[link removed]</loc>
-    <lastmod>2026-08-08T21:12:12+06:30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8000</priority>
-  </url>
-
-  <!-- Lab 4: Wind Energy Generation Lab -->
-  <url>
-    <loc>https://heinpop.xyz/Grade-12_Physics/lab-wind-energy.html</loc>
-    <lastmod>2026-08-08T21:12:12+06:30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8000</priority>
-  </url>
-
-</urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Root pages -->
+    <url>
+        <loc>https://heinpop.xyz/</loc>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/3D_Interactive.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Front-End_Architecture.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Graphic_&amp;_UI_Design.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Motion_Graphic_&amp;_Videos.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Grade-12 Physics folder -->
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-circular-motion.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-em-induction.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-fluid-dynamics.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-rotational-motion.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-wind-energy.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
