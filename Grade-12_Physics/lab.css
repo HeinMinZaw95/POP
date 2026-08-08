@@ -1,0 +1,447 @@
+.lab-section-container {
+            min-height: 100vh;
+            padding: 7rem 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            z-index: 2;
+        }
+
+        .section-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-main, #ffffff);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-sub, #a0a0ab);
+            font-size: 1.1rem;
+        }
+
+        .labs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            min-height: 500px;
+            max-width: 1100px;
+            z-index: 2;
+        }
+
+        .portfolio-card.lab-card {
+            background-color: var(--bg-secondary, #121218);
+            border: 1px solid var(--border-alpha, rgba(255, 255, 255, 0.1));
+            border-radius: 14px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .portfolio-card.lab-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent, #ee1c4b);
+            box-shadow: 0 12px 30px rgba(238, 28, 75, 0.2);
+        }
+
+        .card-image-wrapper {
+            position: relative;
+            height: 190px;
+            background: linear-gradient(135deg, #0b0b10 0%, #1a1a2e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .lab-preview-bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .lab-preview-bg::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #00ffcc;
+            filter: blur(50px);
+            opacity: 0.3;
+        }
+
+        .lab-card-icon {
+            font-size: 3.8rem !important;
+            color: #00ffcc;
+            z-index: 2;
+            animation: pulseIcon 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseIcon {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.15); opacity: 1; filter: drop-shadow(0 0 10px #00ffcc); }
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 255, 204, 0.15);
+            color: #00ffcc;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main, #ffffff);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-content p {
+            font-size: 0.92rem;
+            color: var(--text-sub, #a0a0ab);
+            line-height: 1.5;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-alpha, rgba(255, 255, 255, 0.08));
+            padding-top: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tech-tag {
+            font-size: 0.75rem;
+            color: #00ffcc;
+            background: rgba(0, 255, 204, 0.08);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .explore-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent, #ee1c4b);
+            text-decoration: none;
+        }
+
+        .explore-link .arrow-icon {
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-card.lab-card:hover .explore-link .arrow-icon {
+            transform: translateX(5px);
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            filter: blur(160px);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    /* ပင်မ Layout ကို Column တစ်ခုတည်းအဖြစ် ပြောင်းလဲရန် */
+    .lab-container, body {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    /* 3D Canvas ကို ဖုန်းစခရင်၏ အပေါ်ပိုင်းတွင် အသင့်အတ້ອຍ နေရာပေးရန် */
+    #physics-canvas {
+        width: 100% !important;
+        height: 50vh !important;
+        touch-action: none; /* Mobile touch gestures များ ပုံမှန်အလုပ်လုပ်ရန် */
+    }
+
+    /* Control Panel ကို အောက်ဘက်တွင် အဆင်ပြေစွာ ပေါ်လာစေရန် */
+    .control-panel {
+        width: 100% !important;
+        max-height: 50vh;
+        overflow-y: auto;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Sliders များနှင့် Button များကို လက်မဖြင့် ထိတွေ့ရလွယ်ကူအောင် ကြီးပေးခြင်း */
+    input[type="range"] {
+        padding: 10px 0;
+        cursor: pointer;
+    }
+
+    .toolbar-btn, button {
+        min-height: 40px;
+        font-size: 14px;
+    }
+}
+
+.lab-hero {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.lab-workspace {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.lab-hero {
+    padding-top: 7rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 4rem;
+}
+
+.lab-header {
+    text-align: center;
+    max-width: 800px;
+    margin-bottom: 2rem;
+}
+
+.lab-header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.lab-header p {
+    color: var(--text-sub);
+    font-size: 1rem;
+}
+
+/* Workspace Layout: Split view for Controls and 3D Canvas */
+.lab-workspace {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1280px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-alpha);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* Control Panel */
+.lab-controls-panel {
+    padding: 1.8rem;
+    border-right: 1px solid var(--border-alpha);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--bg-primary);
+}
+
+.lab-controls-panel h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    border-bottom: 2px solid var(--border-alpha);
+    padding-bottom: 0.5rem;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.control-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.control-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+/* Live Theory Status Card */
+.theory-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-alpha);
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.theory-card h4 {
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.theory-card p {
+    color: var(--text-sub);
+    line-height: 1.4;
+}
+
+/* Action Buttons */
+.lab-btn {
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-alpha);
+    color: var(--text-main);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* 3D Canvas Viewport Container */
+.lab-canvas-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background: #050505;
+}
+
+#physics-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Floating Real-time Telemetry Overlay inside Canvas */
+.telemetry-overlay {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid var(--border-alpha);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #00ffcc;
+    pointer-events: none;
+    backdrop-filter: blur(5px);
+}
+
+.telemetry-overlay span {
+    color: #fff;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 950px) {
+    .lab-workspace {
+        grid-template-columns: 1fr;
+    }
+    .lab-controls-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--border-alpha);
+    }
+    .lab-canvas-container {
+        height: 450px;
+    }
+}
+
+/* Fullscreen Button Styling */
+.fullscreen-btn {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid var(--border-alpha, rgba(255, 255, 255, 0.2));
+    color: #00ffcc;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.fullscreen-btn:hover {
+    background: rgba(0, 255, 204, 0.2);
+    transform: scale(1.05);
+}
+
+/* Fullscreen Mode ရောက်သွားသည့်အခါ Canvas Container ကို အပြည့်ချဲ့ရန် */
+#canvasContainer:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+}
+
+#canvasContainer:fullscreen #physics-canvas {
+    width: 100% !important;
+    height: 100% !important;
+}

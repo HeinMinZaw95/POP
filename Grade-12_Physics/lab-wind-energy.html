@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wind Energy Generation | HeinPop-Lab</title>
+    <meta name="description" content="Explore an interactive 3D simulation of Wind Turbine Dynamics and Renewable Energy generation for Grade 12 Myanmar curriculum.">
+    <meta name="keywords" content="Grade 12 Physics, Wind Energy, Renewable Energy, Wind Turbine Simulation, Physics Simulation, HeinPop, Myanmar Curriculum, 3D Physics Lab">
+    <meta name="author" content="HeinPop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/lab-wind-energy.html">
+
+    <!-- === OPEN GRAPH / SOCIAL MEDIA SEO === -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://heinpop.xyz/Grade-12_Physics/lab-wind-energy.html">
+    <meta property="og:title" content="Wind Energy Generation Simulation | HeinPop-Lab">
+    <meta property="og:description" content="Interactive 3D simulation of Wind Turbine Dynamics and Renewable Energy generation for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === TWITTER CARD SEO === -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://heinpop.xyz/Grade-12_Physics/lab-wind-energy.html">
+    <meta name="twitter:title" content="Wind Energy Generation Simulation | HeinPop-Lab">
+    <meta name="twitter:description" content="Interactive 3D simulation of Wind Turbine Dynamics and Renewable Energy generation for Grade 12 Myanmar curriculum built by HeinPop.">
+    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === STRUCTURED DATA === -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Wind Energy Production Simulation",
+      "description": "Interactive 3D simulation of Wind Turbine Dynamics and Renewable Energy generation designed for Grade 12 Physics students.",
+      "educationalLevel": "Grade 12",
+      "learningResourceType": "Interactive Simulation",
+      "author": {
+        "@type": "Person",
+        "name": "HeinPop"
+      },
+      "url": "https://heinpop.xyz/Grade-12_Physics/lab-wind-energy.html"
+    }
+    </script>
+
+    <!-- Material Symbols & Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="lab.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.svg">
+    
+    <!-- Three.js Core & Controls & GLTFLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    
+    <!-- MathJax for LaTeX Formulas -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Lab JavaScript File -->
+    <script src="lab-wind-energy.js" defer></script>
+</head>
+<body class="dark-theme">
+
+   <nav class="navbar">
+        <div class="logo">
+            <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="../index.html#home" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="../index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
+            <li class="dropdown">
+                <a href="../index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="../Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="../Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="../Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="../3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN LAB HERO SECTION -->
+    <section class="lab-hero max-container">
+        <div class="lab-header">
+            <span class="section-tagline" data-en="Renewable Energy Sources" data-mm="ပြန်လည်ပြည့်ဖြိုးမြဲ စွမ်းအင်အရင်းအမြစ်များ">Renewable Energy Sources</span>
+            <h1 data-en="Wind Turbine & Emission Dynamics Simulation" data-mm="လေရဟတ်နှင့် အလင်းတောက်ပမှု စွမ်းအင်စမ်းသပ်ခန်း">Wind Turbine & Emission Dynamics Simulation</h1>
+            <p data-en="Observe wind speed, blade rotation, and dynamic emission intensity control for clean energy generation."
+               data-mm="သန့်ရှင်းသော စွမ်းအင်ထုတ်လုပ်မှုအတွက် လေတိုက်နှုန်း၊ ပန်ကာလည်ပတ်မှုနှင့် အလင်းတောက်ပမှု အားတို့ကို လေ့လာပါ။">
+               Observe wind speed, blade rotation, and dynamic emission intensity control for clean energy generation.
+            </p>
+        </div>
+
+        <div class="lab-workspace">
+            <!-- Controls Panel -->
+            <div class="lab-controls-panel">
+                <h3>Control Center</h3>
+                
+                <div class="control-group">
+                    <label for="windSpeedRange">Wind Speed (m/s): <span id="windSpeedVal">10</span></label>
+                    <input type="range" id="windSpeedRange" min="1" max="25" step="1" value="10">
+                </div>
+
+                <!-- Theory Card & Equation -->
+                <div class="theory-card">
+                    <h4>Key Concept & Equation</h4>
+                    <p data-en="Wind power output is proportional to the cube of the wind speed."
+                       data-mm="လေအားလျှပ်စင် ထွက်ရှိမှုသည် လေတိုက်နှုန်း၏ သုံးထပ်ကိန်းနှင့် အချိုးကျသည်။">
+                       Wind power output is proportional to the cube of the wind speed.
+                    </p>
+                    
+                    <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 14px; color: #00ffcc;">
+                        <p>\( P \propto v^3 \)</p>
+                    </div>
+                </div>
+
+                <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
+                    <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a> 
+            </div>
+            <!-- 3D Canvas Viewport Container -->
+            <div class="lab-canvas-container" id="canvasContainer">
+                <div class="telemetry-overlay">
+                    <div>Generated Power (\( P \)): <span id="powerVal">25.0</span> kW</div>
+                </div>
+                
+                <!-- Fullscreen Toggle Button -->
+                <button id="fullscreenBtn" class="fullscreen-btn" title="Full Screen">
+                    <span class="material-symbols-outlined">fullscreen</span>
+                </button>
+                                <!-- Fullscreen ခလုတ်ဘေးတွင်ဖြစ်စေ၊ Control Center ထဲတွင်ဖြစ်စေ ထည့်နိုင်သည်
+                <button id="resetCameraBtn" class="fullscreen-btn" title="Reset Camera" style="right: 50px;">
+                    <span class="material-symbols-outlined">restart_alt</span>
+                </button> -->
+                <canvas id="physics-canvas"></canvas>
+            </div>
+        </div>
+
+            <!-- POST-LAB RANDOM QUIZ SECTION (20 Questions Pool -> 3 Random Questions) -->
+        <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
+            <div class="quiz-header" style="margin-bottom: 1.5rem;">
+                <h3 data-en="Post-Lab Knowledge Check (3 Random Questions)" data-mm="စမ်းသပ်ခန်းအပြီး ဗဟုသုတစစ်ဆေးရန် (ကျပန်းမေးခွန်း ၃ ပုဒ်)">Post-Lab Knowledge Check</h3>
+                <p data-en="Test your understanding through 3 random questions selected from our physics question bank."
+                   data-mm="ရူပဗေဒ မေးခွန်းဘဏ်ကြီးထဲမှ ကျပန်းထုတ်ပေးသော မေးခွန်း ၃ ပုဒ်ဖြင့် သင်၏နားလည်မှုကို စမ်းသပ်ပါ။">
+                   Test your understanding through 3 random questions selected from our physics question bank.
+                </p>
+            </div>
+
+            <div id="quiz-form-container">
+                <div id="dynamic-quiz-questions">
+                    <!-- JavaScript ဖြင့် ကျပန်းမေးခွန်း ၃ ပုဒ်ကို ဤနေရာတွင် ထည့်သွင်းပေးမည် -->
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button id="submit-quiz" class="lab-btn btn-primary" data-en="Submit Answers" data-mm="အဖြေလွှာတင်မည်">Submit Answers</button>
+                    <button id="refresh-quiz" class="lab-btn btn-secondary" data-en="New Questions" data-mm="မေးခွန်းအသစ်လဲမည်">New Questions</button>
+                    <span id="quiz-result-msg" style="font-weight: bold; font-size: 0.95rem;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+    </footer>
+
+    <!-- Quiz Script for Fluid Dynamics -->
+    <script>
+        const questionBank = [
+                    {
+                        qEn: "What does the term 'Energy Crisis' primarily refer to?",
+                        qMm: "စွမ်းအင်ကျပ်တည်းမှု (Energy Crisis) ဆိုသည်မှာ အဓိကအားဖြင့် အဘယ်အရာကို ဆိုလိုသနည်း။",
+                        optionsEn: ["A critical shortage or high cost of energy resources", "An excess of solar power", "A complete stop of wind movement"],
+                        optionsMm: ["စွမ်းအင်အရင်းအမြစ်များ အရေးပေါ်ရှားပါးလာခြင်း သို့မဟုတ် ဈေးနှုန်းကြီးမြင့်လာခြင်း", "နေစွမ်းအင် ပိုလျှံနေခြင်း", "လေတိုက်ခတ်မှု လုံးဝရပ်တန့်သွားခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "Which of the following is classified as a non-renewable source of energy?",
+                        qMm: "အောက်ပါတို့အနက် မည်သည်တို့သည် ပြန်လည်မပြည့်ဖြိုးမြဲ စွမ်းအင်အရင်းအမြစ်များ ဖြစ်သနည်း။",
+                        optionsEn: ["Coal, Petroleum, and Natural Gas", "Solar, Wind, and Hydroelectric", "Geothermal and Biomass"],
+                        optionsMm: ["ကျောက်မီးသွေး၊ ရေနံနှင့် သဘာဝဓာတ်ငွေ့", "နေစွမ်းအင်၊ လေစွမ်းအင်နှင့် ရေအားလျှပ်စစ်", "မြေအောက်အပူစွမ်းအင်နှင့် ဇီဝထုစွမ်းအင်"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What are the main fossil fuels formed from the remains of ancient organisms?",
+                        qMm: "ရှေးဟောင်းသက်ရှိများ၏ အကြွင်းအကျန်များမှ ဖြစ်ပေါ်လာသော အဓိက ကျောက်ဖြစ်ရုပ်ကြွင်းလောင်စာများမှာ အဘယ်နည်း။",
+                        optionsEn: ["Coal, Oil, and Natural Gas", "Wood, Straw, and Dung", "Hydrogen and Helium"],
+                        optionsMm: ["ကျောက်မီးသွေး၊ ရေနံနှင့် သဘာဝဓာတ်ငွေ့", "သစ်သား၊ ገለባနှင့် တိရစ္ဆာန်စွန့်ပစ်ပစ္စည်း", "ဟိုက်ဒရိုဂျင်နှင့် ဟီလီယမ်"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "Which energy source is considered virtually inexhaustible and environmentally friendly?",
+                        qMm: "မည်သည့်စွမ်းအင်အရင်းအမြစ်ကို လက်တွေ့အားဖြင့် မကုန်ခမ်းနိုင်ဘဲ ပတ်ဝန်းကျင်ကို ထိခိုက်မှုမရှိဟု ယူဆသနည်း။",
+                        optionsEn: ["Renewable sources like solar and wind", "Fossil fuels", "Nuclear fission using limited uranium"],
+                        optionsMm: ["နေနှင့်လေစွမ်းအင်ကဲ့သို့သော ပြန်လည်ပြည့်ဖြိုးမြဲစွမ်းအင်များ", "ကျောက်ဖြစ်ရုပ်ကြွင်းလောင်စာများ", "ယူရေနီယမ်ကို အသုံးပြုသည့် နျူကလီးယားစွမ်းအင်"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is the primary driver of wind energy on Earth?",
+                        qMm: "ကမ္ဘာပေါ်တွင် လေစွမ်းအင်ဖြစ်ပေါ်စေသည့် ပင်မအကြောင်းရင်းမှာ အဘယ်နည်း။",
+                        optionsEn: ["Uneven heating of the Earth's surface by the Sun", "Rotation of the Moon", "Ocean tidal waves"],
+                        optionsMm: ["နေမှကမ္ဘာ့မျက်နှာပြင်ကို မညီညာဘဲ အပူပေးခြင်း", "လ၏ လည်ပတ်မှု", "ပင်လယ်ဒီရေလှိုင်းများ"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "How is electricity generated using wind turbines?",
+                        qMm: "လေရဟတ်များကို အသုံးပြု၍ လျှပ်စစ်ဓာတ်အားကို မည်သို့ ထုတ်လုပ်သနည်း။",
+                        optionsEn: ["Wind turns the blades which spin a generator", "Wind heats water to create steam", "Wind creates direct chemical reactions"],
+                        optionsMm: ["လေက ပန်ကာရွက်များကို လည်စေပြီး ဂျင်နရေတာကို လှည့်ပေးသည်", "လေက ရေကိုအပူပေး၍ ရေနွေးငွေ့ထုတ်သည်", "လေသည် တိုက်ရိုက် ဓာတုဗေဒပြောင်းလဲမှုကို ဖြစ်စေသည်"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is solar photovoltaic (PV) technology used for?",
+                        qMm: "နေရောင်ခြည်သုံး ဖိုတိုဗို့တိတ် (PV) နည်းပညာကို မည်သည့်အတွက် အဓိက အသုံးပြုသနည်း။",
+                        optionsEn: ["Converting sunlight directly into electricity", "Heating water for cooking only", "Generating wind currents"],
+                        optionsMm: ["နေရောင်ခြည်ကို လျှပ်စစ်စွမ်းအင်အဖြစ် တိုက်ရိုက်ပြောင်းလဲရန်", "ချက်ပြုတ်ရန် ရေနွေးပူဖြစ်စေရန်သာ", "လေစီးကြောင်းများ ဖန်တီးရန်"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is hydroelectric power generated from?",
+                        qMm: "ရေအားလျှပ်စစ်ကို မည်သည့်အရာမှ ထုတ်လုပ်သနည်း။",
+                        optionsEn: ["The energy of moving or falling water", "Chemical reactions in deep oceans", "Underground volcanic magma"],
+                        optionsMm: ["ရွေ့လျားနေသော သို့မဟုတ် ကျဆင်းနေသော ရေ၏စွမ်းအင်မှ", "ပင်လယ်နက်အတွင်းရှိ ဓာတုတုံ့ပြန်မှုများမှ", "မြေအောက် မဂ္ဂမာ (Magma) မှ"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is geothermal energy derived from?",
+                        qMm: "မြေအောက်အပူစွမ်းအင် (Geothermal energy) သည် မည်သည့်နေရာမှ ရရှိလာသနည်း။",
+                        optionsEn: ["Heat from deep within the Earth's crust", "Direct heat from solar radiation", "Burning biomass materials"],
+                        optionsMm: ["ကမ္ဘာ့မြေလွှာအတွင်းပိုင်းမှ ထွက်လာသော အပူမှ", "နေရောင်ခြည်မှ တိုက်ရိုက်ရရှိသော အပူမှ", "ဇီဝထုပစ္စည်းများကို မီးရှို့ခြင်းမှ"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What does biomass energy refer to?",
+                        qMm: "ဇီဝထုစွမ်းအင် (Biomass energy) ဆိုသည်မှာ အဘယ်အရာကို ညွှန်းဆိုသနည်း။",
+                        optionsEn: ["Energy derived from organic plant and animal materials", "Energy produced from plastic waste", "Pure chemical hydrogen fuel"],
+                        optionsMm: ["သစ်ပင်နှင့် တိရစ္ဆာန်ထွက်ပစ္စည်း ဇီဝပစ္စည်းများမှ ရရှိသည့်စွမ်းအင်", "ပလတ်စတစ်စွန့်ပစ်ပစ္စည်းများမှ ထုတ်လုပ်သည့်စွမ်းအင်", "သန့်စင်သော ဟိုက်ဒရိုဂျင် ဓာတုလောင်စာ"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "Which gas is a major contributor to global warming released by burning fossil fuels?",
+                        qMm: "ကျောက်ဖြစ်ရုပ်ကြွင်းလောင်စာများကို မီးရှို့ခြင်းကြောင့် ကမ္ဘာကြီးပူနွေးလာမှုကို အဓိက အထောက်အကူပြုသည့် ဓာတ်ငွေ့မှာ အဘယ်နည်း။",
+                        optionsEn: ["Carbon dioxide (CO2)", "Oxygen (O2)", "Nitrogen (N2)"],
+                        optionsMm: ["ကာဗွန်ဒိုင်အောက်ဆိုဒ် (CO2)", "အောက်ဆီဂျင် (O2)", "နိုက်ထိုဂျင် (N2)"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is a major environmental consequence of burning high-sulfur coal?",
+                        qMm: "ဆာလဖာပါဝင်မှုများသော ကျောက်မီးသွေးကို လောင်ကျွမ်းစေခြင်း၏ အဓိက ပတ်ဝန်းကျင်ဆိုင်ရာ ဆိုးကျိုးမှာ အဘယ်နည်း။",
+                        optionsEn: ["Acid rain", "Ozone layer healing", "Increased freshwater supply"],
+                        optionsMm: ["အက်ဆစ်မိုးရွာခြင်း", "အိုဇုန်းလွှာ ပြန်လည်ကောင်းမွန်လာခြင်း", "သန့်ရှင်းသော ရေအရင်းအမြစ် တိုးပွားလာခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What environmental impact is commonly associated with large hydroelectric dams?",
+                        qMm: "ရေအားလျှပ်စစ်ဆည်ကြီးများကြောင့် ဖြစ်ပေါ်လေ့ရှိသော ပတ်ဝန်းကျင်ဆိုင်ရာ သက်ရောက်မှုမှာ အဘယ်နည်း။",
+                        optionsEn: ["Displacement of local ecosystems and communities", "Permanent cooling of global climate", "Reduction of seismic activity"],
+                        optionsMm: ["ဒေသန္တရ ဂေဟစနစ်နှင့် လူမှုအသိုက်အဝန်းများ ရွှေ့ပြောင်းရခြင်း", "ကမ္ဘာ့ရာသီဥတု အပြီးအပိုင် အေးမြသွားခြင်း", "မြေငញ្စည်းလှုပ်ခတ်မှုများ လုံးဝချုပ်ငြိမ်းသွားခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "Which of the following is a disadvantage of solar and wind energy?",
+                        qMm: "အောက်ပါတို့အနက် နေစွမ်းအင်နှင့် လေစွမ်းအင်တို့၏ အားနည်းချက်မှာ အဘယ်နည်း။",
+                        optionsEn: ["They are intermittent and weather-dependent", "They produce high amounts of nuclear waste", "They cause severe underground radiation"],
+                        optionsMm: ["အချိန်အခါအလိုက် ပြောင်းလဲပြီး ရာသီဥတုအပေါ် မူတည်နေခြင်း", "နျူကလီးယားစွန့်ပစ်ပစ္စည်း အမြောက်အမြား ထွက်ရှိခြင်း", "ပြင်းထန်သော မြေအောက် ရေဒီယိုသတ္တိကြွမှု ဖြစ်စေခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is nuclear energy produced by?",
+                        qMm: "နျူကလီးယားစွမ်းအင်ကို မည်သည့်နည်းလမ်းဖြင့် ထုတ်လုပ်သနည်း။",
+                        optionsEn: ["Nuclear fission or fusion reactions", "Simple burning of coal", "Chemical oxidation of oil"],
+                        optionsMm: ["နျူကလီးယား ကွဲထွက်ခြင်း (Fission) သို့မဟုတ် ပေါင်းစပ်ခြင်း (Fusion) တုံ့ပြန်မှုများ", "ကျောက်မီးသွေးကို ရိုးရိုးမီးရှို့ခြင်း", "ရေနံ၏ ဓာတုအောက်ဆီဂျင်ပေါင်းစပ်မှု"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is a primary safety concern regarding nuclear power plants?",
+                        qMm: "နျူကလီးယားစွမ်းအင်ထုတ်လုပ်ရေးစက်ရုံများနှင့် ပတ်သက်၍ အဓိက စိုးရိမ်ရသည့် ဘေးကင်းလုံခြုံရေး အချက်မှာ အဘယ်နည်း။",
+                        optionsEn: ["Radioactive waste disposal and potential accidents", "Excessive noise pollution", "High carbon dioxide emissions during operation"],
+                        optionsMm: ["ရေဒီယိုသတ္တိကြွ စွန့်ပစ်ပစ္စည်း စီမံခန့်ခွဲမှုနှင့် ဖြစ်နိုင်ချေရှိသော မတော်တဆမှုများ", "ဆူညံသံ ထွက်ရှိမှု လွန်ကဲခြင်း", "လည်ပတ်နေစဉ် ကာဗွန်ဒိုင်အောက်ဆိုဒ် အမြောက်အမြား ထွက်ခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What term describes the wise and efficient use of energy resources to avoid waste?",
+                        qMm: "စွမ်းအင် অপဟဿ မဖြစ်စေရန် စွမ်းအင်အရင်းအမြစ်များကို ဉာဏ်ပညာရှိရှိနှင့် ထိရောက်စွာ အသုံးပြုခြင်းကို မည်သို့ ခေါ်ဆိုသနည်း။",
+                        optionsEn: ["Energy conservation", "Energy destruction", "Energy maximization"],
+                        optionsMm: ["စွမ်းအင်ကို ထိန်းသိမ်းခြင်း (Energy conservation)", "စွမ်းအင်ဖျက်ဆီးခြင်း", "စွမ်းအင် အများဆုံးသုံးစွဲခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "Which sector typically consumes the largest share of global primary energy?",
+                        qMm: "ကမ္ဘာ့မူလစွမ်းအင်၏ အများဆုံးဝေစုကို ပုံမှန်အားဖြင့် မည်သည့်ကဏ္ဍက အဓိက သုံးစွဲသနည်း။",
+                        optionsEn: ["Industry, transportation, and residential/commercial buildings", "Space exploration only", "Deep sea diving equipment"],
+                        optionsMm: ["စက်မှုလုပ်ငန်း၊ သယ်ယူပို့ဆောင်ရေးနှင့် လူနေအိမ်ရာ/စီးပွားရေး အဆောက်အအုံများ", "အာကာသ စူးစမ်းလေ့လာရေး သီးသန့်", "ပင်လယ်နက် ရေငုပ်ပစ္စည်းများ"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "What is the main benefit of improving energy efficiency in appliances and buildings?",
+                        qMm: "လျှပ်စစ်ပစ္စည်းများနှင့် အဆောက်အအုံများတွင် စွမ်းအင်သုံးစွဲမှု ထိရောက်မှုကို မြှင့်တင်ခြင်း၏ အဓိက အကျိုးကျေးဇူးမှာ အဘယ်နည်း။",
+                        optionsEn: ["Reducing overall energy consumption and greenhouse gas emissions", "Increasing electricity bills", "Making devices much heavier"],
+                        optionsMm: ["စုစုပေါင်း စွမ်းအင်သုံးစွဲမှုနှင့် ဖန်လုံအိမ်ဓာတ်ငွေ့ ထွက်ရှိမှုကို လျှော့ချပေးခြင်း", "လျှပ်စစ်မီတာခများ ပိုမိုကြီးမြင့်လာစေခြင်း", "ပစ္စည်းကိရိယာများကို ပိုမိုလေးလံစေခြင်း"],
+                        answer: 0
+                    },
+                    {
+                        qEn: "Why is transitioning towards renewable energy sources crucial for the future?",
+                        qMm: "အနာဂတ်အတွက် ပြန်လည်ပြည့်ဖြိုးမြဲစွမ်းအင်အရင်းအမြစ်များဆီသို့ ကူးပြောင်းရန် အဘယ်ကြောင့် အရေးကြီးသနည်း။",
+                        optionsEn: ["To ensure sustainable development and combat climate change", "To make fossil fuels last forever", "To stop the rotation of the Earth"],
+                        optionsMm: ["ရေရှည်တည်တံ့သော ဖွံ့ဖြိုးတိုးတက်မှုကို အာမခံရန်နှင့် ရာသီဥတုပြောင်းလဲမှုကို တိုက်ဖျက်ရန်", "ကျောက်ဖြစ်ရုပ်ကြွင်းလောင်စာများ ထာဝစဉ် တည်တံ့စေရန်", "ကမ္ဘာ့လည်ပတ်မှုကို ရပ်တန့်စေရန်"],
+                        answer: 0
+                    }
+                ];
+
+        let activeQuizSet = [];
+
+        function loadRandomQuiz() {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            activeQuizSet = shuffled.slice(0, 3);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            if (activeQuizSet.length === 0) return;
+
+            const container = document.getElementById('dynamic-quiz-questions');
+            container.innerHTML = '';
+
+            const currentLang = localStorage.getItem("portfolio-lang") || "en";
+            const isMM = currentLang === "mm";
+
+            activeQuizSet.forEach((item, index) => {
+                const qText = isMM ? item.qMm : item.qEn;
+                const opts = isMM ? item.optionsMm : item.optionsEn;
+
+                let html = `
+                    <div class="quiz-question-card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: #00ffcc; margin-bottom: 0.5rem; font-size: 1rem;">${index + 1}. ${qText}</h4>
+                        <div class="quiz-options" style="display: flex; flex-direction: column; gap: 6px; padding-left: 10px;">
+                `;
+
+                opts.forEach((opt, oIndex) => {
+                    html += `
+                        <label style="cursor: pointer; font-size: 0.9rem;">
+                            <input type="radio" name="q_${index}" value="${oIndex}"> ${opt}
+                        </label>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+
+            document.getElementById('quiz-result-msg').textContent = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('refresh-quiz').addEventListener('click', () => {
+            loadRandomQuiz();
+        });
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
+            const msg = document.getElementById('quiz-result-msg');
+
+            let score = 0;
+            let allAnswered = true;
+
+            activeQuizSet.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                } else if (parseInt(selected.value) === item.answer) {
+                    score++;
+                }
+            });
+
+            if (!allAnswered) {
+                msg.style.color = '#ee1c4b';
+                msg.textContent = isMM ? "ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပါ။" : "Please answer all questions.";
+                return;
+            }
+
+            msg.style.color = '#00ffcc';
+            msg.textContent = isMM 
+                ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` 
+                : `You got (${score}/3) score.`;
+        });
+    </script>
+    <script src="../app.js" defer></script>
+    <script src="physics_main.js" defer></script>
+
+</body>
+</html>
