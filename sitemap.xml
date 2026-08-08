@@ -12,6 +12,11 @@
         <priority>0.8</priority>
     </url>
     <url>
+        <loc>https://heinpop.xyz/3D-Viewer.html</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
         <loc>https://heinpop.xyz/Front-End_Architecture.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -53,3 +58,4 @@
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
+</urlset>
