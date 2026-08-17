@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satellite & Solar Energy Lab | HeinPop-Lab</title>
+    <meta name="description" content="Explore an interactive 3D simulation of Satellite Orbital Dynamics and Solar Panel Energy Generation for Grade 12 Myanmar curriculum.">
+    <meta name="keywords" content="Grade 12 Physics, Satellite Orbit, Solar Energy, Renewable Energy, 3D Physics Simulation, HeinPop, Myanmar Curriculum">
+    <meta name="author" content="HeinPop">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/lab-sattelite-solar.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://heinpop.xyz/Grade-12_Physics/lab-sattelite-solar.html">
+    <meta property="og:title" content="Satellite & Solar Energy Simulation | HeinPop-Lab">
+    <meta property="og:description" content="Interactive 3D simulation of Satellite Orbital Dynamics and Solar Panel Energy Generation built by HeinPop.">
+    <meta property="og:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://heinpop.xyz/Grade-12_Physics/lab-sattelite-solar.html">
+    <meta name="twitter:title" content="Satellite & Solar Energy Simulation | HeinPop-Lab">
+    <meta name="twitter:description" content="Interactive 3D simulation of Satellite Orbital Dynamics and Solar Panel Energy Generation built by HeinPop.">
+    <meta name="twitter:image" content="https://heinpop.xyz/img/logo.svg">
+
+    <!-- === STRUCTURED DATA === -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "Solar Energy And Sattelites Simulation",
+      "description": "Interactive 3D simulation of Satellite Orbital Dynamics and Solar Panel Energy Generation for Grade 12 Physics students.",
+      "educationalLevel": "Grade 12",
+      "learningResourceType": "Interactive Simulation",
+      "author": {
+        "@type": "Person",
+        "name": "HeinPop"
+      },
+      "url": "https://heinpop.xyz/Grade-12_Physics/lab-sattelite-solar.html"
+    }
+    </script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="lab.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.svg">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="lab-sattelite-solar.js" defer></script>
+</head>
+<body class="dark-theme">
+
+   <nav class="navbar">
+        <div class="logo">
+            <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="../index.html#home" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="../index.html#my-workflow" data-en="My-workflow" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
+            <li class="dropdown">
+                <a href="../index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="../Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="../Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="../Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="../3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="lab-hero max-container">
+        <div class="lab-header">
+            <span class="section-tagline" data-en="Orbital Mechanics & Solar Power" data-mm="ဂြိုဟ်တုပတ်လမ်းနှင့် နေစွမ်းအင်">Orbital Mechanics & Solar Power</span>
+            <h1 data-en="Satellite Orbital & Solar Energy Simulation" data-mm="ဂြိုဟ်တုပတ်လမ်းနှင့် နေစွမ်းအင်ထုတ်လုပ်မှု စမ်းသပ်ခန်း">Satellite Orbital & Solar Energy Simulation</h1>
+            <p data-en="Explore satellite orbital dynamics and solar panel energy absorption."
+               data-mm="ဂြိုဟ်တုပတ်လမ်းကြောင်းဆိုင်ရာ ဒိုင်းနမစ်များနှင့် ဆိုလာပြားစွမ်းအင်စုပ်ယူမှုစနစ်တို့ကို လေ့လာပါ။">
+               Explore satellite orbital dynamics and solar panel energy absorption.
+            </p>
+        </div>
+
+        <div class="lab-workspace">
+            <div class="lab-controls-panel">
+                <h3>Control Center</h3>
+                
+                <div class="control-sub-panel" id="LeftPanels">
+                    <h4 data-en="Satellite Tracking & View" data-mm="ဂြိုဟ်တု ရွေးချယ်ခြင်းနှင့် ကြည့်ရှုမှု">Satellite Tracking & View</h4>
+                    
+                    <div class="control-group" style="margin-bottom: 10px;">
+                        <label for="satelliteSelect" data-en="Choose Satellite:" data-mm="ဂြိုဟ်တုရွေးချယ်ရန်:">Choose Satellite:</label>
+                        <select id="satelliteSelect" class="lab-select" style="width: 100%; padding: 8px; background: #222; color: #fff; border: 1px solid #444; border-radius: 6px; margin-top: 5px;">
+                            <option value="earth" data-en="Earth Overview" data-mm="ကမ္ဘာလုံးခြုံငုံကြည့်ရှုရန်">Earth Overview</option>
+                            <option value="sat0" data-en="Satellite Alpha (Orbit 1)" data-mm="ဂြိုဟ်တု အယ်လ်ဖာ (ပတ်လမ်း ၁)">Satellite Alpha (Orbit 1)</option>
+                            <option value="sat1" data-en="Satellite Beta (Orbit 2)" data-mm="ဂြိုဟ်တု ဘီတာ (ပတ်လမ်း ၂)">Satellite Beta (Orbit 2)</option>
+                            <option value="sat2" data-en="Satellite Gamma (Orbit 3)" data-mm="ဂြိုဟ်တု ဂမ်မာ (ပတ်လမ်း ၃)">Satellite Gamma (Orbit 3)</option>
+                            <option value="sat3" data-en="Satellite Delta (Orbit 4)" data-mm="ဂြိုဟ်တု ဒယ်တာ (ပတ်လမ်း ၄)">Satellite Delta (Orbit 4)</option>
+                            <option value="sat4" data-en="Satellite Omega (Orbit 5)" data-mm="ဂြိုဟ်တု အိုမီဂါ (ပတ်လမ်း ၅)">Satellite Omega (Orbit 5)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="theory-card">
+                    <h4 data-en="Space & Solar Energy Principles" data-mm="အာကာသနှင့် နေစွမ်းအင်ဆိုင်ရာ အခြေခံမူများ">Space & Solar Energy Principles</h4>
+                    <p data-en="Satellites utilize photovoltaic solar panels oriented toward the Sun to convert solar irradiance into electrical power while maintaining stable orbital velocities."
+                       data-mm="ဂြိုဟ်တုများသည် တည်ငြိမ်သော ပတ်လမ်းအမြန်နှုန်းကို ထိန်းသိမ်းရင်း နေရောင်ခြည်စွမ်းအင်ကို လျှပ်စစ်စွမ်းအင်အဖြစ် ပြောင်းလဲရန် နေဘက်သို့ ချိန်ရွယ်ထားသော ဆိုလာပြားများကို အသုံးပြုကြသည်။">
+                       Satellites utilize photovoltaic solar panels oriented toward the Sun to convert solar irradiance into electrical power while maintaining stable orbital velocities.
+                    </p>
+                    
+                    <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 13px; color: #00ffcc;">
+                        <p>\( P = I \cdot A \cdot \eta \)</p>
+                        <p style="font-size: 11px; margin-top: 4px; color: #ccc;">(\(I\)=Solar Constant, \(A\)=Panel Area, \(\eta\)=Efficiency)</p>
+                    </div>
+                </div>
+
+                <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
+                <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a> 
+            </div>
+
+            <div class="lab-canvas-container" id="canvasContainer">
+                <div class="telemetry-overlay">
+                    <div>Solar Energy Output (\( P \)): <span id="powerVal">145.0</span> kW</div>
+                    <div id="eclipse-status" style="font-size: 11px; color: #00ffcc; margin-top: 2px;">Status: In Sunlight (Generating)</div>
+                    <div id="cam-info" style="font-size: 11px; color: #00ffcc; margin-top: 2px;">Tracking: Earth Overview</div>
+                </div>
+                
+                <button id="fullscreenBtn" class="fullscreen-btn" title="Full Screen">
+                    <span class="material-symbols-outlined">fullscreen</span>
+                </button>
+                <canvas id="physics-canvas"></canvas>
+            </div>
+        </div>
+
+        <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
+            <div class="quiz-header" style="margin-bottom: 1.5rem;">
+                <h3 data-en="Post-Lab Knowledge Check (3 Random Questions)" data-mm="စမ်းသပ်ခန်းအပြီး ဗဟုသုတစစ်ဆေးရန် (ကျပန်းမေးခွန်း ၃ ပုဒ်)">Post-Lab Knowledge Check</h3>
+                <p data-en="Test your understanding through 3 random questions selected from our 20-question satellite and solar energy question bank."
+                   data-mm="ဂြိုဟ်တုနှင့် နေစွမ်းအင်ဆိုင်ရာ မေးခွန်း ၂၀ ပါဝင်သော ဘဏ်ကြီးထဲမှ ကျပန်းထုတ်ပေးသော မေးခွန်း ၃ ပုဒ်ဖြင့် စမ်းသပ်ပါ။">
+                   Test your understanding through 3 random questions selected from our 20-question satellite and solar energy question bank.
+                </p>
+            </div>
+
+            <div id="quiz-form-container">
+                <div id="dynamic-quiz-questions"></div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button id="submit-quiz" class="lab-btn btn-primary" data-en="Submit Answers" data-mm="အဖြေလွှာတင်မည်">Submit Answers</button>
+                    <button id="refresh-quiz" class="lab-btn btn-secondary" data-en="New Questions" data-mm="မေးခွန်းအသစ်လဲမည်">New Questions</button>
+                    <span id="quiz-result-msg" style="font-weight: bold; font-size: 0.95rem;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">&copy; 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+    </footer>
+
+    <script>
+        // မေးခွန်း ၂၀ ပုဒ်အပြည့်အစုံ
+        const questionBank = [
+            {
+                qEn: "What is the primary power source for satellites in Earth orbit?",
+                qMm: "ကမ္ဘာပတ်လမ်းရှိ ဂြိုဟ်တုများအတွက် ပင်မစွမ်းအင်အရင်းအမြစ်မှာ အဘယ်နည်း။",
+                optionsEn: ["Solar photovoltaic panels", "Internal nuclear diesel generators", "Underground geothermal cables"],
+                optionsMm: ["နေရောင်ခြည်သုံး ဖိုတိုဗို့တိတ် ဆိုလာပြားများ", "အတွင်းပိုင်း နျူကလီးယား ဒီဇယ်ဂျင်နရေတာများ", "မြေအောက် အပူစွမ်းအင်ကြိုးများ"],
+                answer: 0
+            },
+            {
+                qEn: "What happens to a satellite's solar power generation when it passes into Earth's shadow (eclipse)?",
+                qMm: "ဂြိုဟ်တုသည် ကမ္ဘာ့အရိပ်ထဲသို့ ဝင်ရောက်သွားသောအခါ (Eclipse) ဆိုလာစွမ်းအင်ထုတ်လုပ်မှု မည်သို့ဖြစ်သွားသနည်း။",
+                optionsEn: ["Power generation drops significantly to near zero", "Power generation increases to maximum", "Power generation remains completely unaffected"],
+                optionsMm: ["စွမ်းအင်ထုတ်လုပ်မှု သိသိသာသာ ကျဆင်းသွားပြီး သုညနီးပါးဖြစ်သွားသည်", "စွမ်းအင်ထုတ်လုပ်မှု အမြင့်ဆုံးသို့ တက်သွားသည်", "စွမ်းအင်ထုတ်လုပ်မှု လုံးဝပြောင်းလဲမှုမရှိပါ"],
+                answer: 0
+            },
+            {
+                qEn: "Why do satellites experience day and night cycles in Low Earth Orbit (LEO)?",
+                qMm: "ကမ္ဘာပတ်လမ်းနိမ့် (LEO) ရှိ ဂြိုဟ်တုများသည် အဘယ်ကြောင့် နေ့နှင့်ည စက်ဝန်းကို ကြုံတွေ့ရသနည်း။",
+                optionsEn: ["Because they orbit Earth and pass into Earth's shadow", "Because the Sun turns off periodically", "Because of cloud blockages"],
+                optionsMm: ["ကမ္ဘာကိုပတ်နေစဉ် ကမ္ဘာ့အရိပ်ထဲသို့ ဝင်ရောက်သွားသောကြောင့်", "နေသည် အချိန်အပိုင်းအခြားအလိုက် ငြိမ်းသွားသောကြောင့်", "တိမ်များပိတ်ဆို့နေသောကြောင့်"],
+                answer: 0
+            },
+            {
+                qEn: "What is the main function of solar panels on a satellite?",
+                qMm: "ဂြိုဟ်တုပေါ်ရှိ ဆိုလာပြားများ၏ ပင်မလုပ်ဆောင်ချက်မှာ အဘယ်နည်း။",
+                optionsEn: ["To convert sunlight into electrical energy", "To protect the satellite from asteroid impacts", "To push the satellite faster in orbit"],
+                optionsMm: ["နေရောင်ခြည်ကို လျှပ်စစ်စွမ်းအင်အဖြစ် ပြောင်းလဲရန်", "ဂြိုဟ်တုကို ဥက္ကာခဲရိုက်ခတ်မှုမှ ကာကွယ်ရန်", "ပတ်လမ်းထဲတွင် ဂြိုဟ်တုကို ပိုမိုမြန်ဆန်စွာ တွန်းကန်ရန်"],
+                answer: 0
+            },
+            {
+                qEn: "Which physical law or force keeps a satellite in orbit around the Earth?",
+                qMm: "ဂြိုဟ်တုတစ်စင်းကို ကမ္ဘာပတ်လမ်းကြောင်းအတွင်း ဆက်လက်တည်ရှိနေစေသော ရူပဗေဒနိယာမ သို့မဟုတ် ძယ်မှာ အဘယ်နည်း။",
+                optionsEn: ["Gravitational force balanced with orbital velocity", "Magnetic repulsion from the atmosphere", "Centrifugal force pushing away from the Sun"],
+                optionsMm: ["ပတ်လမ်းအမြန်နှုန်းနှင့် ဟန်ချက်ညီနေသော မြေဆွဲအား", "လေထုမှ သံလိုက်ဓာတ် တွန်းကန်အား", "နေဘက်မှ တွန်းထုတ်သော စင်တီဖူဂယ် အား"],
+                answer: 0
+            },
+            {
+                qEn: "What device stores electrical energy generated by solar panels during eclipse periods?",
+                qMm: "အရိပ်ကျရောက်ချိန် (Eclipse) တွင် ဆိုလာပြားများမှ ထုတ်ပေးသော လျှပ်စစ်စွမ်းအင်ကို မည်သည့်ပစ္စည်းက သိမ်းဆည်းပေးသနည်း။",
+                optionsEn: ["Rechargeable batteries (e.g., Lithium-ion)", "Water tanks", "High-speed mechanical flywheels only"],
+                optionsMm: ["ပြန်လည်အားသွင်းနိုင်သော ဘက်ထရီများ (ဥပမာ- လီသီယမ်အိုင်ယွန်)", "ရေကန်များ", "အမြန်လည်ပတ်နေသော စက်မှုဒလက်များသာ"],
+                answer: 0
+            },
+            {
+                qEn: "What is solar irradiance outside Earth's atmosphere approximately called?",
+                qMm: "ကမ္ဘာ့လေထုပြင်ပရှိ နေရောင်ခြည်စွမ်းအင်သိပ်သည်းဆကို ယေဘုယျအားဖြင့် မည်သို့ခေါ်ဆိုသနည်း။",
+                optionsEn: ["Solar Constant", "Atmospheric Pressure Index", "Thermal Radiation Constant"],
+                optionsMm: ["ဆိုလာ ကိန်းမြဲ (Solar Constant)", "လေထုဖိအား အညွှန်းကိန်း", "အပူဖြာထွက်မှု ကိန်းမြဲ"],
+                answer: 0
+            },
+            {
+                qEn: "Why do satellite solar panels typically track the Sun?",
+                qMm: "ဂြိုဟ်တုဆိုလာပြားများသည် အဘယ်ကြောင့် နေကို အမြဲတမ်း မျက်နှာမူခြေရာခံကြသနည်း။",
+                optionsEn: ["To maximize the absorption of solar energy", "To keep the satellite warm in deep space", "To prevent space dust accumulation"],
+                optionsMm: ["နေစွမ်းအင်စုပ်ယူမှုကို အမြင့်ဆုံးရရှိစေရန်", "အနက်ရှိုင်းဆုံးအာကာသထဲတွင် ဂြိုဟ်တုကို ပူနွေးစေရန်", "အာကာသ דוုန်မှုန့်များ စုပုံလာမှုကို တားဆီးရန်"],
+                answer: 0
+            },
+            {
+                qEn: "What type of orbit typically takes about 90 minutes to complete one revolution around Earth?",
+                qMm: "ကမ္ဘာကို တစ်ပတ်ပတ်မိရန် ပုံမှန်အားဖြင့် မိနစ် ၉၀ ခန့် ကြာမြင့်တတ်သော ပတ်လမ်းအမျိုးအစားမှာ အဘယ်နည်း။",
+                optionsEn: ["Low Earth Orbit (LEO)", "Geostationary Orbit (GEO)", "Lunar Orbit"],
+                optionsMm: ["ကမ္ဘာပတ်လမ်းနိမ့် (LEO)", "ဂျီအိုစတေရှင်နရီ ပတ်လမ်း (GEO)", "လပတ်လမ်း"],
+                answer: 0
+            },
+            {
+                qEn: "What materials are widely used in space solar cells for high efficiency?",
+                qMm: "စွမ်းဆောင်ရည်မြင့်မားစေရန် အာကာသဆိုလာဆဲလ်များတွင် မည်သည့်ပစ္စည်းများကို ကျယ်ပြန့်စွာ အသုံးပြုကြသနည်း။",
+                optionsEn: ["Multi-junction semiconductor materials (Gallium Arsenide)", "Pure copper plates", "Wooden carbon sheets"],
+                optionsMm: ["မော်လီကျူးစုံ ဆီမီးကွန်ဒတ်တာ ပစ္စည်းများ (Gallium Arsenide)", "သန့်စစ်ထားသော ကြေးနီပြားများ", "သစ်သားကာဗွန်စာရွက်များ"],
+                answer: 0
+            },
+            {
+                qEn: "What effect does space radiation have on satellite solar panels over long periods?",
+                qMm: "ကြာရှည်လာသည်နှင့်အမျှ အာကာသဖြာထွက်မှု (Radiation) သည် ဂြိုဟ်တုဆိုလာပြားများအပေါ် မည်ကဲ့သို့ သက်ရောက်မှုရှိသနည်း။",
+                optionsEn: ["Gradual degradation and reduction in power output", "Continuous increase in power generation efficiency", "Transformation into magnetic transmitters"],
+                optionsMm: ["တဖြည်းဖြည်း ယိုယွင်းပျက်စီးစေပြီး စွမ်းအင်ထုတ်လုပ်မှု လျော့ကျသွားစေသည်", "စွမ်းအင်ထုတ်လုပ်မှု စွမ်းဆောင်ရည် အဆက်မပြတ် တိုးတက်လာစေသည်", "သံလိုက်ဖြန့်ဝေသည့် ပစ္စည်းအဖြစ်သို့ ပြောင်းလဲသွားစေသည်"],
+                answer: 0
+            },
+            {
+                qEn: "What is the primary danger of space debris to orbiting satellites and solar panels?",
+                qMm: "ပတ်လမ်းရှိ ဂြိုဟ်တုများနှင့် ဆိုလာပြားများအတွက် အာကာသအမှိုက်များ (Space Debris) ၏ အကြီးမားဆုံးအန္တရာယ်မှာ အဘယ်နည်း။",
+                optionsEn: ["High-speed physical collisions causing catastrophic damage", "Blocking all radio signals permanently", "Melting the panels due to extreme heat"],
+                optionsMm: ["အလွန်အမင်း မြန်ဆန်သော တိုက်မိမှုများကြောင့် ပြင်းထန်ပျက်စီးစေခြင်း", "ရေဒီယိုအချက်ပြမှုအားလုံးကို အပြီးအပိုင် ပိတ်ဆို့ပစ်ခြင်း", "အလွန်အမင်း ပူပြင်းမှုကြောင့် ပြားများ အရည်ပျော်သွားခြင်း"],
+                answer: 0
+            },
+            {
+                qEn: "How does the distance from the Sun affect the solar power available to a spacecraft?",
+                qMm: "နေနှင့်အကွာအဝေးသည် အာကာသယာဉ်တစ်စင်း ရရှိနိုင်သော နေစွမ်းအင်အပေါ် မည်သို့ သက်ရောက်မှုရှိသနည်း။",
+                optionsEn: ["Power varies inversely with the square of the distance from the Sun", "Power remains constant regardless of distance", "Power increases linearly with distance"],
+                optionsMm: ["စွမ်းအင်သည် နေနှင့်အကွာအဝေး၏ နှစ်ထပ်ကိန်းနှင့် ပြောင်းပြန်အချိုးကျသည်", "အကွာအဝေး မည်သို့ပင်ရှိစေကာမူ စွမ်းအင်ပမာဏ တူညီနေသည်", "အကွာအဝေးနှင့်အတူ စွမ်းအင်က တိုက်ရိုက် တိုးလာသည်"],
+                answer: 0
+            },
+            {
+                qEn: "What is thermal management in satellite solar panels designed to handle?",
+                qMm: "ဂြိုဟ်တုဆိုလာပြားများတွင် အပူချိန်စီမံခန့်ခွဲမှု (Thermal Management) သည် မည်သည့်အရာကို ကိုင်တွယ်ဖြေရှင်းရန် ရည်ရွယ်သနည်း။",
+                optionsEn: ["Extreme temperature fluctuations between direct sunlight and shadow", "Internal water cooling for human astronauts", "Preventing wind friction inside the vacuum"],
+                optionsMm: ["နေရောင်တိုက်ရိုက်ကျခြင်းနှင့် အရိပ်ကျခြင်းတို့ကြား အလွန်အမင်း ကွာခြားသော အပူချိန်ပြောင်းလဲမှုများ", "လူလိုက်ပါသော အာကာသယာဉ်မှူးများအတွက် အတွင်းပိုင်းရေအေးစနစ်", "လေဟာနယ်အတွင်း လေပွတ်တိုက်မှုကို ကာကွယ်ရန်"],
+                answer: 0
+            },
+            {
+                qEn: "Why are solar panels on satellites often designed to be deployable (folding)?",
+                qMm: "ဂြိုဟ်တုပေါ်ရှိ ဆိုလာပြားများကို အဘယ်ကြောင့် ခေါက်သိမ်း၍ ထုတ်ယူနိုင်သော ပုံစံဖြင့် တည်ဆောက်ကြသနည်း။",
+                optionsEn: ["To fit inside rocket fairings during launch and expand in space", "To hide from enemy satellite surveillance", "To reduce the overall weight of the satellite to zero"],
+                optionsMm: ["ဒုံးပျံလွှင့်တင်စဉ် တင်ဆောင်နိုင်ရန်နှင့် အာကာသထဲရောက်မှ ဖြန့်ထွက်ရန်", "ရန်သူ့ဂြိုဟ်တုများ၏ စောင့်ကြည့်မှုမှ ပုန်းအောင်းရန်", "ဂြိုဟ်တု၏ စုစုပေါင်းအလေးချိန်ကို သုညအထိ လျှော့ချရန်"],
+                answer: 0
+            },
+            {
+                qEn: "What is the role of attitude control systems (ACS) in relation to solar panels?",
+                qMm: "ဆိုလာပြားများနှင့်စပ်လျဉ်း၍ ကိုယ်ထည်ထိန်းချုပ်မှုစနစ် (Attitude Control Systems - ACS) ၏ အခန်းကဏ္ဍမှာ အဘယ်နည်း။",
+                optionsEn: ["To orient the satellite and its solar wings precisely toward the Sun", "To spin the satellite randomly to confuse radar", "To generate mechanical wind power inside the cabin"],
+                optionsMm: ["ဂြိုဟ်တုနှင့် ဆိုလာတောင်ပံများကို နေဘက်သို့ တိကျစွာ ချိန်ရွယ်ပေးရန်", "រ៉ာဒါကို လှည့်စားရန် ဂြိုဟ်တုကို ကျပန်းလည်ပတ်စေရန်", "အခန်းတွင်း၌ စက်မှုလေစွမ်းအင်ကို ထုတ်လုပ်ရန်"],
+                answer: 0
+            },
+            {
+                qEn: "What happens to the efficiency of silicon solar panels as their temperature increases in sunlight?",
+                qMm: "နေရောင်ခြည်အောက်တွင် ဆီလီကွန်ဆိုလာပြားများ၏ အပူချိန် မြင့်တက်လာသောအခါ ၎င်းတို့၏ စွမ်းဆောင်ရည် မည်သို့ဖြစ်သွားသနည်း။",
+                optionsEn: ["Efficiency generally decreases as temperature rises", "Efficiency increases exponentially", "Efficiency remains 100% stable at all temperatures"],
+                optionsMm: ["အပူချိန်မြင့်တက်လာသည်နှင့်အမျှ စွမ်းဆောင်ရည် ကျဆင်းသွားသည်", "စွမ်းဆောင်ရည်မှာ အဆမတန် တိုးတက်လာသည်", "အပူချိန် မည်မျှပင်ရှိစေကာမူ ၁၀၀% တည်ငြိမ်နေသည်"],
+                answer: 0
+            },
+            {
+                qEn: "Which orbit type matches the Earth's rotational speed, allowing a satellite to stay over the same point?",
+                qMm: "ကမ္ဘာ့လည်ပတ်နှုန်းနှင့် ကိုက်ညီပြီး ဂြိုဟ်တုတစ်စင်းကို တူညီသောနေရာပေါ်တွင် အမြဲတည်ရှိနေစေသော ပတ်လမ်းအမျိုးအစားမှာ အဘယ်နည်း။",
+                optionsEn: ["Geostationary Equatorial Orbit (GEO)", "Low Polar Orbit", "Random Elliptical Orbit"],
+                optionsMm: ["ဂျီအိုစတေရှင်နရီ အီကွေတာပတ်လမ်း (GEO)", "ဝင်ရိုးစွန်းပတ်လမ်းနိမ့်", "ကျပန်း ဘဲဥပုံပတ်လမ်း"],
+                answer: 0
+            },
+            {
+                qEn: "What is the primary purpose of satellite telemetry systems?",
+                qMm: "ဂြိုဟ်တု တယ်လီမေထရီ (Telemetry) စနစ်များ၏ ပင်မရည်ရွယ်ချက်မှာ အဘယ်နည်း။",
+                optionsEn: ["To transmit operational health and power data back to Earth stations", "To take high-resolution selfies of the satellite", "To broadcast television programs globally"],
+                optionsMm: ["ဂြိုဟ်တု၏ လည်ပတ်မှုကျန်းမာရေးနှင့် စွမ်းအင်အချက်အလက်များကို ကမ္ဘာ့မြေပြင်စခန်းများသို့ ပေးပို့ရန်", "ဂြိုဟ်တု၏ အလှပုံများကို ရိုက်ကူးရန်", "ကမ္ဘာတစ်ဝန်းသို့ ရုပ်မြင်သံကြားအစီအစဉ်များ ထုတ်လွှင့်ရန်"],
+                answer: 0
+            },
+            {
+                qEn: "Why is vacuum environment advantageous for operating solar cells in space compared to Earth's surface?",
+                qMm: "ကမ္ဘာ့မျက်နှာပြင်နှင့်နှိုင်းယှဉ်ပါက အာကာသတွင်းရှိ လေဟာနယ်ပတ်ဝန်းကျင်သည် ဆိုလာဆဲလ်များအတွက် မည်သည့်အတွက် ကောင်းမွန်သနည်း။",
+                optionsEn: ["No atmospheric absorption or scattering, receiving direct unfiltered solar radiation", "Higher air pressure pushing electrons faster", "Complete absence of gravity increasing solar power"],
+                optionsMm: ["လေထုမှ စုပ်ယူမှု သို့မဟုတ် ပြန့်ကျဲမှုမရှိဘဲ ဖစ်တိုက်မထားသော နေရောင်ခြည်ကို တိုက်ရိုက်ရရှိခြင်း", "အီလက်ထရွန်များကို ပိုမိုမြန်ဆန်စွာ တွန်းအားပေးသည့် လေထုဖိအားမြင့်မားခြင်း", "မြေဆွဲအား လုံးဝမရှိခြင်းကြောင့် ဆိုလာစွမ်းအင် တိုးလာခြင်း"],
+                answer: 0
+            }
+        ];
+
+        let activeQuizSet = [];
+
+        function loadRandomQuiz() {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            activeQuizSet = shuffled.slice(0, 3);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            if (activeQuizSet.length === 0) return;
+            const container = document.getElementById('dynamic-quiz-questions');
+            container.innerHTML = '';
+            const currentLang = localStorage.getItem("portfolio-lang") || "en";
+            const isMM = currentLang === "mm";
+
+            activeQuizSet.forEach((item, index) => {
+                const qText = isMM ? item.qMm : item.qEn;
+                const opts = isMM ? item.optionsMm : item.optionsEn;
+
+                let html = `
+                    <div class="quiz-question-card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: #00ffcc; margin-bottom: 0.5rem; font-size: 1rem;">${index + 1}. ${qText}</h4>
+                        <div class="quiz-options" style="display: flex; flex-direction: column; gap: 6px; padding-left: 10px;">
+                `;
+                opts.forEach((opt, oIndex) => {
+                    html += `
+                        <label style="cursor: pointer; font-size: 0.9rem;">
+                            <input type="radio" name="q_${index}" value="${oIndex}"> ${opt}
+                        </label>
+                    `;
+                });
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+            document.getElementById('quiz-result-msg').textContent = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { loadRandomQuiz(); });
+        document.getElementById('refresh-quiz').addEventListener('click', () => { loadRandomQuiz(); });
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
+            const msg = document.getElementById('quiz-result-msg');
+            let score = 0;
+            let allAnswered = true;
+
+            activeQuizSet.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                } else if (parseInt(selected.value) === item.answer) {
+                    score++;
+                }
+            });
+
+            if (!allAnswered) {
+                msg.style.color = '#ee1c4b';
+                msg.textContent = isMM ? "ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပါ။" : "Please answer all questions.";
+                return;
+            }
+
+            msg.style.color = '#00ffcc';
+            msg.textContent = isMM ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` : `You got (${score}/3) score.`;
+        });
+    </script>
+
+    <script src="../app.js" defer></script>
+    <script src="physics_main.js" defer></script>
+</body>
+</html>
