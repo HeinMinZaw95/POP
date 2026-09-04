@@ -89,7 +89,7 @@ function init() {
 
     // 7. Load Blender GLB Model
     const loader = new THREE.GLTFLoader();
-    loader.load('rod_mesh.glb', (gltf) => {
+    loader.load('models/rod_mesh.glb', (gltf) => {
         scene.add(gltf.scene);
 
         rodMesh = gltf.scene.getObjectByName("rod_mesh");
