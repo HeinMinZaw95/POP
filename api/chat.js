@@ -7,8 +7,43 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { messages, userMsg, isExportRequest, isCVRequest, hasPhoto } = req.body;
+  const { messages, userMsg, isExportRequest, isCVRequest, hasPhoto, isStarterRequest, lang } = req.body;
 
+  // 1. Trendy Starter တောင်းဆိုလာသည့်အခါ အထူး xử lý လုပ်ပေးခြင်း
+  if (isStarterRequest) {
+    const promptLangInstruction = lang === "mm" ? "Translate and generate entirely in fluent Myanmar (Burmese)." : "Generate in English.";
+    const randomSeed = Math.floor(Math.random() * 100000);
+    
+    const starterSystemPrompt = `You are HeinPop AI, an elite Professional Graphic Designer and Art Director. ${promptLangInstruction} 
+    Generate 3 completely unique, fresh, and diverse conversation starters (max 5-7 words each, use emojis) covering graphic design trends, branding, UI/UX, or creative portfolio concepts. Random seed: ${randomSeed}.
+    Return ONLY a valid JSON object with a single field "starters" containing an array of 3 strings. No markdown formatting.`;
+
+    try {
+    
+      const starterResponse = await fetch("https://api.sargalay.com/v1/chat/completions", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.SARGALAY_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "anthropic/claude-haiku-5.5",
+          messages: [
+            { role: "system", content: starterSystemPrompt },
+            { role: "user", content: "Give me 3 diverse design starters." }
+          ]
+        })
+      });
+
+      const starterData = await starterResponse.json();
+      return res.status(200).json(starterData);
+    } catch (error) {
+      console.error("Starter Proxy Error:", error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  // 2. ပုံမှန် Chat နှင့် File Export လုပ်ဆောင်ချက်များ
   let fileExportRule = "";
   if (isExportRequest) {
     if (isCVRequest && !hasPhoto) {
@@ -69,7 +104,7 @@ JSON Structure Schema:
         model: "anthropic/claude-haiku-5.5",
         messages: [
           { role: "system", content: systemPrompt },
-          ...messages
+          ...(Array.isArray(messages) ? messages : [])
         ]
       })
     });
