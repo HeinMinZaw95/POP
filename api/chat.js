@@ -27,7 +27,7 @@ export default async function handler(req, res) {
           'Authorization': `Bearer ${process.env.SARGALAY_API_KEY}`
         },
         body: JSON.stringify({
-          model: "anthropic/claude-haiku-5.5",
+          model: "nvidia/nemotron-3.5-super-vl:free",
           messages: [
             { role: "system", content: starterSystemPrompt },
             { role: "user", content: "Give me 3 diverse design starters." }
