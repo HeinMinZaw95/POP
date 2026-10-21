@@ -34,12 +34,10 @@ let animationsMap = new Map();
 let animationsMap1 = new Map();
 let animationsMap2 = new Map();
 let activeAction;
-let activeCharIndex = 1; // 1 = Boy (Char.glb), 2 = Girl (Char2.glb)[cite: 1]
+let activeCharIndex = 1; // 1 = Boy, 2 = Girl[cite: 1]
 
 let frontLight, redLight, cyanLight;
 const clock = new THREE.Clock();
-let currentAudioPlayer = null;
-let currentAudioPlayerText = "";
 
 function updateLoadingProgress(percent, message) {
     const bar = document.getElementById('loadingBar');
@@ -61,14 +59,18 @@ window.toggleVoiceSpeech = function() {
     const voiceIcon = document.getElementById('voiceIcon');
     if (isVoiceMuted) {
         if (voiceIcon) voiceIcon.textContent = "volume_off";
-        if (currentAudioPlayer) {
-            currentAudioPlayer.pause();
-            currentAudioPlayer = null;
-        }
         showCustomNotification("AI အသံထွက်ကို ပိတ်ထားလိုက်ပါပြီ။");
     } else {
         if (voiceIcon) voiceIcon.textContent = "volume_up";
         showCustomNotification("AI အသံထွက်ကို ဖွင့်ထားလိုက်ပါပြီ။");
+    }
+}
+
+// Sidebar Toggle Function (Fixes Console Error)
+window.toggleHistorySidebar = function() {
+    const sidebar = document.getElementById('historySidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('open');
     }
 }
 
@@ -148,7 +150,6 @@ function init3DStage() {
         }
     };
 
-    // 1. Load Boy Character (Char.glb)[cite: 1]
     loader.load('Char.glb', (gltf) => {
         character1 = gltf.scene;
         character1.scale.set(1.0, 1.0, 1.0);
@@ -173,14 +174,12 @@ function init3DStage() {
             activeAction.play();
         }
 
-        const charStatus = document.getElementById('charStatus');
-        if (charStatus) charStatus.textContent = "CYBER STAGE READY";
+        document.getElementById('charStatus').textContent = "CYBER STAGE READY";
         loadCenteredStarters(currentLangState);
         updateLoadingProgress(60, "LOADING CHARACTER 2...");
         checkAllLoaded();
     }, undefined, () => checkAllLoaded());
 
-    // 2. Load Girl Character (Char2.glb)[cite: 1]
     loader.load('Char2.glb', (gltf) => {
         character2 = gltf.scene;
         character2.scale.set(1.0, 1.0, 1.0);
@@ -301,64 +300,17 @@ function animate() {
 
 init3DStage();
 
-window.addEventListener('resize', () => {
-    const container = document.querySelector('.cyber-character-stage');
-    if (!container || !renderer) return;
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-});
-
-function updateStageMood(actionName) {
-    const stageElement = document.querySelector('.cyberpunk-stage');
-    const moodBadge = document.getElementById('moodBadge');
-    if (!stageElement) return;
-
-    stageElement.className = "cyberpunk-stage";
-    if (moodBadge) moodBadge.textContent = `MOOD: ${actionName}`;
-
-    if (actionName === 'EXCITING' || actionName.includes('DANCE')) {
-        stageElement.classList.add('mood-exciting');
-        if (redLight) redLight.color.setHex(0x00f0ff);
-        if (cyanLight) cyanLight.color.setHex(0x00ffcc);
-    } else if (actionName === 'THINKING') {
-        stageElement.classList.add('mood-thinking');
-        if (redLight) redLight.color.setHex(0x8a2be2);
-        if (cyanLight) cyanLight.color.setHex(0xda70d6);
-    } else {
-        stageElement.classList.add('mood-idle');
-        if (redLight) redLight.color.setHex(0xEE1C4B);
-        if (cyanLight) cyanLight.color.setHex(0x00f0ff);
-    }
-}
-
-function updateMindsetAndMoodUI(mindset, emotion) {
-    const mindsetVal = document.getElementById('mindsetVal');
-    const emotionVal = document.getElementById('emotionVal');
-    if (mindsetVal) mindsetVal.textContent = mindset || "NEUTRAL";
-    if (emotionVal) emotionVal.textContent = emotion || "CALM";
-}
-
 window.handleInlineProfileImageUpload = function(event) {
     const file = event.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = async function(e) {
         userProfileImageBase64 = e.target.result;
-        showCustomNotification("🎨 CV ဓာတ်ပုံကို အောင်မြင်စွာ တင်ပြီးပါပြီ။ CV ထုတ်လုပ်နေပါပြီ...");
-        
+        showCustomNotification("🎨 CV ဓာတ်ပုံကို အောင်မြင်စွာ တင်ပြီးပါပြီ။");
         const badge = document.getElementById('uploadedPhotoBadge');
-        if (badge) {
-            badge.innerHTML = `✅ ပုံတင်ပြီးပါပြီ`;
-            badge.style.color = "#00ffcc";
-        }
-
+        if (badge) { badge.innerHTML = `✅ ပုံတင်ပြီးပါပြီ`; badge.style.color = "#00ffcc"; }
         const chatInput = document.getElementById('aiChatInput');
-        if (chatInput) {
-            chatInput.value = "I have uploaded my profile photo. Please generate my final CV now.";
-            sendHeinPopAIChat();
-        }
+        if (chatInput) { chatInput.value = "I have uploaded my profile photo. Please generate my final CV now."; sendHeinPopAIChat(); }
     };
     reader.readAsDataURL(file);
 }
@@ -369,7 +321,6 @@ window.loadCenteredStarters = async function(lang = "en") {
         if (startersWrapper) startersWrapper.classList.add('hidden');
         return;
     }
-
     const startersListContainer = document.getElementById('startersChipsList');
     const startersWrapper = document.getElementById('centeredStartersContainer');
     if (!startersListContainer || !startersWrapper) return;
@@ -383,30 +334,11 @@ window.loadCenteredStarters = async function(lang = "en") {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ isStarterRequest: true, lang })
         });
-
         const data = await response.json();
-        let parsed;
-        try {
+        let parsed = data;
+        if (data.choices && data.choices[0]) {
             parsed = JSON.parse(data.choices[0].message.content.replace(/```json|```/g, "").trim());
-        } catch (e) {
-            parsed = { 
-                starters: lang === "mm" ? [
-                    "🎨 Professional CV ဖောင်အလှ ဖန်တီးရန်",
-                    "✨ Modern Brand Identity ဒီဇိုင်းဆွဲရန်",
-                    "🚀 Creative Portfolio Layout ပြုလုပ်ရန်"
-                ] : [
-                    "🎨 Design Professional CV Layout",
-                    "✨ Modern Brand Identity Concept",
-                    "🚀 Creative Portfolio Structure"
-                ]
-            };
         }
-
-        if (activeChatMessages && activeChatMessages.length > 0) {
-            startersWrapper.classList.add('hidden');
-            return;
-        }
-
         startersListContainer.innerHTML = '';
         parsed.starters.forEach(text => {
             const btn = document.createElement('button');
@@ -414,21 +346,16 @@ window.loadCenteredStarters = async function(lang = "en") {
             btn.textContent = text;
             btn.onclick = () => {
                 const input = document.getElementById('aiChatInput');
-                if (input) {
-                    input.value = text;
-                    sendHeinPopAIChat();
-                }
+                if (input) { input.value = text; sendHeinPopAIChat(); }
             };
             startersListContainer.appendChild(btn);
         });
-
     } catch (err) {
         console.error("Starters error:", err);
-        startersListContainer.innerHTML = `<div style="font-size:0.75rem; color:#ff4d6d; text-align:center;">Failed to load trendy starters.</div>`;
     }
 }
 
-// Authentication & Firebase History
+// Authentication & Firebase Chat History
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
@@ -451,22 +378,21 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 window.loginWithGoogle = async () => {
-    try {
-        await signInWithPopup(auth, provider);
-    } catch (e) {
-        console.error(e);
-    }
+    try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
 
 window.logoutUser = async () => {
-    try {
-        await signOut(auth);
-        currentUser = null;
-        location.reload();
-    } catch (e) {
-        console.error("Logout error:", e);
-    }
+    try { await signOut(auth); currentUser = null; location.reload(); } catch (e) { console.error(e); }
 };
+
+window.createNewChatSession = async function() {
+    if (!currentUser) { openLoginModal(); return; }
+    activeChatMessages = [];
+    currentChatId = null;
+    document.getElementById('chatHistory').innerHTML = '';
+    loadCenteredStarters(currentLangState);
+    loadUserChats();
+}
 
 async function saveCurrentChat(titlePrompt) {
     if (!currentUser) return;
@@ -495,12 +421,38 @@ async function loadUserChats() {
     try {
         const q = query(collection(db, "users", currentUser.uid, "chats"), orderBy("updatedAt", "desc"));
         const querySnapshot = await getDocs(q);
+        let chats = [];
         querySnapshot.forEach((docSnap) => {
-            // Render history items if needed
+            chats.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        chats.forEach((data) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = `history-item-wrapper ${data.id === currentChatId ? 'active' : ''}`;
+            wrapper.style.cssText = "padding: 8px 12px; cursor: pointer; border-radius: 6px; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;";
+            wrapper.innerHTML = `<span>${data.title || "New Chat"}</span>`;
+            wrapper.onclick = () => selectChatSession(data.id, data.messages);
+            chatListContainer.appendChild(wrapper);
         });
     } catch (err) {
         console.error("Error loading chats:", err);
     }
+}
+
+function selectChatSession(chatId, messages) {
+    currentChatId = chatId;
+    activeChatMessages = messages || [];
+    const chatBox = document.getElementById('chatHistory');
+    const startersWrapper = document.getElementById('centeredStartersContainer');
+    if (startersWrapper) startersWrapper.classList.add('hidden');
+    chatBox.innerHTML = '';
+
+    activeChatMessages.forEach((msg) => {
+        const roleClass = msg.role === 'user' ? 'user' : 'ai';
+        const senderName = msg.role === 'user' ? 'You' : 'HeinPop AI';
+        chatBox.innerHTML += `<div class="chat-msg ${roleClass}"><strong>${senderName}:</strong> ${msg.content}</div>`;
+    });
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // Main Chat Execution via Vercel Backend Proxy[cite: 3]
@@ -522,18 +474,14 @@ window.sendHeinPopAIChat = async function() {
 
     if (charStatus) charStatus.textContent = "AI THINKING...";
     fadeToAction('THINKING', 0.5);
-    updateStageMood('THINKING');
 
     try {
         let isCVRequest = userMsg.toLowerCase().includes('cv') || userMsg.toLowerCase().includes('resume') || userMsg.toLowerCase().includes('ဖောင်');
-        let isExportRequest = isCVRequest || userMsg.toLowerCase().includes('pdf') || userMsg.toLowerCase().includes('excel') || userMsg.toLowerCase().includes('pptx') || userMsg.toLowerCase().includes('download') || userMsg.toLowerCase().includes('presentation');
+        let isExportRequest = isCVRequest || userMsg.toLowerCase().includes('pdf') || userMsg.toLowerCase().includes('excel') || userMsg.toLowerCase().includes('pptx') || userMsg.toLowerCase().includes('download');
 
-        // Calling Vercel Backend API Route (/api/chat)[cite: 3]
         const response = await fetch('/api/chat', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 messages: activeChatMessages,
                 userMsg: userMsg,
@@ -545,8 +493,7 @@ window.sendHeinPopAIChat = async function() {
         });
 
         const data = await response.json();
-        
-        let parsed;
+        let parsed = data;
         if (data.choices && data.choices[0] && data.choices[0].message) {
             let rawContent = data.choices[0].message.content;
             let cleanJson = rawContent.trim();
@@ -559,79 +506,38 @@ window.sendHeinPopAIChat = async function() {
                 cleanJson = cleanJson.substring(jsonStart, jsonEnd + 1);
             }
             parsed = JSON.parse(cleanJson);
-        } else {
-            parsed = data;
-        }
-
-        if (parsed.reply) {
-            parsed.reply = parsed.reply.replace(/[\#\*\`\>]/g, '').trim();
-        }
-
-        let inlineUploadHTML = '';
-        const lowerReply = (parsed && parsed.reply) ? parsed.reply.toLowerCase() : '';
-        const lowerUserMsg = userMsg.toLowerCase();
-        const needsPhoto = lowerUserMsg.includes('ပုံ') || lowerUserMsg.includes('photo') || lowerUserMsg.includes('cv') ||
-                           lowerReply.includes('photo') || lowerReply.includes('ဓာတ်ပုံ') || lowerReply.includes('upload') || lowerReply.includes('တင်ရန်');
-
-        if (!userProfileImageBase64 && needsPhoto && !parsed.file_export) {
-            inlineUploadHTML = `
-                <div style="margin-top: 12px; padding: 10px; background: rgba(0, 240, 255, 0.05); border: 1px dashed var(--accent); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-                    <label style="font-size: 0.75rem; color: var(--accent); cursor: pointer; padding: 5px 10px; border: 1px solid var(--accent); border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
-                        <span class="material-symbols-outlined" style="font-size: 14px;">photo_camera</span>
-                        <span id="uploadedPhotoBadge">ဓာတ်ပုံ တင်ရန်</span>
-                        <input type="file" accept="image/*" style="display: none;" onchange="handleInlineProfileImageUpload(event)">
-                    </label>
-                </div>
-            `;
         }
 
         let fileBtnHTML = '';
         if (parsed.file_export) {
             const fe = parsed.file_export;
-            const fileNameOrTitle = fe.filename || fe.title || 'File';
-            const fileType = (fe.type || 'file').toUpperCase();
-            
-            fileBtnHTML = `<br><button class="cta-button" style="margin-top:8px; padding: 4px 12px; font-size: 0.75rem;" onclick='triggerFileDownloadFromHistoryDirect(${JSON.stringify(fe)})'>📥 Download ${fileNameOrTitle} (${fileType})</button>`;
+            fileBtnHTML = `<br><button class="cta-button" style="margin-top:8px; font-size:0.75rem;" onclick='triggerFileDownloadFromHistoryDirect(${JSON.stringify(fe)})'>📥 Download ${fe.filename || fe.title} (${fe.type.toUpperCase()})</button>`;
             triggerFileDownloadFromHistoryDirect(fe);
         }
 
-        chatHistory.innerHTML += `<div class="chat-msg ai"><strong>HeinPop AI:</strong> ${parsed.reply}${inlineUploadHTML}${fileBtnHTML}</div>`;
-        
-        activeChatMessages.push({ 
-            role: "ai", 
-            content: parsed.reply,
-            file_export: parsed.file_export || null 
-        });
-
+        chatHistory.innerHTML += `<div class="chat-msg ai"><strong>HeinPop AI:</strong> ${parsed.reply}${fileBtnHTML}</div>`;
+        activeChatMessages.push({ role: "ai", content: parsed.reply, file_export: parsed.file_export || null });
         chatHistory.scrollTop = chatHistory.scrollHeight;
-
-        updateMindsetAndMoodUI(parsed.mindset, parsed.emotion);
 
         if (parsed.action) {
             if (charStatus) charStatus.textContent = `ANIMATION: ${parsed.action}`;
             fadeToAction(parsed.action, 0.5);
-            updateStageMood(parsed.action);
         }
 
         await saveCurrentChat(userMsg);
-
     } catch (err) {
         console.error(err);
         if (charStatus) charStatus.textContent = "CONNECTION ERROR";
         fadeToAction('IDLE0', 1.0);
-        updateStageMood('IDLE0');
     }
 }
 
-// File Export Handlers
 window.triggerFileDownloadFromHistoryDirect = function(fe) {
     if (!fe) return;
     const type = (fe.type || '').toLowerCase();
-    
-    if (type === 'excel') window.generateExcelFile(fe.filename || 'Designer_Data', fe.data || []);
-    else if (type === 'pptx') window.generatePPTXFile(fe.title || 'Design_Presentation', fe.slides || [], fe.theme || null);
-    else if (type === 'pdf') window.generatePDFFile(fe.filename || 'Designer_Document', fe.html || '<div style="padding:20px;">Empty Design Layout</div>');
-    
+    if (type === 'excel') generateExcelFile(fe.filename || 'Data', fe.data || []);
+    else if (type === 'pptx') generatePPTXFile(fe.title || 'Presentation', fe.slides || [], fe.theme || null);
+    else if (type === 'pdf') generatePDFFile(fe.filename || 'Document', fe.html || '');
     showCustomNotification("🎨 ဖိုင်ကို အောင်မြင်စွာ ဒေါင်းလုဒ်ဆွဲပြီးပါပြီ။");
 };
 
@@ -639,29 +545,22 @@ window.generateExcelFile = function(fileName, dataArray) {
     if (typeof XLSX === 'undefined') return;
     const worksheet = XLSX.utils.json_to_sheet(dataArray);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "DesignGrid");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
 };
 
 window.generatePPTXFile = function(title, slidesData, theme) {
     if (typeof PptxGenJS === 'undefined') return;
     let pptx = new PptxGenJS();
-    
-    const bgColor = (theme && theme.bgColor) ? theme.bgColor : "0F172A";
-    const titleColor = (theme && theme.titleColor) ? theme.titleColor : "38BDF8";
-
     let slide = pptx.addSlide();
-    slide.background = { color: bgColor };
-    slide.addText(title, { x: 1.1, y: 1.8, w: 8.5, fontSize: 32, bold: true, color: titleColor });
-
+    slide.background = { color: theme?.bgColor || "0F172A" };
+    slide.addText(title, { x: 1, y: 1.5, fontSize: 28, color: theme?.titleColor || "38BDF8", bold: true });
     pptx.writeFile({ fileName: `${title}.pptx` });
 };
 
 window.generatePDFFile = function(fileName, htmlContent) {
     if (typeof html2pdf === 'undefined') return;
     let finalHtml = htmlContent;
-    if (userProfileImageBase64) {
-        finalHtml = finalHtml.replace(/__PROFILE_IMAGE_PLACEHOLDER__/g, userProfileImageBase64);
-    }
+    if (userProfileImageBase64) finalHtml = finalHtml.replace(/__PROFILE_IMAGE_PLACEHOLDER__/g, userProfileImageBase64);
     html2pdf().from(finalHtml).save(`${fileName}.pdf`);
 };
