@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.SARGALAY_API_KEY || "sk-fc6666f54ccf448184213c068a246e13"}`
+          'Authorization': `Bearer ${process.env.SARGALAY_API_KEY}`
         },
         body: JSON.stringify({
           model: "anthropic/claude-haiku-5.5",
