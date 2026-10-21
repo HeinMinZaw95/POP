@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   const { messages, userMsg, isExportRequest, isCVRequest, hasPhoto, isStarterRequest, lang } = req.body;
 
-  // 1. Trendy Starter တောင်းဆိုလာသည့်အခါ အထူး xử lý လုပ်ပေးခြင်း
+  // 1. Trendy Starter တောင်းဆိုလာသည့်အခါ အထူး 처리 လုပ်ပေးခြင်း
   if (isStarterRequest) {
     const promptLangInstruction = lang === "mm" ? "Translate and generate entirely in fluent Myanmar (Burmese)." : "Generate in English.";
     const randomSeed = Math.floor(Math.random() * 100000);
@@ -19,7 +19,6 @@ export default async function handler(req, res) {
     Return ONLY a valid JSON object with a single field "starters" containing an array of 3 strings. No markdown formatting.`;
 
     try {
-    
       const starterResponse = await fetch("https://api.sargalay.com/v1/chat/completions", {
         method: 'POST',
         headers: {
