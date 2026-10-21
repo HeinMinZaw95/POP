@@ -5,6 +5,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// 🔗 Vercel Serverless Proxy Endpoint
+const VERCEL_BACKEND_URL = "https://my-project-mu-red.vercel.app/api/chat";
+
 const firebaseConfig = {
     apiKey: "AIzaSyC5U2QwKBo8TiyN_wZ912hdEYhgtLpoTOA",
     authDomain: "heinpop-ai.firebaseapp.com",
@@ -25,83 +28,39 @@ let currentChatId = null;
 let activeChatMessages = [];
 let isVoiceMuted = false;
 let currentLangState = localStorage.getItem("portfolio-lang") || "en";
-let userProfileImageBase64 = null;
+let userProfileImageBase64 = null; // 📸 User Profile Image Base64 storage
 
-const SARGALAY_API_KEY = "sk-fc6666f54ccf448184213c068a246e13";
-const SARGALAY_BASE_URL = "https://api.sargalay.com/v1";
-const AI_MODEL_NAME = "anthropic/claude-haiku-5.5";
-
-let scene, camera, renderer, controls;
-
-// Character & Animation Control Variables
-let character1, character2, activeCharacter;
-let mixer, mixer1, mixer2;
-let animationsMap = new Map();
-let animationsMap1 = new Map();
-let animationsMap2 = new Map();
+let scene, camera, renderer, character, controls;
+let mixer, animationsMap = new Map();
 let activeAction;
-let activeCharIndex = 1; // 1 = Boy (Char.glb), 2 = Girl (Char2.glb)
-
 let frontLight, redLight, cyanLight;
 const clock = new THREE.Clock();
-let currentAudioPlayer = null;
-let currentAudioPlayerText = "";
 
-// Loading Screen Progress Helper
-function updateLoadingProgress(percent, message) {
-    const bar = document.getElementById('loadingBar');
-    const txt = document.getElementById('loadingText');
-    if (bar) bar.style.width = `${percent}%`;
-    if (txt && message) txt.textContent = message;
+const synth = window.speechSynthesis;
+let selectedVoice = null;
+
+function loadVoices() {
+    const voices = synth.getVoices();
+    selectedVoice = voices.find(voice => 
+        (voice.name.includes('Female') || voice.name.includes('Victoria') || voice.name.includes('Google US English') || voice.name.includes('Aria') || voice.name.includes('Zira')) && voice.lang.startsWith('en')
+    ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
 }
 
-function hideCyberLoadingScreen() {
-    const screen = document.getElementById('cyberLoadingScreen');
-    if (screen) {
-        screen.style.opacity = '0';
-        setTimeout(() => screen.remove(), 500);
-    }
+if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = loadVoices;
 }
+loadVoices();
 
 window.toggleVoiceSpeech = function() {
     isVoiceMuted = !isVoiceMuted;
     const voiceIcon = document.getElementById('voiceIcon');
     if (isVoiceMuted) {
-        if (voiceIcon) voiceIcon.textContent = "volume_off";
-        if (currentAudioPlayer) {
-            currentAudioPlayer.pause();
-            currentAudioPlayer = null;
-        }
+        voiceIcon.textContent = "volume_off";
+        if (synth.speaking) synth.cancel();
         showCustomNotification("AI အသံထွက်ကို ပိတ်ထားလိုက်ပါပြီ။");
     } else {
-        if (voiceIcon) voiceIcon.textContent = "volume_up";
+        voiceIcon.textContent = "volume_up";
         showCustomNotification("AI အသံထွက်ကို ဖွင့်ထားလိုက်ပါပြီ။");
-    }
-}
-
-function playAIAudioResponse(audioDataUrl, onComplete) {
-    if (isVoiceMuted || !audioDataUrl) {
-        if (onComplete) onComplete();
-        return;
-    }
-    try {
-        if (currentAudioPlayer) {
-            currentAudioPlayer.pause();
-            currentAudioPlayer = null;
-        }
-        currentAudioPlayer = new Audio(audioDataUrl);
-        currentAudioPlayer.onended = () => { if (onComplete) onComplete(); };
-        currentAudioPlayer.onerror = (e) => { 
-            console.error("Audio playback error:", e);
-            fallbackBrowserSpeech(currentAudioPlayerText, onComplete);
-        };
-        currentAudioPlayer.play().catch(err => {
-            console.error("Autoplay restrictions or error:", err);
-            fallbackBrowserSpeech(currentAudioPlayerText, onComplete);
-        });
-    } catch (err) {
-        console.error("Audio execution error:", err);
-        if (onComplete) onComplete();
     }
 }
 
@@ -161,9 +120,6 @@ function init3DStage() {
     controls.maxPolarAngle = Math.PI / 2 + 0.1;
     controls.target.set(0, 0, 0);
 
-    controls.enableZoom = false; 
-    controls.enableRotate = true;
-
     const ambient = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambient);
 
@@ -179,165 +135,61 @@ function init3DStage() {
     cyanLight.position.set(2, 1, 2);
     scene.add(cyanLight);
 
-    createClubBalloons();
-
-    updateLoadingProgress(20, "LOADING 3D ENVIRONMENT...");
-
     const loader = new GLTFLoader();
-    let loadedCount = 0;
-
-    const checkAllLoaded = () => {
-        loadedCount++;
-        if (loadedCount >= 2) {
-            updateLoadingProgress(100, "SYSTEM READY");
-            setTimeout(hideCyberLoadingScreen, 400);
-        }
-    };
-
-    // 1. Load Boy Character (Char.glb)
     loader.load('Char.glb', (gltf) => {
-        character1 = gltf.scene;
-        character1.scale.set(1.0, 1.0, 1.0);
-        character1.position.set(0, -1.2, 0);
-        scene.add(character1);
+        character = gltf.scene;
+        character.scale.set(1.0, 1.0, 1.0);
+        character.position.set(0, -1.2, 0);
+        scene.add(character);
 
-        mixer1 = new THREE.AnimationMixer(character1);
+        mixer = new THREE.AnimationMixer(character);
+
         if (gltf.animations && gltf.animations.length > 0) {
             gltf.animations.forEach((clip) => {
-                const action = mixer1.clipAction(clip);
-                animationsMap1.set(clip.name.toUpperCase().trim(), action);
+                const action = mixer.clipAction(clip);
+                animationsMap.set(clip.name.toUpperCase().trim(), action);
             });
+
+            const defaultAction = animationsMap.get('IDLE0') || animationsMap.values().next().value;
+            if (defaultAction) {
+                activeAction = defaultAction;
+                activeAction.play();
+            }
         }
 
-        activeCharacter = character1;
-        mixer = mixer1;
-        animationsMap = animationsMap1;
-        activeCharIndex = 1;
-
-        const defaultAction = animationsMap.get('IDLE0') || animationsMap.values().next().value;
-        if (defaultAction) {
-            activeAction = defaultAction;
-            activeAction.play();
-        }
-
-        const charStatus = document.getElementById('charStatus');
-        if (charStatus) charStatus.textContent = "CYBER STAGE READY";
+        document.getElementById('charStatus').textContent = "CYBER STAGE READY";
         loadCenteredStarters(currentLangState);
-        
-        updateLoadingProgress(60, "LOADING CHARACTER 2...");
-        checkAllLoaded();
     }, undefined, (err) => {
-        console.error("Char.glb loading error:", err);
-        checkAllLoaded();
-    });
-
-    // 2. Load Girl Character (Char2.glb)
-    loader.load('Char2.glb', (gltf) => {
-        character2 = gltf.scene;
-        character2.scale.set(1.0, 1.0, 1.0);
-        character2.position.set(0, -1.2, 0);
-        character2.visible = false;
-        scene.add(character2);
-
-        mixer2 = new THREE.AnimationMixer(character2);
-        if (gltf.animations && gltf.animations.length > 0) {
-            gltf.animations.forEach((clip) => {
-                const action = mixer2.clipAction(clip);
-                animationsMap2.set(clip.name.toUpperCase().trim(), action);
-            });
-        }
-        updateLoadingProgress(90, "FINALIZING STAGE...");
-        checkAllLoaded();
-    }, undefined, (err) => {
-        console.error("Char2.glb loading error:", err);
-        checkAllLoaded();
+        console.error(err);
+        document.getElementById('charStatus').textContent = "ERROR LOADING MODEL";
     });
 
     animate();
 }
 
-// Character Switch Function (Boy vs Girl)
-window.switchCharacter = function(charIndex) {
-    const btn1 = document.getElementById('charBtn1');
-    const btn2 = document.getElementById('charBtn2');
-
-    if (charIndex === 1) {
-        if (!character1) return;
-        if (character2) character2.visible = false;
-        character1.visible = true;
-        
-        activeCharacter = character1;
-        mixer = mixer1;
-        animationsMap = animationsMap1;
-        activeCharIndex = 1;
-        
-        if (btn1) btn1.classList.add('active');
-        if (btn2) btn2.classList.remove('active');
-
-        showCustomNotification("Boy Character (Char.glb) သို့ ပြောင်းလိုက်ပါပြီ။");
-    } else if (charIndex === 2) {
-        if (!character2) {
-            showCustomNotification("Girl Character (Char2.glb) ဖိုင် မတွေ့ရသေးပါ။");
-            return;
-        }
-        if (character1) character1.visible = false;
-        character2.visible = true;
-        
-        activeCharacter = character2;
-        mixer = mixer2;
-        animationsMap = animationsMap2;
-        activeCharIndex = 2;
-        
-        if (btn2) btn2.classList.add('active');
-        if (btn1) btn1.classList.remove('active');
-
-        showCustomNotification("Girl Character (Char2.glb) သို့ ပြောင်းလိုက်ပါပြီ။");
-    }
-
-    fadeToAction('IDLE0', 0.3);
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+    if (controls) controls.update();
+    if (renderer && scene && camera) renderer.render(scene, camera);
 }
+
+init3DStage();
+
+window.addEventListener('resize', () => {
+    const container = document.querySelector('.cyber-character-stage');
+    if (!container || !renderer) return;
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+});
 
 function fadeToAction(name, duration = 0.5) {
     const cleanName = name.toUpperCase().trim();
-    let nextAction = animationsMap.get(cleanName);
-
-    if (!nextAction) {
-        if (activeCharIndex === 1) { 
-            if (cleanName.includes('TALK')) {
-                const talkTracks = ['TALKING0', 'TALKING1', 'TALKING2'].filter(t => animationsMap.has(t));
-                const randomTalk = talkTracks[Math.floor(Math.random() * talkTracks.length)] || 'TALKING0';
-                nextAction = animationsMap.get(randomTalk);
-            } else if (cleanName.includes('DANCE') || cleanName.includes('EXCITING')) {
-                const danceTracks = ['DANCE0', 'DANCE1', 'DANCE2'].filter(d => animationsMap.has(d));
-                const randomDance = danceTracks[Math.floor(Math.random() * danceTracks.length)] || 'DANCE0';
-                nextAction = animationsMap.get(randomDance);
-            } else if (cleanName.includes('IDLE')) {
-                nextAction = animationsMap.get('IDLE0') || animationsMap.get('IDLE1');
-            } else if (cleanName.includes('THINK')) {
-                nextAction = animationsMap.get('THINKING');
-            }
-        } else { 
-            if (cleanName.includes('TALK')) {
-                nextAction = animationsMap.get('TALKING0');
-            } else if (cleanName.includes('DANCE') || cleanName.includes('EXCITING')) {
-                nextAction = animationsMap.get('EXCITING') || animationsMap.get('GREETING');
-            } else if (cleanName.includes('IDLE')) {
-                nextAction = animationsMap.get('IDLE0') || animationsMap.get('IDLE1');
-            } else if (cleanName.includes('THINK')) {
-                nextAction = animationsMap.get('THINKING');
-            } else if (cleanName.includes('ARGU') || cleanName.includes('AGGR')) {
-                nextAction = animationsMap.get('ARGUING') || animationsMap.get('AGGRESIVE');
-            } else if (cleanName.includes('THANK')) {
-                nextAction = animationsMap.get('THANKFUL');
-            }
-        }
-    }
-
-    if (!nextAction) {
-        nextAction = animationsMap.values().next().value;
-    }
-
-    if (!nextAction || activeAction === nextAction) return;
+    const nextAction = animationsMap.get(cleanName);
+    if (!nextAction) return;
+    if (activeAction === nextAction) return;
 
     nextAction.reset();
     nextAction.setEffectiveTimeScale(1);
@@ -351,69 +203,6 @@ function fadeToAction(name, duration = 0.5) {
     activeAction = nextAction;
 }
 
-let balloonsGroup = [];
-function createClubBalloons() {
-    const balloonGroupContainer = new THREE.Group();
-    const balloonGeo = new THREE.SphereGeometry(0.12, 32, 32);
-    balloonGeo.scale(1, 1.2, 1);
-
-    const colors = [0xff0055, 0x00f0ff, 0x7000ff, 0x00ffcc, 0xff00aa];
-    
-    for (let i = 0; i < 15; i++) {
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const material = new THREE.MeshStandardMaterial({
-            color: color,
-            roughness: 0.1,
-            metalness: 0.8
-        });
-
-        const balloon = new THREE.Mesh(balloonGeo, material);
-        
-        balloon.position.set(
-            (Math.random() - 0.5) * 3.5,
-            Math.random() * 2.0 - 0.5,
-            (Math.random() - 0.5) * 2.0 - 0.5
-        );
-
-        balloon.userData = {
-            baseY: balloon.position.y,
-            speed: 0.5 + Math.random() * 1.5,
-            offset: Math.random() * Math.PI * 2
-        };
-
-        balloonGroupContainer.add(balloon);
-        balloonsGroup.push(balloon);
-    }
-    scene.add(balloonGroupContainer);
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    const delta = clock.getDelta();
-    const elapsedTime = clock.getElapsedTime();
-
-    if (mixer) mixer.update(delta);
-    if (controls) controls.update();
-
-    balloonsGroup.forEach((b) => {
-        b.position.y = b.userData.baseY + Math.sin(elapsedTime * b.userData.speed + b.userData.offset) * 0.15;
-    });
-
-    if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-    }
-}
-
-init3DStage();
-
-window.addEventListener('resize', () => {
-    const container = document.querySelector('.cyber-character-stage');
-    if (!container || !renderer) return;
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
-});
-
 function updateStageMood(actionName) {
     const stageElement = document.querySelector('.cyberpunk-stage');
     const moodBadge = document.getElementById('moodBadge');
@@ -422,34 +211,49 @@ function updateStageMood(actionName) {
     stageElement.className = "cyberpunk-stage";
     if (moodBadge) moodBadge.textContent = `MOOD: ${actionName}`;
 
-    if (actionName === 'EXCITING' || actionName.includes('DANCE')) {
+    if (actionName === 'EXCITING') {
         stageElement.classList.add('mood-exciting');
+        if (moodBadge) { moodBadge.style.color = '#00f0ff'; moodBadge.style.borderColor = 'rgba(0,240,255,0.4)'; }
         if (redLight) redLight.color.setHex(0x00f0ff);
         if (cyanLight) cyanLight.color.setHex(0x00ffcc);
     } else if (actionName === 'THINKING') {
         stageElement.classList.add('mood-thinking');
+        if (moodBadge) { moodBadge.style.color = '#da70d6'; moodBadge.style.borderColor = 'rgba(138,43,226,0.4)'; }
         if (redLight) redLight.color.setHex(0x8a2be2);
         if (cyanLight) cyanLight.color.setHex(0xda70d6);
     } else if (actionName === 'ARGUING' || actionName === 'AGGRESIVE') {
         stageElement.classList.add('mood-drama');
+        if (moodBadge) { moodBadge.style.color = '#ff4d6d'; moodBadge.style.borderColor = 'rgba(238,28,75,0.4)'; }
         if (redLight) redLight.color.setHex(0xff0033);
         if (cyanLight) cyanLight.color.setHex(0xff5722);
     } else if (actionName === 'THANKFUL') {
         stageElement.classList.add('mood-warm');
+        if (moodBadge) { moodBadge.style.color = '#ffd700'; moodBadge.style.borderColor = 'rgba(255,165,0,0.4)'; }
         if (redLight) redLight.color.setHex(0xffa500);
         if (cyanLight) cyanLight.color.setHex(0xffd700);
     } else {
         stageElement.classList.add('mood-idle');
+        if (moodBadge) { moodBadge.style.color = '#00f0ff'; moodBadge.style.borderColor = 'rgba(0,240,255,0.3)'; }
         if (redLight) redLight.color.setHex(0xEE1C4B);
         if (cyanLight) cyanLight.color.setHex(0x00f0ff);
     }
 }
 
 function updateMindsetAndMoodUI(mindset, emotion) {
-    const mindsetVal = document.getElementById('mindsetVal');
-    const emotionVal = document.getElementById('emotionVal');
-    if (mindsetVal) mindsetVal.textContent = mindset || "NEUTRAL";
-    if (emotionVal) emotionVal.textContent = emotion || "CALM";
+    let mindsetBadge = document.getElementById('mindsetBadge');
+    if (!mindsetBadge) {
+        const headerTools = document.querySelector('.header-tools');
+        if (headerTools) {
+            mindsetBadge = document.createElement('div');
+            mindsetBadge.id = 'mindsetBadge';
+            headerTools.appendChild(mindsetBadge);
+        }
+    }
+    if (mindsetBadge) {
+        mindsetBadge.style.cssText = "font-size: 0.72rem; padding: 4px 10px; border-radius: 20px; background: rgba(238,28,75,0.15); border: 1px solid var(--accent); color: var(--text-main); letter-spacing: 0.5px; backdrop-filter: blur(6px); margin-left: auto; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle;";
+        mindsetBadge.title = `Mindset: ${mindset || "NEUTRAL"} | Emotion: ${emotion || "CALM"}`;
+        mindsetBadge.innerHTML = `🧠 <b>${mindset || "NEUTRAL"}</b> | ⚡ <b>${emotion || "CALM"}</b>`;
+    }
 }
 
 window.handleInlineProfileImageUpload = function(event) {
@@ -504,13 +308,16 @@ window.loadCenteredStarters = async function(lang = "en") {
     if (!startersListContainer || !startersWrapper) return;
 
     startersWrapper.classList.remove('hidden');
-    startersListContainer.innerHTML = `<div style="font-size:0.75rem; color:#00f0ff; text-align:center;">Generating versatile starters...</div>`;
+    startersListContainer.innerHTML = `<div style="font-size:0.75rem; color:#00f0ff; text-align:center;" data-en="Generating versatile starters..." data-mm="နယ်ပယ်စုံမှ အကြံပြုချက်များ ဖန်တီးနေသည်...">Generating versatile starters...</div>`;
 
     try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch(VERCEL_BACKEND_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isStarterRequest: true, lang: lang })
+            body: JSON.stringify({ 
+                isStarterRequest: true,
+                lang: lang
+            })
         });
 
         const data = await response.json();
@@ -565,7 +372,7 @@ window.loadCenteredStarters = async function(lang = "en") {
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("theme-toggle");
     const body = document.body;
-    const themeIcon = document.getElementById("themeIcon");
+    const themeIcon = themeToggle ? themeToggle.querySelector(".material-symbols-outlined") : null;
 
     const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
     if (savedTheme === "light") {
@@ -574,21 +381,24 @@ document.addEventListener("DOMContentLoaded", () => {
         if (themeIcon) themeIcon.textContent = "dark_mode";
     }
 
-    window.toggleTheme = function() {
-        if (body.classList.contains("dark-theme")) {
-            body.classList.remove("dark-theme");
-            body.classList.add("light-theme");
-            localStorage.setItem("portfolio-theme", "light");
-            if (themeIcon) themeIcon.textContent = "dark_mode";
-        } else {
-            body.classList.remove("light-theme");
-            body.classList.add("dark-theme");
-            localStorage.setItem("portfolio-theme", "dark");
-            if (themeIcon) themeIcon.textContent = "light_mode";
-        }
-    };
+    if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+            if (body.classList.contains("dark-theme")) {
+                body.classList.remove("dark-theme");
+                body.classList.add("light-theme");
+                localStorage.setItem("portfolio-theme", "light");
+                if (themeIcon) themeIcon.textContent = "dark_mode";
+            } else {
+                body.classList.remove("light-theme");
+                body.classList.add("dark-theme");
+                localStorage.setItem("portfolio-theme", "dark");
+                if (themeIcon) themeIcon.textContent = "light_mode";
+            }
+        });
+    }
 
-    const langText = document.getElementById("langText");
+    const langToggle = document.getElementById("lang-toggle");
+    const langText = langToggle ? langToggle.querySelector(".lang-text") : null;
     currentLangState = localStorage.getItem("portfolio-lang") || "en";
 
     const updateDOMText = (lang) => {
@@ -605,12 +415,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateDOMText(currentLangState);
 
-    window.toggleLanguage = function() {
-        currentLangState = currentLangState === "en" ? "mm" : "en";
-        localStorage.setItem("portfolio-lang", currentLangState);
-        updateDOMText(currentLangState);
-        loadCenteredStarters(currentLangState);
-    };
+    if (langToggle) {
+        langToggle.addEventListener("click", () => {
+            currentLangState = currentLangState === "en" ? "mm" : "en";
+            localStorage.setItem("portfolio-lang", currentLangState);
+            updateDOMText(currentLangState);
+            loadCenteredStarters(currentLangState);
+        });
+    }
 });
 
 window.openLoginModal = () => document.getElementById('loginModal').classList.add('active');
@@ -850,6 +662,7 @@ async function saveCurrentChat(titlePrompt) {
     loadUserChats();
 }
 
+// 🛡️ Vercel Serverless Backend Proxy ဆီသို့ Request ပို့ပေးသော Main Chat Handler
 window.sendHeinPopAIChat = async function() {
     const input = document.getElementById('aiChatInput');
     const chatHistory = document.getElementById('chatHistory');
@@ -867,7 +680,7 @@ window.sendHeinPopAIChat = async function() {
     input.value = "";
     chatHistory.scrollTop = chatHistory.scrollHeight;
 
-    if (charStatus) charStatus.textContent = "AI THINKING...";
+    charStatus.textContent = "AI THINKING...";
     fadeToAction('THINKING', 0.5);
     updateStageMood('THINKING');
 
@@ -875,19 +688,16 @@ window.sendHeinPopAIChat = async function() {
         let isCVRequest = userMsg.toLowerCase().includes('cv') || userMsg.toLowerCase().includes('resume') || userMsg.toLowerCase().includes('ဖောင်');
         let isExportRequest = isCVRequest || userMsg.toLowerCase().includes('pdf') || userMsg.toLowerCase().includes('excel') || userMsg.toLowerCase().includes('pptx') || userMsg.toLowerCase().includes('download') || userMsg.toLowerCase().includes('presentation');
 
-        // Vercel Serverless Function သို့ လှမ်းခေါ်ခြင်း
-        const response = await fetch('/api/chat', {
+        // Vercel Serverless API Proxy ဆီသို့ Fetch ခေါ်ယူခြင်း
+        const response = await fetch(VERCEL_BACKEND_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                messages: activeChatMessages,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                messages: activeChatMessages.map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.content })),
                 userMsg: userMsg,
                 isExportRequest: isExportRequest,
                 isCVRequest: isCVRequest,
-                hasPhoto: !!userProfileImageBase64,
-                activeCharIndex: activeCharIndex
+                hasPhoto: !!userProfileImageBase64
             })
         });
 
@@ -970,105 +780,49 @@ window.sendHeinPopAIChat = async function() {
         updateMindsetAndMoodUI(parsed.mindset, parsed.emotion);
 
         if (parsed.action) {
-            if (charStatus) charStatus.textContent = `ANIMATION: ${parsed.action}`;
+            charStatus.textContent = `ANIMATION: ${parsed.action}`;
             fadeToAction(parsed.action, 0.5);
             updateStageMood(parsed.action);
         }
 
         await saveCurrentChat(userMsg);
 
-        if (parsed.reply && !isVoiceMuted) {
-            currentAudioPlayerText = parsed.reply;
-            try {
-                const voiceChoice = activeCharIndex === 1 ? "echo" : "alloy";
-
-                const audioRes = await fetch(`${SARGALAY_BASE_URL}/audio/speech`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SARGALAY_API_KEY}` },
-                    body: JSON.stringify({
-                        model: "tts-1",
-                        input: parsed.reply,
-                        voice: voiceChoice
-                    })
-                });
-
-                if (audioRes.ok) {
-                    const audioBlob = await audioRes.blob();
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    playAIAudioResponse(audioUrl, () => {
-                        fadeToAction('IDLE0', 1.0);
-                        updateStageMood('IDLE0');
-                        if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
-                    });
-                } else {
-                    fallbackBrowserSpeech(parsed.reply, () => {
-                        fadeToAction('IDLE0', 1.0);
-                        updateStageMood('IDLE0');
-                        if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
-                    });
-                }
-            } catch (audioErr) {
-                console.error("Audio API error, using browser speech fallback:", audioErr);
-                fallbackBrowserSpeech(parsed.reply, () => {
-                    fadeToAction('IDLE0', 1.0);
-                    updateStageMood('IDLE0');
-                    if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
-                });
-            }
+        if (!isVoiceMuted) {
+            speakAndAnimateVoice(parsed.reply, () => {
+                fadeToAction('IDLE0', 1.0);
+                updateStageMood('IDLE0');
+                charStatus.textContent = "SYSTEM ONLINE";
+            });
         } else {
             setTimeout(() => {
                 fadeToAction('IDLE0', 1.0);
                 updateStageMood('IDLE0');
-                if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
+                charStatus.textContent = "SYSTEM ONLINE";
             }, 1000);
         }
 
     } catch (err) {
         console.error(err);
-        if (charStatus) charStatus.textContent = "CONNECTION ERROR";
+        charStatus.textContent = "CONNECTION ERROR";
         fadeToAction('IDLE0', 1.0);
         updateStageMood('IDLE0');
     }
 }
 
-function fallbackBrowserSpeech(text, onComplete) {
+function speakAndAnimateVoice(text, onComplete) {
     if (!text || isVoiceMuted) { if (onComplete) onComplete(); return; }
-    const synth = window.speechSynthesis;
     if (synth.speaking) synth.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     utterance.rate = 0.95;
-
-    if (activeCharIndex === 1) { 
-        utterance.pitch = 0.8; 
-    } else { 
-        utterance.pitch = 1.3; 
-    }
-
-    const voices = synth.getVoices();
-    let selectedVoice = null;
-
-    if (activeCharIndex === 1) { 
-        selectedVoice = voices.find(v => (v.name.includes('Male') || v.name.includes('David') || v.name.includes('George')) && v.lang.includes('en'));
-    } else { 
-        selectedVoice = voices.find(v => (v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Samantha') || v.name.includes('Victoria')) && v.lang.includes('en'));
-    }
-
-    if (selectedVoice) {
-        utterance.voice = selectedVoice;
-    }
+    if (selectedVoice) utterance.voice = selectedVoice;
+    utterance.pitch = 1.5;
 
     utterance.onend = () => { if (onComplete) onComplete(); };
     utterance.onerror = () => { if (onComplete) onComplete(); };
 
     synth.speak(utterance);
-}
-
-if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-    };
 }
 
 window.triggerFileDownloadFromHistory = function(msgIndex) {
@@ -1153,11 +907,11 @@ window.generatePDFFile = function(fileName, htmlContent) {
         finalHtml = finalHtml.replace(/__PROFILE_IMAGE_PLACEHOLDER__/g, userProfileImageBase64);
     }
 
-    let element = document.createElement('div');
+    const element = document.createElement('div');
     element.style.cssText = 'font-family: "Inter", "Segoe UI", sans-serif; background: #ffffff; color: #1e293b;';
     element.innerHTML = finalHtml;
 
-    let opt = {
+    const opt = {
         margin:       10,
         filename:     `${fileName}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },

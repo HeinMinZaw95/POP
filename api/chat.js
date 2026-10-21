@@ -7,9 +7,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { messages, userMsg, isExportRequest, isCVRequest, hasPhoto, isStarterRequest, lang, activeCharIndex } = req.body;
+  const { messages, userMsg, isExportRequest, isCVRequest, hasPhoto, isStarterRequest, lang } = req.body;
 
-  // 1. Trendy Starter Request
+  // 1. Trendy Starter တောင်းဆိုလာသည့်အခါ အထူး xử lý လုပ်ပေးခြင်း
   if (isStarterRequest) {
     const promptLangInstruction = lang === "mm" ? "Translate and generate entirely in fluent Myanmar (Burmese)." : "Generate in English.";
     const randomSeed = Math.floor(Math.random() * 100000);
@@ -19,7 +19,8 @@ export default async function handler(req, res) {
     Return ONLY a valid JSON object with a single field "starters" containing an array of 3 strings. No markdown formatting.`;
 
     try {
-      const starterResponse = await fetch("[https://api.sargalay.com/v1/chat/completions](https://api.sargalay.com/v1/chat/completions)", {
+    
+      const starterResponse = await fetch("https://api.sargalay.com/v1/chat/completions", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ export default async function handler(req, res) {
     }
   }
 
-  // 2. Main Chat Request
+  // 2. ပုံမှန် Chat နှင့် File Export လုပ်ဆောင်ချက်များ
   let fileExportRule = "";
   if (isExportRequest) {
     if (isCVRequest && !hasPhoto) {
@@ -54,14 +55,9 @@ export default async function handler(req, res) {
     fileExportRule = ` [CRITICAL: User is just conversing/greeting. Do NOT generate any file export. You MUST set "file_export": null.]`;
   }
 
-  const availableActionsPrompt = activeCharIndex === 2 
-    ? "Available actions: THINKING, TALKING0, EXCITING, GREETING, THANKFUL, ARGUING, AGGRESIVE, IDLE0"
-    : "Available actions: THINKING, TALKING0, TALKING1, TALKING2, DANCE0, DANCE1, DANCE2, IDLE0";
-
   const systemPrompt = `You are HeinPop AI, an elite Professional Graphic Designer and Art Director. 
 Your Tone: Professional, aesthetic, and polite. Keep plain text conversational response without markdown symbols (#, *).
 ${fileExportRule}
-${availableActionsPrompt}
 
 PHOTO & INLINE UPLOAD RULES:
 1. If user wants to add/change a profile photo for CV, ask them to upload using the inline upload box. NEVER tell users to edit in Canva, Word, or upload to third-party image links.
@@ -98,20 +94,18 @@ JSON Structure Schema:
 }`;
 
   try {
-    const apiMessages = [
-      { role: "system", content: systemPrompt },
-      ...(Array.isArray(messages) ? messages.map(m => ({ role: m.role === 'ai' ? 'assistant' : 'user', content: m.content })) : [])
-    ];
-
-    const response = await fetch("[https://api.sargalay.com/v1/chat/completions](https://api.sargalay.com/v1/chat/completions)", {
+    const response = await fetch("https://api.sargalay.com/v1/chat/completions", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.SARGALAY_API_KEY || "sk-fc6666f54ccf448184213c068a246e13"}`
+        'Authorization': `Bearer ${process.env.SARGALAY_API_KEY}`
       },
       body: JSON.stringify({
         model: "anthropic/claude-haiku-5.5",
-        messages: apiMessages
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...(Array.isArray(messages) ? messages : [])
+        ]
       })
     });
 
