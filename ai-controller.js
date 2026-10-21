@@ -27,18 +27,27 @@ let isVoiceMuted = false;
 let currentLangState = localStorage.getItem("portfolio-lang") || "en";
 let userProfileImageBase64 = null;
 
+const SARGALAY_API_KEY = "sk-fc6666f54ccf448184213c068a246e13";
+const SARGALAY_BASE_URL = "https://api.sargalay.com/v1";
+const AI_MODEL_NAME = "anthropic/claude-haiku-5.5";
+
 let scene, camera, renderer, controls;
+
+// Character & Animation Control Variables
 let character1, character2, activeCharacter;
 let mixer, mixer1, mixer2;
 let animationsMap = new Map();
 let animationsMap1 = new Map();
 let animationsMap2 = new Map();
 let activeAction;
-let activeCharIndex = 1; // 1 = Boy, 2 = Girl[cite: 1]
+let activeCharIndex = 1; // 1 = Boy (Char.glb), 2 = Girl (Char2.glb)
 
 let frontLight, redLight, cyanLight;
 const clock = new THREE.Clock();
+let currentAudioPlayer = null;
+let currentAudioPlayerText = "";
 
+// Loading Screen Progress Helper
 function updateLoadingProgress(percent, message) {
     const bar = document.getElementById('loadingBar');
     const txt = document.getElementById('loadingText');
@@ -59,6 +68,10 @@ window.toggleVoiceSpeech = function() {
     const voiceIcon = document.getElementById('voiceIcon');
     if (isVoiceMuted) {
         if (voiceIcon) voiceIcon.textContent = "volume_off";
+        if (currentAudioPlayer) {
+            currentAudioPlayer.pause();
+            currentAudioPlayer = null;
+        }
         showCustomNotification("AI အသံထွက်ကို ပိတ်ထားလိုက်ပါပြီ။");
     } else {
         if (voiceIcon) voiceIcon.textContent = "volume_up";
@@ -66,11 +79,29 @@ window.toggleVoiceSpeech = function() {
     }
 }
 
-// Sidebar Toggle Function (Fixes Console Error)
-window.toggleHistorySidebar = function() {
-    const sidebar = document.getElementById('historySidebar');
-    if (sidebar) {
-        sidebar.classList.toggle('open');
+function playAIAudioResponse(audioDataUrl, onComplete) {
+    if (isVoiceMuted || !audioDataUrl) {
+        if (onComplete) onComplete();
+        return;
+    }
+    try {
+        if (currentAudioPlayer) {
+            currentAudioPlayer.pause();
+            currentAudioPlayer = null;
+        }
+        currentAudioPlayer = new Audio(audioDataUrl);
+        currentAudioPlayer.onended = () => { if (onComplete) onComplete(); };
+        currentAudioPlayer.onerror = (e) => { 
+            console.error("Audio playback error:", e);
+            fallbackBrowserSpeech(currentAudioPlayerText, onComplete);
+        };
+        currentAudioPlayer.play().catch(err => {
+            console.error("Autoplay restrictions or error:", err);
+            fallbackBrowserSpeech(currentAudioPlayerText, onComplete);
+        });
+    } catch (err) {
+        console.error("Audio execution error:", err);
+        if (onComplete) onComplete();
     }
 }
 
@@ -81,10 +112,21 @@ function showCustomNotification(message) {
     const toast = document.createElement('div');
     toast.id = 'cyberToast';
     toast.style.cssText = `
-        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
-        background: rgba(14, 8, 24, 0.95); border: 1px solid #00f0ff; color: #00f0ff;
-        padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
-        z-index: 2000; opacity: 0; transition: all 0.3s ease; backdrop-filter: blur(8px);
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(14, 8, 24, 0.95);
+        border: 1px solid #00f0ff;
+        color: #00f0ff;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        z-index: 2000;
+        opacity: 0;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(8px);
     `;
     toast.textContent = message;
     document.body.appendChild(toast);
@@ -118,6 +160,7 @@ function init3DStage() {
     controls.dampingFactor = 0.05;
     controls.maxPolarAngle = Math.PI / 2 + 0.1;
     controls.target.set(0, 0, 0);
+
     controls.enableZoom = false; 
     controls.enableRotate = true;
 
@@ -137,6 +180,7 @@ function init3DStage() {
     scene.add(cyanLight);
 
     createClubBalloons();
+
     updateLoadingProgress(20, "LOADING 3D ENVIRONMENT...");
 
     const loader = new GLTFLoader();
@@ -150,6 +194,7 @@ function init3DStage() {
         }
     };
 
+    // 1. Load Boy Character (Char.glb)
     loader.load('Char.glb', (gltf) => {
         character1 = gltf.scene;
         character1.scale.set(1.0, 1.0, 1.0);
@@ -159,7 +204,8 @@ function init3DStage() {
         mixer1 = new THREE.AnimationMixer(character1);
         if (gltf.animations && gltf.animations.length > 0) {
             gltf.animations.forEach((clip) => {
-                animationsMap1.set(clip.name.toUpperCase().trim(), mixer1.clipAction(clip));
+                const action = mixer1.clipAction(clip);
+                animationsMap1.set(clip.name.toUpperCase().trim(), action);
             });
         }
 
@@ -174,12 +220,18 @@ function init3DStage() {
             activeAction.play();
         }
 
-        document.getElementById('charStatus').textContent = "CYBER STAGE READY";
+        const charStatus = document.getElementById('charStatus');
+        if (charStatus) charStatus.textContent = "CYBER STAGE READY";
         loadCenteredStarters(currentLangState);
+        
         updateLoadingProgress(60, "LOADING CHARACTER 2...");
         checkAllLoaded();
-    }, undefined, () => checkAllLoaded());
+    }, undefined, (err) => {
+        console.error("Char.glb loading error:", err);
+        checkAllLoaded();
+    });
 
+    // 2. Load Girl Character (Char2.glb)
     loader.load('Char2.glb', (gltf) => {
         character2 = gltf.scene;
         character2.scale.set(1.0, 1.0, 1.0);
@@ -190,16 +242,21 @@ function init3DStage() {
         mixer2 = new THREE.AnimationMixer(character2);
         if (gltf.animations && gltf.animations.length > 0) {
             gltf.animations.forEach((clip) => {
-                animationsMap2.set(clip.name.toUpperCase().trim(), mixer2.clipAction(clip));
+                const action = mixer2.clipAction(clip);
+                animationsMap2.set(clip.name.toUpperCase().trim(), action);
             });
         }
         updateLoadingProgress(90, "FINALIZING STAGE...");
         checkAllLoaded();
-    }, undefined, () => checkAllLoaded());
+    }, undefined, (err) => {
+        console.error("Char2.glb loading error:", err);
+        checkAllLoaded();
+    });
 
     animate();
 }
 
+// Character Switch Function (Boy vs Girl)
 window.switchCharacter = function(charIndex) {
     const btn1 = document.getElementById('charBtn1');
     const btn2 = document.getElementById('charBtn2');
@@ -208,25 +265,35 @@ window.switchCharacter = function(charIndex) {
         if (!character1) return;
         if (character2) character2.visible = false;
         character1.visible = true;
+        
         activeCharacter = character1;
         mixer = mixer1;
         animationsMap = animationsMap1;
         activeCharIndex = 1;
+        
         if (btn1) btn1.classList.add('active');
         if (btn2) btn2.classList.remove('active');
-        showCustomNotification("Boy Character (Char.glb) သို့ ပြောင်းလိုက်ပါပြီ။[cite: 1]");
+
+        showCustomNotification("Boy Character (Char.glb) သို့ ပြောင်းလိုက်ပါပြီ။");
     } else if (charIndex === 2) {
-        if (!character2) return;
+        if (!character2) {
+            showCustomNotification("Girl Character (Char2.glb) ဖိုင် မတွေ့ရသေးပါ။");
+            return;
+        }
         if (character1) character1.visible = false;
         character2.visible = true;
+        
         activeCharacter = character2;
         mixer = mixer2;
         animationsMap = animationsMap2;
         activeCharIndex = 2;
+        
         if (btn2) btn2.classList.add('active');
         if (btn1) btn1.classList.remove('active');
-        showCustomNotification("Girl Character (Char2.glb) သို့ ပြောင်းလိုက်ပါပြီ။[cite: 1]");
+
+        showCustomNotification("Girl Character (Char2.glb) သို့ ပြောင်းလိုက်ပါပြီ။");
     }
+
     fadeToAction('IDLE0', 0.3);
 }
 
@@ -235,30 +302,51 @@ function fadeToAction(name, duration = 0.5) {
     let nextAction = animationsMap.get(cleanName);
 
     if (!nextAction) {
-        if (activeCharIndex === 1) {
+        if (activeCharIndex === 1) { 
             if (cleanName.includes('TALK')) {
-                const talks = ['TALKING0', 'TALKING1', 'TALKING2'].filter(t => animationsMap.has(t));
-                nextAction = animationsMap.get(talks[Math.floor(Math.random() * talks.length)] || 'TALKING0');
+                const talkTracks = ['TALKING0', 'TALKING1', 'TALKING2'].filter(t => animationsMap.has(t));
+                const randomTalk = talkTracks[Math.floor(Math.random() * talkTracks.length)] || 'TALKING0';
+                nextAction = animationsMap.get(randomTalk);
             } else if (cleanName.includes('DANCE') || cleanName.includes('EXCITING')) {
-                const dances = ['DANCE0', 'DANCE1', 'DANCE2'].filter(d => animationsMap.has(d));
-                nextAction = animationsMap.get(dances[Math.floor(Math.random() * dances.length)] || 'DANCE0');
-            } else {
-                nextAction = animationsMap.get('IDLE0');
+                const danceTracks = ['DANCE0', 'DANCE1', 'DANCE2'].filter(d => animationsMap.has(d));
+                const randomDance = danceTracks[Math.floor(Math.random() * danceTracks.length)] || 'DANCE0';
+                nextAction = animationsMap.get(randomDance);
+            } else if (cleanName.includes('IDLE')) {
+                nextAction = animationsMap.get('IDLE0') || animationsMap.get('IDLE1');
+            } else if (cleanName.includes('THINK')) {
+                nextAction = animationsMap.get('THINKING');
             }
-        } else {
+        } else { 
             if (cleanName.includes('TALK')) {
                 nextAction = animationsMap.get('TALKING0');
             } else if (cleanName.includes('DANCE') || cleanName.includes('EXCITING')) {
                 nextAction = animationsMap.get('EXCITING') || animationsMap.get('GREETING');
-            } else {
-                nextAction = animationsMap.get('IDLE0');
+            } else if (cleanName.includes('IDLE')) {
+                nextAction = animationsMap.get('IDLE0') || animationsMap.get('IDLE1');
+            } else if (cleanName.includes('THINK')) {
+                nextAction = animationsMap.get('THINKING');
+            } else if (cleanName.includes('ARGU') || cleanName.includes('AGGR')) {
+                nextAction = animationsMap.get('ARGUING') || animationsMap.get('AGGRESIVE');
+            } else if (cleanName.includes('THANK')) {
+                nextAction = animationsMap.get('THANKFUL');
             }
         }
     }
 
+    if (!nextAction) {
+        nextAction = animationsMap.values().next().value;
+    }
+
     if (!nextAction || activeAction === nextAction) return;
-    nextAction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1);
-    if (activeAction) activeAction.crossFadeTo(nextAction, duration, true);
+
+    nextAction.reset();
+    nextAction.setEffectiveTimeScale(1);
+    nextAction.setEffectiveWeight(1);
+
+    if (activeAction) {
+        activeAction.crossFadeTo(nextAction, duration, true);
+    }
+
     nextAction.play();
     activeAction = nextAction;
 }
@@ -268,18 +356,31 @@ function createClubBalloons() {
     const balloonGroupContainer = new THREE.Group();
     const balloonGeo = new THREE.SphereGeometry(0.12, 32, 32);
     balloonGeo.scale(1, 1.2, 1);
+
     const colors = [0xff0055, 0x00f0ff, 0x7000ff, 0x00ffcc, 0xff00aa];
     
     for (let i = 0; i < 15; i++) {
         const color = colors[Math.floor(Math.random() * colors.length)];
-        const material = new THREE.MeshStandardMaterial({ color, roughness: 0.1, metalness: 0.8 });
+        const material = new THREE.MeshStandardMaterial({
+            color: color,
+            roughness: 0.1,
+            metalness: 0.8
+        });
+
         const balloon = new THREE.Mesh(balloonGeo, material);
+        
         balloon.position.set(
             (Math.random() - 0.5) * 3.5,
             Math.random() * 2.0 - 0.5,
             (Math.random() - 0.5) * 2.0 - 0.5
         );
-        balloon.userData = { baseY: balloon.position.y, speed: 0.5 + Math.random() * 1.5, offset: Math.random() * Math.PI * 2 };
+
+        balloon.userData = {
+            baseY: balloon.position.y,
+            speed: 0.5 + Math.random() * 1.5,
+            offset: Math.random() * Math.PI * 2
+        };
+
         balloonGroupContainer.add(balloon);
         balloonsGroup.push(balloon);
     }
@@ -290,29 +391,105 @@ function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
     const elapsedTime = clock.getElapsedTime();
+
     if (mixer) mixer.update(delta);
     if (controls) controls.update();
+
     balloonsGroup.forEach((b) => {
         b.position.y = b.userData.baseY + Math.sin(elapsedTime * b.userData.speed + b.userData.offset) * 0.15;
     });
-    if (renderer && scene && camera) renderer.render(scene, camera);
+
+    if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+    }
 }
 
 init3DStage();
 
+window.addEventListener('resize', () => {
+    const container = document.querySelector('.cyber-character-stage');
+    if (!container || !renderer) return;
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+});
+
+function updateStageMood(actionName) {
+    const stageElement = document.querySelector('.cyberpunk-stage');
+    const moodBadge = document.getElementById('moodBadge');
+    if (!stageElement) return;
+
+    stageElement.className = "cyberpunk-stage";
+    if (moodBadge) moodBadge.textContent = `MOOD: ${actionName}`;
+
+    if (actionName === 'EXCITING' || actionName.includes('DANCE')) {
+        stageElement.classList.add('mood-exciting');
+        if (redLight) redLight.color.setHex(0x00f0ff);
+        if (cyanLight) cyanLight.color.setHex(0x00ffcc);
+    } else if (actionName === 'THINKING') {
+        stageElement.classList.add('mood-thinking');
+        if (redLight) redLight.color.setHex(0x8a2be2);
+        if (cyanLight) cyanLight.color.setHex(0xda70d6);
+    } else if (actionName === 'ARGUING' || actionName === 'AGGRESIVE') {
+        stageElement.classList.add('mood-drama');
+        if (redLight) redLight.color.setHex(0xff0033);
+        if (cyanLight) cyanLight.color.setHex(0xff5722);
+    } else if (actionName === 'THANKFUL') {
+        stageElement.classList.add('mood-warm');
+        if (redLight) redLight.color.setHex(0xffa500);
+        if (cyanLight) cyanLight.color.setHex(0xffd700);
+    } else {
+        stageElement.classList.add('mood-idle');
+        if (redLight) redLight.color.setHex(0xEE1C4B);
+        if (cyanLight) cyanLight.color.setHex(0x00f0ff);
+    }
+}
+
+function updateMindsetAndMoodUI(mindset, emotion) {
+    const mindsetVal = document.getElementById('mindsetVal');
+    const emotionVal = document.getElementById('emotionVal');
+    if (mindsetVal) mindsetVal.textContent = mindset || "NEUTRAL";
+    if (emotionVal) emotionVal.textContent = emotion || "CALM";
+}
+
 window.handleInlineProfileImageUpload = function(event) {
     const file = event.target.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = async function(e) {
         userProfileImageBase64 = e.target.result;
-        showCustomNotification("🎨 CV ဓာတ်ပုံကို အောင်မြင်စွာ တင်ပြီးပါပြီ။");
+        showCustomNotification("🎨 CV ဓာတ်ပုံကို အောင်မြင်စွာ တင်ပြီးပါပြီ။ CV ထုတ်လုပ်နေပါပြီ...");
+        
         const badge = document.getElementById('uploadedPhotoBadge');
-        if (badge) { badge.innerHTML = `✅ ပုံတင်ပြီးပါပြီ`; badge.style.color = "#00ffcc"; }
+        if (badge) {
+            badge.innerHTML = `✅ ပုံတင်ပြီးပါပြီ`;
+            badge.style.color = "#00ffcc";
+        }
+
         const chatInput = document.getElementById('aiChatInput');
-        if (chatInput) { chatInput.value = "I have uploaded my profile photo. Please generate my final CV now."; sendHeinPopAIChat(); }
+        if (chatInput) {
+            chatInput.value = "I have uploaded my profile photo. Please generate my final CV now.";
+            sendHeinPopAIChat();
+        }
     };
     reader.readAsDataURL(file);
+}
+
+window.handleInlineInfoFileUpload = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const chatInput = document.getElementById('aiChatInput');
+        if (chatInput) {
+            chatInput.value = `Here is my CV information loaded from file: ${file.name}`;
+            sendHeinPopAIChat();
+        }
+        showCustomNotification("📁 အချက်အလက်ဖိုင်ကို အောင်မြင်စွာ ဖတ်ရှုပြီးပါပြီ။");
+    };
+    reader.readAsText(file);
 }
 
 window.loadCenteredStarters = async function(lang = "en") {
@@ -321,6 +498,7 @@ window.loadCenteredStarters = async function(lang = "en") {
         if (startersWrapper) startersWrapper.classList.add('hidden');
         return;
     }
+
     const startersListContainer = document.getElementById('startersChipsList');
     const startersWrapper = document.getElementById('centeredStartersContainer');
     if (!startersListContainer || !startersWrapper) return;
@@ -332,65 +510,325 @@ window.loadCenteredStarters = async function(lang = "en") {
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isStarterRequest: true, lang })
+            body: JSON.stringify({ isStarterRequest: true, lang: lang })
         });
+
         const data = await response.json();
-        let parsed = data;
-        if (data.choices && data.choices[0]) {
-            parsed = JSON.parse(data.choices[0].message.content.replace(/```json|```/g, "").trim());
+        let rawContent = data.choices[0].message.content;
+
+        let parsed;
+        try {
+            const cleanJson = rawContent.replace(/```json|```/g, "").trim();
+            parsed = JSON.parse(cleanJson);
+        } catch (e) {
+            parsed = { 
+                starters: lang === "mm" ? [
+                    "🎨 Professional CV ဖောင်အလှ ဖန်တီးရန်",
+                    "✨ Modern Brand Identity ဒီဇိုင်းဆွဲရန်",
+                    "🚀 Creative Portfolio Layout ပြုလုပ်ရန်"
+                ] : [
+                    "🎨 Design Professional CV Layout",
+                    "✨ Modern Brand Identity Concept",
+                    "🚀 Creative Portfolio Structure"
+                ]
+            };
         }
+
+        if (activeChatMessages && activeChatMessages.length > 0) {
+            startersWrapper.classList.add('hidden');
+            return;
+        }
+
         startersListContainer.innerHTML = '';
         parsed.starters.forEach(text => {
             const btn = document.createElement('button');
             btn.className = 'starter-chip-btn';
             btn.textContent = text;
+            
             btn.onclick = () => {
                 const input = document.getElementById('aiChatInput');
-                if (input) { input.value = text; sendHeinPopAIChat(); }
+                if (input) {
+                    input.value = text;
+                    sendHeinPopAIChat();
+                }
             };
+            
             startersListContainer.appendChild(btn);
         });
+
     } catch (err) {
         console.error("Starters error:", err);
+        startersListContainer.innerHTML = `<div style="font-size:0.75rem; color:#ff4d6d; text-align:center;">Failed to load trendy starters.</div>`;
     }
 }
 
-// Authentication & Firebase Chat History
+document.addEventListener("DOMContentLoaded", () => {
+    const themeToggle = document.getElementById("theme-toggle");
+    const body = document.body;
+    const themeIcon = document.getElementById("themeIcon");
+
+    const savedTheme = localStorage.getItem("portfolio-theme") || "dark";
+    if (savedTheme === "light") {
+        body.classList.remove("dark-theme");
+        body.classList.add("light-theme");
+        if (themeIcon) themeIcon.textContent = "dark_mode";
+    }
+
+    window.toggleTheme = function() {
+        if (body.classList.contains("dark-theme")) {
+            body.classList.remove("dark-theme");
+            body.classList.add("light-theme");
+            localStorage.setItem("portfolio-theme", "light");
+            if (themeIcon) themeIcon.textContent = "dark_mode";
+        } else {
+            body.classList.remove("light-theme");
+            body.classList.add("dark-theme");
+            localStorage.setItem("portfolio-theme", "dark");
+            if (themeIcon) themeIcon.textContent = "light_mode";
+        }
+    };
+
+    const langText = document.getElementById("langText");
+    currentLangState = localStorage.getItem("portfolio-lang") || "en";
+
+    const updateDOMText = (lang) => {
+        document.querySelectorAll("[data-en]").forEach(el => {
+            const translation = el.getAttribute(`data-${lang}`);
+            if (translation) el.textContent = translation;
+        });
+        document.querySelectorAll("[data-en-placeholder]").forEach(el => {
+            const ph = el.getAttribute(`data-${lang}-placeholder`);
+            if (ph) el.placeholder = ph;
+        });
+        if (langText) langText.textContent = lang === "en" ? "MM" : "EN";
+    };
+
+    updateDOMText(currentLangState);
+
+    window.toggleLanguage = function() {
+        currentLangState = currentLangState === "en" ? "mm" : "en";
+        localStorage.setItem("portfolio-lang", currentLangState);
+        updateDOMText(currentLangState);
+        loadCenteredStarters(currentLangState);
+    };
+});
+
+window.openLoginModal = () => document.getElementById('loginModal').classList.add('active');
+window.closeLoginModal = () => document.getElementById('loginModal').classList.remove('active');
+window.openShareModal = (url) => {
+    document.getElementById('shareLinkInput').value = url;
+    document.getElementById('shareModal').classList.add('active');
+};
+window.closeShareModal = () => document.getElementById('shareModal').classList.remove('active');
+
+window.copyShareLink = () => {
+    const input = document.getElementById('shareLinkInput');
+    input.select();
+    navigator.clipboard.writeText(input.value);
+    showCustomNotification("Public Share Link ကို ကူးယူပြီးပါပြီ။");
+};
+
+window.toggleHistorySidebar = () => document.getElementById('historySidebar').classList.toggle('open');
+
+window.loginWithGoogle = async () => {
+    try {
+        await signInWithPopup(auth, provider);
+        closeLoginModal();
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+window.logoutUser = async () => {
+    try {
+        await signOut(auth);
+        currentUser = null;
+        document.getElementById('creditDisplay').textContent = "--";
+        document.getElementById('authContainer').innerHTML = `<button class="cta-button" onclick="openLoginModal()" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;" data-en="Sign In" data-mm="အကောင့်ဝင်ရန်">Sign In</button>`;
+        document.getElementById('chatHistoryList').innerHTML = "";
+        showCustomNotification("အကောင့်မှ ထွက်ပြီးပါပြီ။");
+    } catch (e) {
+        console.error("Logout error:", e);
+    }
+};
+
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         currentUser = user;
         const snap = await getDoc(doc(db, "users", user.uid));
         const userCredits = snap.exists() ? snap.data().credits : 10;
-        const creditDisplay = document.getElementById('creditDisplay');
-        if (creditDisplay) creditDisplay.textContent = userCredits;
+        document.getElementById('creditDisplay').textContent = userCredits;
         
-        const authContainer = document.getElementById('authContainer');
-        if (authContainer) {
-            authContainer.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size:0.85rem; color:var(--text-main); font-weight:600;">${user.displayName}</span>
-                    <button onclick="logoutUser()" class="toolbar-btn" title="Log Out" style="width: auto; padding: 0 10px; font-size: 0.75rem; border-color: var(--accent); color: var(--accent);">Log Out</button>
-                </div>
-            `;
-        }
+        document.getElementById('authContainer').innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size:0.85rem; color:var(--text-main); font-weight:600;">${user.displayName}</span>
+                <button onclick="logoutUser()" class="toolbar-btn" title="Log Out" style="width: auto; padding: 0 10px; font-size: 0.75rem; border-color: var(--accent); color: var(--accent);">Log Out</button>
+            </div>
+        `;
         loadUserChats();
     }
 });
 
-window.loginWithGoogle = async () => {
-    try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
-};
-
-window.logoutUser = async () => {
-    try { await signOut(auth); currentUser = null; location.reload(); } catch (e) { console.error(e); }
-};
-
 window.createNewChatSession = async function() {
-    if (!currentUser) { openLoginModal(); return; }
+    if (!currentUser) {
+        openLoginModal();
+        return;
+    }
     activeChatMessages = [];
     currentChatId = null;
     document.getElementById('chatHistory').innerHTML = '';
+    
+    currentLangState = localStorage.getItem("portfolio-lang") || "en";
     loadCenteredStarters(currentLangState);
+    loadUserChats();
+}
+
+async function loadUserChats() {
+    if (!currentUser) return;
+    const chatListContainer = document.getElementById('chatHistoryList');
+    chatListContainer.innerHTML = '';
+
+    try {
+        const q = query(collection(db, "users", currentUser.uid, "chats"), orderBy("updatedAt", "desc"));
+        const querySnapshot = await getDocs(q);
+
+        let chats = [];
+        querySnapshot.forEach((docSnap) => {
+            chats.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        chats.sort((a, b) => {
+            const pinA = a.pinned ? 1 : 0;
+            const pinB = b.pinned ? 1 : 0;
+            return pinB - pinA;
+        });
+
+        chats.forEach((data) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = `history-item-wrapper ${data.id === currentChatId ? 'active' : ''}`;
+
+            const titleSpan = document.createElement('div');
+            titleSpan.className = `history-item-title ${data.pinned ? 'pinned' : ''}`;
+            titleSpan.innerHTML = `${data.pinned ? '<span style="color:#00f0ff; margin-right:4px;">📌</span>' : ''} ${data.title || "New Chat"}`;
+            titleSpan.onclick = () => selectChatSession(data.id, data.messages);
+
+            const menuBtn = document.createElement('button');
+            menuBtn.className = 'history-menu-btn';
+            menuBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 18px;">more_vert</span>';
+            menuBtn.onclick = (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.history-dropdown-menu').forEach(m => { if(m !== dropdown) m.classList.remove('show'); });
+                dropdown.classList.toggle('show');
+            };
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'history-dropdown-menu';
+            
+            const pinOpt = document.createElement('button');
+            pinOpt.className = 'dropdown-opt';
+            pinOpt.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">keep</span> ${data.pinned ? 'Unpin' : 'Pin'}`;
+            pinOpt.onclick = (e) => { e.stopPropagation(); togglePinChat(data.id, !data.pinned); };
+
+            const shareOpt = document.createElement('button');
+            shareOpt.className = 'dropdown-opt';
+            shareOpt.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">share</span> Share Link`;
+            shareOpt.onclick = (e) => { e.stopPropagation(); generatePublicShareLink(data); dropdown.classList.remove('show'); };
+
+            const deleteOpt = document.createElement('button');
+            deleteOpt.className = 'dropdown-opt delete';
+            deleteOpt.innerHTML = `<span class="material-symbols-outlined" style="font-size: 14px;">delete</span> Delete`;
+            deleteOpt.onclick = (e) => { e.stopPropagation(); deleteChatSession(data.id); };
+
+            dropdown.appendChild(pinOpt);
+            dropdown.appendChild(shareOpt);
+            dropdown.appendChild(deleteOpt);
+
+            wrapper.appendChild(titleSpan);
+            wrapper.appendChild(menuBtn);
+            wrapper.appendChild(dropdown);
+            chatListContainer.appendChild(wrapper);
+        });
+    } catch (err) {
+        console.error("Error loading chats:", err);
+    }
+}
+
+window.togglePinChat = async function(chatId, newPinStatus) {
+    if (!currentUser) return;
+    try {
+        const chatRef = doc(db, "users", currentUser.uid, "chats", chatId);
+        await updateDoc(chatRef, { pinned: newPinStatus });
+        loadUserChats();
+        showCustomNotification(newPinStatus ? "ဆွေးနွေးမှုကို Pin လုပ်ပြီးပါပြီ။" : "Pin ကို ဖြုတ်ပြီးပါပြီ။");
+    } catch (err) {
+        console.error("Error pinning chat:", err);
+    }
+}
+
+window.deleteChatSession = async function(chatId) {
+    if (!currentUser) return;
+    try {
+        await deleteDoc(doc(db, "users", currentUser.uid, "chats", chatId));
+        showCustomNotification("ဆွေးနွေးမှုကို ဖျက်ပြီးပါပြီ။");
+        if (currentChatId === chatId) {
+            createNewChatSession();
+        } else {
+            loadUserChats();
+        }
+    } catch (err) {
+        console.error("Error deleting chat:", err);
+    }
+}
+
+window.generatePublicShareLink = async function(chatData) {
+    if (!currentUser) return;
+    try {
+        const shareRef = await addDoc(collection(db, "public_shares"), {
+            title: chatData.title || "Shared Chat",
+            messages: chatData.messages || [],
+            createdAt: serverTimestamp()
+        });
+        const shareUrl = `${window.location.origin}${window.location.pathname}?shareId=${shareRef.id}`;
+        openShareModal(shareUrl);
+    } catch (err) {
+        console.error("Error generating share link:", err);
+        showCustomNotification("Share Link ထုတ်ယူရာတွင် အမှားဖြစ်ပေါ်သွားပါသည်။");
+    }
+}
+
+window.addEventListener('click', (e) => {
+    if (!e.target.closest('.history-menu-btn') && !e.target.closest('.history-dropdown-menu')) {
+        document.querySelectorAll('.history-dropdown-menu').forEach(m => m.classList.remove('show'));
+    }
+});
+
+function selectChatSession(chatId, messages) {
+    currentChatId = chatId;
+    activeChatMessages = messages || [];
+    const chatBox = document.getElementById('chatHistory');
+    const startersWrapper = document.getElementById('centeredStartersContainer');
+    
+    if (startersWrapper) startersWrapper.classList.add('hidden');
+    chatBox.innerHTML = '';
+
+    activeChatMessages.forEach((msg, idx) => {
+        const roleClass = msg.role === 'user' ? 'user' : 'ai';
+        const senderName = msg.role === 'user' ? 'You' : 'HeinPop AI';
+        
+        let fileBtnHTML = '';
+        if (msg.file_export) {
+            const fe = msg.file_export;
+            const fileNameOrTitle = fe.filename || fe.title || 'File';
+            const fileType = (fe.type || 'file').toUpperCase();
+            
+            const btnText = `📥 Download ${fileNameOrTitle} (${fileType})`;
+            fileBtnHTML = `<br><button class="cta-button" style="margin-top:8px; padding: 4px 12px; font-size: 0.75rem;" onclick="triggerFileDownloadFromHistory(${idx})">${btnText}</button>`;
+        }
+
+        let cleanContent = msg.content ? msg.content.replace(/[\#\*\`\>]/g, '').trim() : '';
+        chatBox.innerHTML += `<div class="chat-msg ${roleClass}"><strong>${senderName}:</strong> ${cleanContent}${fileBtnHTML}</div>`;
+    });
+    chatBox.scrollTop = chatBox.scrollHeight;
     loadUserChats();
 }
 
@@ -412,57 +850,14 @@ async function saveCurrentChat(titlePrompt) {
     loadUserChats();
 }
 
-async function loadUserChats() {
-    if (!currentUser) return;
-    const chatListContainer = document.getElementById('chatHistoryList');
-    if (!chatListContainer) return;
-    chatListContainer.innerHTML = '';
-
-    try {
-        const q = query(collection(db, "users", currentUser.uid, "chats"), orderBy("updatedAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        let chats = [];
-        querySnapshot.forEach((docSnap) => {
-            chats.push({ id: docSnap.id, ...docSnap.data() });
-        });
-
-        chats.forEach((data) => {
-            const wrapper = document.createElement('div');
-            wrapper.className = `history-item-wrapper ${data.id === currentChatId ? 'active' : ''}`;
-            wrapper.style.cssText = "padding: 8px 12px; cursor: pointer; border-radius: 6px; margin-bottom: 4px; font-size: 0.85rem; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;";
-            wrapper.innerHTML = `<span>${data.title || "New Chat"}</span>`;
-            wrapper.onclick = () => selectChatSession(data.id, data.messages);
-            chatListContainer.appendChild(wrapper);
-        });
-    } catch (err) {
-        console.error("Error loading chats:", err);
-    }
-}
-
-function selectChatSession(chatId, messages) {
-    currentChatId = chatId;
-    activeChatMessages = messages || [];
-    const chatBox = document.getElementById('chatHistory');
-    const startersWrapper = document.getElementById('centeredStartersContainer');
-    if (startersWrapper) startersWrapper.classList.add('hidden');
-    chatBox.innerHTML = '';
-
-    activeChatMessages.forEach((msg) => {
-        const roleClass = msg.role === 'user' ? 'user' : 'ai';
-        const senderName = msg.role === 'user' ? 'You' : 'HeinPop AI';
-        chatBox.innerHTML += `<div class="chat-msg ${roleClass}"><strong>${senderName}:</strong> ${msg.content}</div>`;
-    });
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-// Main Chat Execution via Vercel Backend Proxy[cite: 3]
 window.sendHeinPopAIChat = async function() {
     const input = document.getElementById('aiChatInput');
     const chatHistory = document.getElementById('chatHistory');
     const charStatus = document.getElementById('charStatus');
     const startersWrapper = document.getElementById('centeredStartersContainer');
     
-    if (!input || !input.value.trim()) return;
+    if (!input.value.trim()) return;
+    
     if (startersWrapper) startersWrapper.classList.add('hidden');
 
     const userMsg = input.value.trim();
@@ -474,28 +869,33 @@ window.sendHeinPopAIChat = async function() {
 
     if (charStatus) charStatus.textContent = "AI THINKING...";
     fadeToAction('THINKING', 0.5);
+    updateStageMood('THINKING');
 
     try {
         let isCVRequest = userMsg.toLowerCase().includes('cv') || userMsg.toLowerCase().includes('resume') || userMsg.toLowerCase().includes('ဖောင်');
-        let isExportRequest = isCVRequest || userMsg.toLowerCase().includes('pdf') || userMsg.toLowerCase().includes('excel') || userMsg.toLowerCase().includes('pptx') || userMsg.toLowerCase().includes('download');
+        let isExportRequest = isCVRequest || userMsg.toLowerCase().includes('pdf') || userMsg.toLowerCase().includes('excel') || userMsg.toLowerCase().includes('pptx') || userMsg.toLowerCase().includes('download') || userMsg.toLowerCase().includes('presentation');
 
+        // Vercel Serverless Function သို့ လှမ်းခေါ်ခြင်း
         const response = await fetch('/api/chat', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 messages: activeChatMessages,
                 userMsg: userMsg,
                 isExportRequest: isExportRequest,
                 isCVRequest: isCVRequest,
                 hasPhoto: !!userProfileImageBase64,
-                lang: currentLangState
+                activeCharIndex: activeCharIndex
             })
         });
 
         const data = await response.json();
-        let parsed = data;
-        if (data.choices && data.choices[0] && data.choices[0].message) {
-            let rawContent = data.choices[0].message.content;
+        let rawContent = data.choices[0].message.content;
+
+        let parsed;
+        try {
             let cleanJson = rawContent.trim();
             if (cleanJson.startsWith("```")) {
                 cleanJson = cleanJson.replace(/^```(json)?/, "").replace(/```$/, "").trim();
@@ -506,61 +906,264 @@ window.sendHeinPopAIChat = async function() {
                 cleanJson = cleanJson.substring(jsonStart, jsonEnd + 1);
             }
             parsed = JSON.parse(cleanJson);
+        } catch (e) {
+            console.error("JSON Parse Error:", e, rawContent);
+            parsed = { 
+                reply: rawContent.replace(/[\#\*\`\>]/g, '').trim(), 
+                action: "TALKING0", 
+                mindset: "CREATIVE", 
+                emotion: "INSPIRED", 
+                file_export: null 
+            };
+        }
+
+        if (parsed.reply) {
+            parsed.reply = parsed.reply.replace(/[\#\*\`\>]/g, '').trim();
+        }
+
+        let inlineUploadHTML = '';
+        const lowerReply = (parsed && parsed.reply) ? parsed.reply.toLowerCase() : '';
+        const lowerUserMsg = userMsg.toLowerCase();
+        
+        const needsPhoto = lowerUserMsg.includes('ပုံ') || lowerUserMsg.includes('photo') || lowerUserMsg.includes('cv') ||
+                           lowerReply.includes('photo') || lowerReply.includes('ဓာတ်ပုံ') || lowerReply.includes('upload') || lowerReply.includes('တင်ရန်');
+
+        if (!userProfileImageBase64 && needsPhoto && !parsed.file_export) {
+            inlineUploadHTML = `
+                <div style="margin-top: 12px; padding: 10px; background: rgba(0, 240, 255, 0.05); border: 1px dashed var(--accent); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                    <label style="font-size: 0.75rem; color: var(--accent); cursor: pointer; padding: 5px 10px; border: 1px solid var(--accent); border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 14px;">photo_camera</span>
+                        <span id="uploadedPhotoBadge">ဓာတ်ပုံ တင်ရန်</span>
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleInlineProfileImageUpload(event)">
+                    </label>
+                    <label style="font-size: 0.75rem; color: #00ffcc; cursor: pointer; padding: 5px 10px; border: 1px solid #00ffcc; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">
+                        <span class="material-symbols-outlined" style="font-size: 14px;">description</span>
+                        <span>အချက်အလက် (Word/Text) တင်ရန်</span>
+                        <input type="file" accept=".txt,.doc,.docx" style="display: none;" onchange="handleInlineInfoFileUpload(event)">
+                    </label>
+                </div>
+            `;
         }
 
         let fileBtnHTML = '';
         if (parsed.file_export) {
             const fe = parsed.file_export;
-            fileBtnHTML = `<br><button class="cta-button" style="margin-top:8px; font-size:0.75rem;" onclick='triggerFileDownloadFromHistoryDirect(${JSON.stringify(fe)})'>📥 Download ${fe.filename || fe.title} (${fe.type.toUpperCase()})</button>`;
+            const fileNameOrTitle = fe.filename || fe.title || 'File';
+            const fileType = (fe.type || 'file').toUpperCase();
+            
+            const btnText = `📥 Download ${fileNameOrTitle} (${fileType})`;
+            fileBtnHTML = `<br><button class="cta-button" style="margin-top:8px; padding: 4px 12px; font-size: 0.75rem;" onclick="triggerFileDownloadFromHistory(${activeChatMessages.length})">${btnText}</button>`;
+            
             triggerFileDownloadFromHistoryDirect(fe);
         }
 
-        chatHistory.innerHTML += `<div class="chat-msg ai"><strong>HeinPop AI:</strong> ${parsed.reply}${fileBtnHTML}</div>`;
-        activeChatMessages.push({ role: "ai", content: parsed.reply, file_export: parsed.file_export || null });
+        chatHistory.innerHTML += `<div class="chat-msg ai"><strong>HeinPop AI:</strong> ${parsed.reply}${inlineUploadHTML}${fileBtnHTML}</div>`;
+        
+        activeChatMessages.push({ 
+            role: "ai", 
+            content: parsed.reply,
+            file_export: parsed.file_export || null 
+        });
+
         chatHistory.scrollTop = chatHistory.scrollHeight;
+
+        updateMindsetAndMoodUI(parsed.mindset, parsed.emotion);
 
         if (parsed.action) {
             if (charStatus) charStatus.textContent = `ANIMATION: ${parsed.action}`;
             fadeToAction(parsed.action, 0.5);
+            updateStageMood(parsed.action);
         }
 
         await saveCurrentChat(userMsg);
+
+        if (parsed.reply && !isVoiceMuted) {
+            currentAudioPlayerText = parsed.reply;
+            try {
+                const voiceChoice = activeCharIndex === 1 ? "echo" : "alloy";
+
+                const audioRes = await fetch(`${SARGALAY_BASE_URL}/audio/speech`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SARGALAY_API_KEY}` },
+                    body: JSON.stringify({
+                        model: "tts-1",
+                        input: parsed.reply,
+                        voice: voiceChoice
+                    })
+                });
+
+                if (audioRes.ok) {
+                    const audioBlob = await audioRes.blob();
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    playAIAudioResponse(audioUrl, () => {
+                        fadeToAction('IDLE0', 1.0);
+                        updateStageMood('IDLE0');
+                        if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
+                    });
+                } else {
+                    fallbackBrowserSpeech(parsed.reply, () => {
+                        fadeToAction('IDLE0', 1.0);
+                        updateStageMood('IDLE0');
+                        if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
+                    });
+                }
+            } catch (audioErr) {
+                console.error("Audio API error, using browser speech fallback:", audioErr);
+                fallbackBrowserSpeech(parsed.reply, () => {
+                    fadeToAction('IDLE0', 1.0);
+                    updateStageMood('IDLE0');
+                    if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
+                });
+            }
+        } else {
+            setTimeout(() => {
+                fadeToAction('IDLE0', 1.0);
+                updateStageMood('IDLE0');
+                if (charStatus) charStatus.textContent = "SYSTEM ONLINE";
+            }, 1000);
+        }
+
     } catch (err) {
         console.error(err);
         if (charStatus) charStatus.textContent = "CONNECTION ERROR";
         fadeToAction('IDLE0', 1.0);
+        updateStageMood('IDLE0');
     }
 }
 
-window.triggerFileDownloadFromHistoryDirect = function(fe) {
-    if (!fe) return;
-    const type = (fe.type || '').toLowerCase();
-    if (type === 'excel') generateExcelFile(fe.filename || 'Data', fe.data || []);
-    else if (type === 'pptx') generatePPTXFile(fe.title || 'Presentation', fe.slides || [], fe.theme || null);
-    else if (type === 'pdf') generatePDFFile(fe.filename || 'Document', fe.html || '');
-    showCustomNotification("🎨 ဖိုင်ကို အောင်မြင်စွာ ဒေါင်းလုဒ်ဆွဲပြီးပါပြီ။");
+function fallbackBrowserSpeech(text, onComplete) {
+    if (!text || isVoiceMuted) { if (onComplete) onComplete(); return; }
+    const synth = window.speechSynthesis;
+    if (synth.speaking) synth.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.95;
+
+    if (activeCharIndex === 1) { 
+        utterance.pitch = 0.8; 
+    } else { 
+        utterance.pitch = 1.3; 
+    }
+
+    const voices = synth.getVoices();
+    let selectedVoice = null;
+
+    if (activeCharIndex === 1) { 
+        selectedVoice = voices.find(v => (v.name.includes('Male') || v.name.includes('David') || v.name.includes('George')) && v.lang.includes('en'));
+    } else { 
+        selectedVoice = voices.find(v => (v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Samantha') || v.name.includes('Victoria')) && v.lang.includes('en'));
+    }
+
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    }
+
+    utterance.onend = () => { if (onComplete) onComplete(); };
+    utterance.onerror = () => { if (onComplete) onComplete(); };
+
+    synth.speak(utterance);
+}
+
+if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+    };
+}
+
+window.triggerFileDownloadFromHistory = function(msgIndex) {
+    const msg = activeChatMessages[msgIndex];
+    if (msg && msg.file_export) {
+        triggerFileDownloadFromHistoryDirect(msg.file_export);
+    }
 };
 
+function triggerFileDownloadFromHistoryDirect(fe) {
+    if (!fe) return;
+    const type = (fe.type || '').toLowerCase();
+    
+    if (type === 'excel') window.generateExcelFile(fe.filename || 'Designer_Data', fe.data || []);
+    else if (type === 'pptx') window.generatePPTXFile(fe.title || 'Design_Presentation', fe.slides || [], fe.theme || null);
+    else if (type === 'pdf') window.generatePDFFile(fe.filename || 'Designer_Document', fe.html || '<div style="padding:20px;">Empty Design Layout</div>');
+    
+    showCustomNotification("🎨 Designer-Grade ဖိုင်ကို အလှပဆုံး တည်ဆောက်ဒေါင်းလုဒ်ဆွဲလိုက်ပါပြီ။");
+}
+
 window.generateExcelFile = function(fileName, dataArray) {
-    if (typeof XLSX === 'undefined') return;
+    if (typeof XLSX === 'undefined') {
+        showCustomNotification("Excel Library မတင်ရသေးပါ။");
+        return;
+    }
     const worksheet = XLSX.utils.json_to_sheet(dataArray);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "DesignGrid");
     XLSX.writeFile(workbook, `${fileName}.xlsx`);
 };
 
 window.generatePPTXFile = function(title, slidesData, theme) {
-    if (typeof PptxGenJS === 'undefined') return;
+    if (typeof PptxGenJS === 'undefined') {
+        showCustomNotification("PowerPoint Library မတင်ရသေးပါ။");
+        return;
+    }
     let pptx = new PptxGenJS();
+    
+    const bgColor = (theme && theme.bgColor) ? theme.bgColor : "0F172A";
+    const cardBg = (theme && theme.cardBg) ? theme.cardBg : "1E293B";
+    const titleColor = (theme && theme.titleColor) ? theme.titleColor : "38BDF8";
+    const textColor = (theme && theme.textColor) ? theme.textColor : "F8FAFC";
+    const accentColor = (theme && theme.accentColor) ? theme.accentColor : "EE1C4B";
+
     let slide = pptx.addSlide();
-    slide.background = { color: theme?.bgColor || "0F172A" };
-    slide.addText(title, { x: 1, y: 1.5, fontSize: 28, color: theme?.titleColor || "38BDF8", bold: true });
+    slide.background = { color: bgColor };
+    
+    slide.addText("", { x: 0.8, y: 1.6, w: 0.12, h: 1.8, fill: { color: accentColor } });
+    slide.addText(title, { x: 1.1, y: 1.8, w: 8.5, fontSize: 32, bold: true, color: titleColor, align: "left" });
+    slide.addText("DESIGNED BY HEINPOP AI STUDIO", { x: 1.1, y: 3.2, fontSize: 11, color: textColor, tracking: 3 });
+
+    if (Array.isArray(slidesData)) {
+        slidesData.forEach((item, index) => {
+            let contentSlide = pptx.addSlide();
+            contentSlide.background = { color: bgColor };
+
+            contentSlide.addText("", { 
+                x: 0.5, y: 0.5, w: 9.0, h: 4.6, 
+                fill: { color: cardBg }, 
+                line: { color: accentColor, width: 1 } 
+            });
+
+            contentSlide.addText(`0${index + 1}`, { x: 8.0, y: 0.8, w: 1.2, fontSize: 14, bold: true, color: accentColor, align: "right" });
+            contentSlide.addText(item.heading || "Layout Concept", { x: 0.9, y: 0.8, w: 7.0, fontSize: 22, bold: true, color: titleColor });
+            
+            const bullets = Array.isArray(item.bulletPoints) ? item.bulletPoints.join("\n\n• ") : (item.bulletPoints || "");
+            contentSlide.addText("• " + bullets, { x: 0.9, y: 1.7, w: 8.2, h: 3.1, fontSize: 14, color: textColor, lineSpacing: 18 });
+        });
+    }
+
     pptx.writeFile({ fileName: `${title}.pptx` });
 };
 
 window.generatePDFFile = function(fileName, htmlContent) {
-    if (typeof html2pdf === 'undefined') return;
+    if (typeof html2pdf === 'undefined') {
+        showCustomNotification("PDF Library မတင်ရသေးပါ။");
+        return;
+    }
+
     let finalHtml = htmlContent;
-    if (userProfileImageBase64) finalHtml = finalHtml.replace(/__PROFILE_IMAGE_PLACEHOLDER__/g, userProfileImageBase64);
-    html2pdf().from(finalHtml).save(`${fileName}.pdf`);
+    if (userProfileImageBase64) {
+        finalHtml = finalHtml.replace(/__PROFILE_IMAGE_PLACEHOLDER__/g, userProfileImageBase64);
+    }
+
+    let element = document.createElement('div');
+    element.style.cssText = 'font-family: "Inter", "Segoe UI", sans-serif; background: #ffffff; color: #1e293b;';
+    element.innerHTML = finalHtml;
+
+    let opt = {
+        margin:       10,
+        filename:     `${fileName}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
 };
