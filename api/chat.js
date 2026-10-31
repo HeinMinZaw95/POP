@@ -1,28 +1,23 @@
 export default async function handler(req, res) {
-  // CORS Headers များ ခွင့်ပြုပေးခြင်း
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS Headers များ အပြည့်အစုံ ခွင့်ပြုပေးခြင်း
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', 'https://heinpop.xyz');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 
+  // Preflight OPTIONS request ဝင်လာလျှင် 200 OK ဖြင့် ချက်ချင်း ရပ်တန့်ရန်
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
+  // POST မဟုတ်လျှင် 405 Error ပြန်ရန်
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { messages, userMsg, isExportRequest, isCVRequest, hasPhoto, isStarterRequest, lang } = req.body;
 
-  // 1. Trendy Starter တောင်းဆိုလာသည့်အခါ အထူး xử lý လုပ်ပေးခြင်း
+  // 1. Trendy Starter တောင်းဆိုလာသည့်အခါ အထူး လုပ်ဆောင်ပေးခြင်း
   if (isStarterRequest) {
     const promptLangInstruction = lang === "mm" ? "Translate and generate entirely in fluent Myanmar (Burmese)." : "Generate in English.";
     const randomSeed = Math.floor(Math.random() * 100000);
@@ -32,7 +27,6 @@ export default async function handler(req, res) {
     Return ONLY a valid JSON object with a single field "starters" containing an array of 3 strings. No markdown formatting.`;
 
     try {
-    
       const starterResponse = await fetch("https://api.sargalay.com/v1/chat/completions", {
         method: 'POST',
         headers: {
