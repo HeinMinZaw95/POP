@@ -42,8 +42,8 @@ let selectedVoice = null;
 function loadVoices() {
     const voices = synth.getVoices();
     selectedVoice = voices.find(voice => 
-        (voice.name.includes('Female') || voice.name.includes('Victoria') || voice.name.includes('Google US English') || voice.name.includes('Aria') || voice.name.includes('Zira')) && voice.lang.startsWith('en')
-    ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
+    (voice.name.includes('Male') || voice.name.includes('David') || voice.name.includes('Guy') || voice.name.includes('Mark') || voice.name.includes('George')) && voice.lang.startsWith('en')
+) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
 }
 
 if (synth.onvoiceschanged !== undefined) {
