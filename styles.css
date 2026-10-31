@@ -55,9 +55,9 @@ section {
 }
 
 .max-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1800px;
     width: 100%;
+    margin: 0 auto;
 }
 
 .lab-search-container{
@@ -86,12 +86,12 @@ section {
 }
 
 /* Background Grids */
-.skills-studio, .workflow-section, .experience-section {
+.skills-studio, .workflow-section, .experience-section, .ai-studio-banner-section {
     position: relative;
     overflow: hidden;
 }
 
-.skills-studio::before, .workflow-section::before, .experience-section::before {
+.skills-studio::before, .workflow-section::before, .experience-section::before, .ai-studio-banner-section::before {
     content: '';
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -104,7 +104,8 @@ section {
 
 .skills-studio .max-container, 
 .workflow-section .max-container, 
-.experience-section .max-container {
+.experience-section .max-container,
+.ai-studio-banner-section .max-container {
     position: relative;
     z-index: 1;
 }
@@ -774,6 +775,166 @@ section {
     }
     to {
         transform: translateX(calc(-100% - 4rem)); /* Width + Gap အတွက် ညှိထားခြင်း */
+    }
+}
+
+/* ==========================================================
+   AI STUDIO INTRO BANNER SECTION
+   ========================================================== */
+.ai-studio-banner-section {
+    padding: 4rem 5%;
+    position: relative;
+    z-index: 2;
+}
+
+.ai-studio-banner-card {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 3.5rem 3rem;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px var(--accent-glow);
+}
+
+.ai-banner-glow {
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 350px;
+    height: 350px;
+    background: var(--accent);
+    filter: blur(140px);
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(238, 28, 75, 0.15);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 1.2rem;
+}
+
+.ai-badge-icon {
+    font-size: 16px;
+}
+
+.ai-banner-content h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
+
+.ai-banner-content p {
+    color: var(--text-sub);
+    font-size: 1rem;
+    margin-bottom: 1.8rem;
+    line-height: 1.6;
+}
+
+.ai-features-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 2rem;
+}
+
+.ai-features-pills span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-alpha);
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+.ai-features-pills span .material-symbols-outlined {
+    font-size: 16px;
+    color: var(--accent);
+}
+
+.ai-studio-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.9rem 2rem;
+    font-size: 0.95rem;
+}
+
+/* Preview Box */
+.ai-banner-preview {
+    position: relative;
+    width: 100%;
+}
+
+.cyber-preview-frame {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-alpha);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    aspect-ratio: 16 / 10;
+}
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.8);
+    transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.cyber-preview-frame:hover .preview-img {
+    transform: scale(1.05);
+    filter: brightness(1);
+}
+
+.preview-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.play-icon {
+    font-size: 60px;
+    color: var(--accent);
+    text-shadow: 0 0 20px var(--accent-glow);
+    transition: transform 0.3s ease;
+}
+
+.cyber-preview-frame:hover .play-icon {
+    transform: scale(1.15);
+}
+
+/* Responsive Handling */
+@media (max-width: 992px) {
+    .ai-studio-banner-card {
+        grid-template-columns: 1fr;
+        padding: 2.5rem 2rem;
+        gap: 2rem;
     }
 }
 
