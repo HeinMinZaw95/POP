@@ -6,7 +6,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChang
 import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, query, orderBy, serverTimestamp, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // 🔗 Vercel Serverless Proxy Endpoint
-const VERCEL_BACKEND_URL = "https://hein-ai-one.vercel.app/api/chat";
+const VERCEL_BACKEND_URL = "https://ai-project-beta-red.vercel.app/";
 
 const firebaseConfig = {
     apiKey: "AIzaSyC5U2QwKBo8TiyN_wZ912hdEYhgtLpoTOA",
