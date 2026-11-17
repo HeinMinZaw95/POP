@@ -27,17 +27,16 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://heinpop.xyz/Graphic_&_UI_Design.html</loc>
+        <loc>https://heinpop.xyz/Graphic_%26_UI_Design.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://heinpop.xyz/Motion_Graphic_&_Videos.html</loc>
+        <loc>https://heinpop.xyz/Motion_Graphic_%26_Videos.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-    <url>
-    
+
     <!-- Grade-12 Physics folder -->
     <url>
         <loc>https://heinpop.xyz/Grade-12_Physics/lab-circular-motion.html</loc>
