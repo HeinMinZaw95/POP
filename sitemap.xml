@@ -27,12 +27,12 @@
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://heinpop.xyz/Graphic_&amp;_UI_Design.html</loc>
+        <loc>https://heinpop.xyz/Graphic_&_UI_Design.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://heinpop.xyz/Motion_Graphic_&amp;_Videos.html</loc>
+        <loc>https://heinpop.xyz/Motion_Graphic_&_Videos.html</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -54,7 +54,22 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-heat-transfer.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-magnetic-field.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://heinpop.xyz/Grade-12_Physics/lab-rotational-motion.html</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://heinpop.xyz/Grade-12_Physics/lab-sattelite-solar.html</loc>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
