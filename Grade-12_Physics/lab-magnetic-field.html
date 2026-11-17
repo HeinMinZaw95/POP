@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Field & Pole Interaction | HeinPop-Lab</title>
+    <meta name="description" content="Interactive 3D simulation of Magnetic Fields, Field Lines, and Two-Magnet Pole Interactions (Attraction & Repulsion) for Grade 12 Physics.">
+    <meta name="keywords" content="Grade 12 Physics, Magnetic Field, Bar Magnet, Magnetic Poles, Attraction and Repulsion, 3D Physics Lab, HeinPop">
+    <meta name="author" content="HeinPop">
+    <link rel="canonical" href="https://heinpop.xyz/Grade-12_Physics/lab-magnetic-field.html">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="lab.css">
+    <link rel="icon" type="image/x-icon" href="../img/logo.svg">
+    
+    <!-- Three.js Core & Controls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <!-- MathJax -->
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <script src="lab-magnetic-field.js" defer></script>
+</head>
+<body class="dark-theme">
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../img/logo.svg" alt="HeinPop Logo" class="logo_img">
+            <a href="../index.html#home" class="logo_name">HeinPop</a>
+        </div>
+        
+        <div class="nav-controls">
+            <button id="theme-toggle" class="toolbar-btn" aria-label="Toggle Theme">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+            <button id="lang-toggle" class="toolbar-btn" aria-label="Switch Language">
+                <span class="lang-text">MM</span>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Navigation">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="../index.html#home" data-en="Home" data-mm="ပင်မစာမျက်နှာ">Home</a></li>
+            <li><a href="../index.html#my-workflow" data-en="About" data-mm="ကျွန်ုပ်၏လုပ်ငန်းစဉ်">About</a></li>
+            <li class="dropdown">
+                <a href="../index.html#skills" class="dropdown-btn">
+                    <span data-en="Specializations" data-mm="ကျွမ်းကျင်မှုများ">Specializations</span>
+                    <span class="material-symbols-outlined dropdown-icon">expand_more</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="../Motion_Graphic_&_Videos.html" data-en="Motion Graphics & Video" data-mm="မိုရှင်းဂရပ်ဖစ်နှင့် ဗီဒီယို">Motion Graphics & Video</a></li>
+                    <li><a href="../Graphic_&_UI_Design.html" data-en="Graphic & UI Design" data-mm="ဂရပ်ဖစ်နှင့် UI ဒီဇိုင်း">Graphic & UI Design</a></li>
+                    <li><a href="../Front-End_Architecture.html" data-en="Front-End Architecture" data-mm="ရှေ့တန်း ဝဘ်ဖွံ့ဖြိုးတိုးတက်မှု">Front-End Architecture</a></li>
+                    <li><a href="../3D_Interactive.html" data-en="3D Interactive" data-mm="3D အပြန်အလှန် တုံ့ပြန်လှုပ်ရှားမှု">3D Interactive</a></li>
+                </ul>
+            </li>
+            <li><a href="../3D_Interactive.html#contact" data-en="Contact" data-mm="ဆက်သွယ်ရန်">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN LAB HERO SECTION -->
+    <section class="lab-hero max-container">
+        <div class="lab-header reveal-on-scroll">
+            <span class="section-tagline" data-en="Electromagnetism: Magnetic Fields" data-mm="လျှပ်စစ်သံလိုက်ပညာ - သံလိုက်စက်ကွင်းများ">Electromagnetism: Magnetic Fields</span>
+            <h1 data-en="3D Magnetic Field & Two-Magnet Interaction" data-mm="သံလိုက်စက်ကွင်းနှင့် သံလိုက် ၂ တုံး အပြန်အလှန်သက်ရောက်မှု">3D Magnetic Field & Two-Magnet Interaction</h1>
+            <p data-en="Observe how magnetic field lines bend, attract, or repel between two bar magnets and inspect field direction using a 3D compass grid." 
+               data-mm="သံလိုက်တုံး ၂ တုံးအကြား ဆွဲငင်မှုနှင့် တွန်းကန်မှုကြောင့် သံလိုက်စက်ကွင်းမျဉ်းကြောင်းများ ပြောင်းလဲပုံကို 3D မြင်ကွင်းဖြင့် လေ့လာပါ။">
+               Observe how magnetic field lines bend, attract, or repel between two bar magnets.
+            </p>
+        </div>
+
+        <div class="lab-workspace reveal-on-scroll">
+            <!-- Controls Panel -->
+            <div class="lab-controls-panel">
+                <h3 data-en="Magnet Controls" data-mm="သံလိုက် ထိန်းချုပ်ခန်း">Magnet Controls</h3>
+                
+                <!-- Pole Configuration -->
+                <div class="control-group">
+                    <label for="poleConfig" data-en="Magnet 2 Orientation:" data-mm="သံလိုက် (၂) ၏ ဝင်ရိုးအနေအထား">Magnet 2 Orientation:</label>
+                    <select id="poleConfig" style="padding: 0.6rem; border-radius: 8px; background: var(--bg-secondary); color: var(--text-main); border: 1px solid var(--border-alpha); font-weight: 600; cursor: pointer;">
+                        <option value="attract" data-en="Unlike Poles (N - S) → Attraction" data-mm="မတူညီသောဝင်ရိုး (N - S) → ဆွဲငင်မည်">Unlike Poles (N - S) → Attraction</option>
+                        <option value="repel" data-en="Like Poles (N - N) → Repulsion" data-mm="တူညီသောဝင်ရိုး (N - N) → တွန်းကန်မည်">Like Poles (N - N) → Repulsion</option>
+                        <option value="single" data-en="Single Magnet (Isolated Field)" data-mm="သံလိုက်တစ်တုံးတည်း စက်ကွင်း">Single Magnet (Isolated Field)</option>
+                    </select>
+                </div>
+
+                <!-- Distance Slider -->
+                <div class="control-group" id="distanceGroup">
+                    <label for="distRange">Distance ($d$): <span id="distVal">3.0</span> m</label>
+                    <input type="range" id="distRange" min="1.4" max="5.0" step="0.1" value="3.0">
+                </div>
+
+                <!-- Pole Strength Slider -->
+                <div class="control-group">
+                    <label for="strengthRange">Pole Strength ($q_m$): <span id="strengthVal">5.0</span> A·m</label>
+                    <input type="range" id="strengthRange" min="1.0" max="10.0" step="0.5" value="5.0">
+                </div>
+
+                <!-- Visual Toggles -->
+                <div class="control-group" style="flex-direction: row; align-items: center; justify-content: space-between; background: var(--bg-secondary); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-alpha);">
+                    <label for="toggleCompasses" style="margin:0; cursor:pointer;" data-en="Show 3D Compass Grid" data-mm="သံလိုက်အိမ်မြှောင်ဇယား ပြရန်">Show 3D Compass Grid</label>
+                    <input type="checkbox" id="toggleCompasses" checked style="accent-color: #00ffcc; width: 16px; height: 16px; cursor: pointer;">
+                </div>
+
+                <!-- Theory Card -->
+                <div class="theory-card">
+                    <h4 data-en="Magnetic Force & Field Laws" data-mm="သံလိုက်အားနှင့် စက်ကွင်းနိယာမ">Magnetic Force & Field Laws</h4>
+                    <p data-en="Field lines exit from North (Red) and enter South (Blue). Unlike poles attract; like poles repel."
+                       data-mm="သံလိုက်စက်ကွင်းမျဉ်းများသည် မြောက်ဝင်ရိုးစွန်း (အနီ) မှထွက်၍ တောင်ဝင်ရိုးစွန်း (အပြာ) သို့ဝင်သည်။">
+                       Field lines exit from North (Red) and enter South (Blue). Unlike poles attract; like poles repel.
+                    </p>
+                    <div class="math-equation-box" style="margin-top: 10px; padding: 10px; background: rgba(0, 255, 204, 0.08); border-left: 3px solid #00ffcc; font-family: monospace; font-size: 13px; color: #00ffcc;">
+                        <p>\(F_m = \frac{\mu_0 q_{m1} q_{m2}}{4\pi r^2}\)</p>
+                        <p style="margin-top: 5px;">\(\vec{B}_{net} = \vec{B}_1 + \vec{B}_2\)</p>
+                    </div>
+                </div>
+
+                <button id="resetSim" class="lab-btn btn-secondary" data-en="Reset Simulation" data-mm="မူလအတိုင်း ပြန်စရန်">Reset Simulation</button>
+                <a href="../3D_Interactive.html" class="lab-btn btn-primary" style="text-decoration: none;" data-en="Back to Main-Lab" data-mm="ပင်မစမ်းသပ်ခန်းများသို့ပြန်ရန်">Back to Main-Lab</a>
+            </div>
+
+            <!-- 3D Canvas Viewport -->
+            <div class="lab-canvas-container" id="canvasContainer">
+                <div class="telemetry-overlay">
+                    <div>Interaction State: <span id="stateBadge" style="color:#00ffcc; font-weight:bold;">ATTRACTION</span></div>
+                    <div style="margin-top: 6px;">Magnetic Force ($F_m$): <span id="forceVal">0.28</span> $\mu$N</div>
+                    <div style="margin-top: 6px;">Midpoint Field ($B_{mid}$): <span id="fieldVal">1.48</span> $\mu$T</div>
+                </div>
+                <button id="fullscreenBtn" class="fullscreen-btn" title="Full Screen">
+                    <span class="material-symbols-outlined">fullscreen</span>
+                </button>
+                <canvas id="physics-canvas"></canvas>
+            </div>
+        </div>
+
+        <!-- POST-LAB RANDOM QUIZ SECTION -->
+        <div class="lab-quiz-section reveal-on-scroll" style="margin-top: 3rem; background: var(--bg-secondary, #121218); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 2rem;">
+            <div class="quiz-header" style="margin-bottom: 1.5rem;">
+                <h3 data-en="Post-Lab Knowledge Check (3 Random Questions)" data-mm="စမ်းသပ်ခန်းအပြီး ဗဟုသုတစစ်ဆေးရန် (ကျပန်းမေးခွန်း ၃ ပုဒ်)">Post-Lab Knowledge Check</h3>
+                <p data-en="Test your understanding of magnetic poles, field lines, and neutral points."
+                   data-mm="သံလိုက်ဝင်ရိုးစွန်းများ၊ စက်ကွင်းမျဉ်းကြောင်းများနှင့် သုညအမှတ် (Neutral Point) အကြောင်း နားလည်မှုကို စမ်းသပ်ပါ။">
+                   Test your understanding of magnetic poles, field lines, and neutral points.
+                </p>
+            </div>
+
+            <div id="quiz-form-container">
+                <div id="dynamic-quiz-questions"></div>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                    <button id="submit-quiz" class="lab-btn btn-primary" data-en="Submit Answers" data-mm="အဖြေလွှာတင်မည်">Submit Answers</button>
+                    <button id="refresh-quiz" class="lab-btn btn-secondary" data-en="New Questions" data-mm="မေးခွန်းအသစ်လဲမည်">New Questions</button>
+                    <span id="quiz-result-msg" style="font-weight: bold; font-size: 0.95rem;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="neon-wrapper">
+        <div class="social reveal-on-scroll">
+            <div class="social-links">
+                <a href="https://github.com/HeinMinZaw95" aria-label="GitHub"><span class="material-symbols-outlined">code</span></a>
+                <a href="https://www.facebook.com/p/Hein-Pop-100028468212689/" aria-label="Facebook"><span class="material-symbols-outlined">photo_camera</span></a>
+                <a href="https://www.linkedin.com/in/hein-pop-932a6535a/" aria-label="LinkedIn"><span class="material-symbols-outlined">group</span></a>
+                <a href="https://youtube.com/@hein-pop" aria-label="YouTube"><span class="material-symbols-outlined">video_library</span></a>
+            </div>
+        </div>
+        <p class="reveal-on-scroll">© 2026 HeinPop. All Rights Reserved. (Yangon, Myanmar)</p>
+    </footer>
+
+    <!-- Quiz Script -->
+    <script>
+        const questionBank = [
+            {
+                qEn: "Outside a bar magnet, what is the direction of magnetic field lines?",
+                qMm: "သံလိုက်တုံးတစ်တုံး၏ အပြင်ဘက်တွင် သံလိုက်စက်ကွင်းမျဉ်းကြောင်းများ၏ ဦးတည်ချက်မှာ မည်သို့နည်း။",
+                optionsEn: ["From North pole to South pole", "From South pole to North pole", "From center outward radially"],
+                optionsMm: ["မြောက်ဝင်ရိုးစွန်း (N) မှ တောင်ဝင်ရိုးစွန်း (S) သို့", "တောင်ဝင်ရိုးစွန်း (S) မှ မြောက်ဝင်ရိုးစွန်း (N) သို့", "အလယ်ဗဟိုမှ အပြင်ဘက်သို့"],
+                answer: 0
+            },
+            {
+                qEn: "What happens when two North poles of bar magnets are brought close together?",
+                qMm: "သံလိုက်တုံး ၂ တုံး၏ မြောက်ဝင်ရိုးစွန်း (North poles) နှစ်ခုကို အနီးကပ်ယူလာပါက မည်သို့ဖြစ်မည်နည်း။",
+                optionsEn: ["They repel each other and field lines push away", "They attract each other strongly", "Magnetic field becomes zero everywhere"],
+                optionsMm: ["တစ်ခုနှင့်တစ်ခု တွန်းကန်ပြီး စက်ကွင်းမျဉ်းများ ဘေးသို့ကွဲထွက်သွားသည်", "အားပြင်းစွာ ဆွဲငင်ကြသည်", "နေရာတိုင်းတွင် သံလိုက်စက်ကွင်း သုညဖြစ်သွားသည်"],
+                answer: 0
+            },
+            {
+                qEn: "At a 'Neutral Point' between two like poles of equal strength, the net magnetic field is:",
+                qMm: "တူညီသောဝင်ရိုး ၂ ခုကြားရှိ Neutral Point (သုညအမှတ်) တွင် အသားတင်သံလိုက်စက်ကွင်း (Net magnetic field) တန်ဖိုးမှာ -",
+                optionsEn: ["Zero", "Maximum", "Infinite"],
+                optionsMm: ["သုည (Zero)", "အများဆုံး (Maximum)", "အနန္တ (Infinite)"],
+                answer: 0
+            },
+            {
+                qEn: "Why do magnetic field lines never intersect (cross) each other?",
+                qMm: "သံလိုက်စက်ကွင်းမျဉ်းကြောင်းများသည် အဘယ်ကြောင့် တစ်ခုနှင့်တစ်ခု ဖြတ်သန်းခြင်း (Intersect) မရှိသနည်း။",
+                optionsEn: ["Because a compass needle cannot point in two directions at the same point", "Because they have positive charge", "Because gravity keeps them parallel"],
+                optionsMm: ["အမှတ်တစ်ခုတည်းတွင် သံလိုက်အိမ်မြှောင်အပ်သည် ဦးတည်ချက် နှစ်ခုတစ်ပြိုင်နက် မပြနိုင်သောကြောင့်", "၎င်းတို့တွင် အဖိုဓာတ်ရှိသောကြောင့်", "မြေဆွဲအားကြောင့်"],
+                answer: 0
+            },
+            {
+                qEn: "How does the magnetic force between two poles change if the distance between them is doubled?",
+                qMm: "သံလိုက်ဝင်ရိုး ၂ ခုကြား အကွာအဝေးကို နှစ်ဆတိုးလိုက်ပါက ၎င်းတို့ကြားရှိ သံလိုက်အားသည် မည်သို့ပြောင်းလဲမည်နည်း။",
+                optionsEn: ["Decreases to one-fourth (1/4)", "Decreases to half (1/2)", "Doubles (2x)"],
+                optionsMm: ["လေးပုံတစ်ပုံ (1/4) အထိ လျော့နည်းသွားမည်", "တစ်ဝက် (1/2) လျော့နည်းသွားမည်", "နှစ်ဆ တိုးလာမည်"],
+                answer: 0
+            },
+            {
+                qEn: "Where is the magnetic field strongest around a bar magnet?",
+                qMm: "သံလိုက်တုံးတစ်တုံး၏ မည်သည့်နေရာတွင် သံလိုက်စက်ကွင်း အပြင်းထန်ဆုံးဖြစ်သနည်း။",
+                optionsEn: ["Near the poles (N and S)", "At the exact geometric center", "Far away from the magnet"],
+                optionsMm: ["ဝင်ရိုးစွန်းများ (N နှင့် S) အနီးတွင်", "အလယ်ဗဟိုတည့်တည့်တွင်", "သံလိုက်နှင့် ဝေးကွာသောနေရာတွင်"],
+                answer: 0
+            }
+        ];
+
+        let activeQuizSet = [];
+
+        function loadRandomQuiz() {
+            const shuffled = [...questionBank].sort(() => 0.5 - Math.random());
+            activeQuizSet = shuffled.slice(0, 3);
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            if (activeQuizSet.length === 0) return;
+            const container = document.getElementById('dynamic-quiz-questions');
+            container.innerHTML = '';
+
+            const currentLang = localStorage.getItem("portfolio-lang") || "en";
+            const isMM = currentLang === "mm";
+
+            activeQuizSet.forEach((item, index) => {
+                const qText = isMM ? item.qMm : item.qEn;
+                const opts = isMM ? item.optionsMm : item.optionsEn;
+
+                let html = `
+                    <div class="quiz-question-card" style="margin-bottom: 1.25rem;">
+                        <h4 style="color: #00ffcc; margin-bottom: 0.5rem; font-size: 1rem;">${index + 1}. ${qText}</h4>
+                        <div class="quiz-options" style="display: flex; flex-direction: column; gap: 6px; padding-left: 10px;">
+                `;
+
+                opts.forEach((opt, oIndex) => {
+                    html += `
+                        <label style="cursor: pointer; font-size: 0.9rem;">
+                            <input type="radio" name="q_${index}" value="${oIndex}"> ${opt}
+                        </label>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML += html;
+            });
+
+            document.getElementById('quiz-result-msg').textContent = '';
+        }
+
+        window.addEventListener('DOMContentLoaded', loadRandomQuiz);
+        document.getElementById('refresh-quiz').addEventListener('click', loadRandomQuiz);
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+            const isMM = document.documentElement.lang === 'mm' || document.querySelector('.lang-text').textContent === 'EN';
+            const msg = document.getElementById('quiz-result-msg');
+            let score = 0;
+            let allAnswered = true;
+
+            activeQuizSet.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (!selected) allAnswered = false;
+                else if (parseInt(selected.value) === item.answer) score++;
+            });
+
+            if (!allAnswered) {
+                msg.style.color = '#ee1c4b';
+                msg.textContent = isMM ? "ကျေးဇူးပြု၍ မေးခွန်းအားလုံးကို ဖြေဆိုပါ။" : "Please answer all questions.";
+                return;
+            }
+
+            msg.style.color = '#00ffcc';
+            msg.textContent = isMM ? `သင့်ရမှတ် (${score}/3) ရရှိပါသည်။` : `You got (${score}/3) score.`;
+        });
+    </script>
+    <script src="../app.js" defer></script>
+    <script src="physics_main.js" defer></script>
+</body>
+</html>
